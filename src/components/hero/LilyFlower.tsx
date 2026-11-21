@@ -85,8 +85,8 @@ export const LilyFlower: React.FC<LilyFlowerProps> = ({
               <img
                 src="/assets/lily/leaf-1.png"
                 alt=""
-                width={431}
-                height={455}
+                width={465}
+                height={536}
                 className="w-full h-full object-contain pointer-events-none"
                 loading="eager"
               />
@@ -103,8 +103,8 @@ export const LilyFlower: React.FC<LilyFlowerProps> = ({
               <img
                 src="/assets/lily/lily-bud.png"
                 alt=""
-                width={431}
-                height={455}
+                width={465}
+                height={536}
                 className="w-full h-full object-contain pointer-events-none"
                 loading="eager"
               />
@@ -120,9 +120,9 @@ export const LilyFlower: React.FC<LilyFlowerProps> = ({
             <picture>
               <img
                 src="/assets/lily/lily-bloom.png"
-                alt="Pink Stargazer Lily Bloom"
-                width={431}
-                height={455}
+                alt="Pink Lily Bloom Bouquet"
+                width={465}
+                height={536}
                 // @ts-expect-error - fetchpriority is valid HTML attribute
                 fetchpriority="high"
                 className="w-full h-full object-contain pointer-events-none"
@@ -141,9 +141,9 @@ export const LilyFlower: React.FC<LilyFlowerProps> = ({
           <picture>
             <img
               src="/assets/lily/lily-full.png"
-              alt="Pink Stargazer Lily Bloom with foliage and bud"
-              width={431}
-              height={455}
+              alt="Pink Lily Bloom Bouquet"
+              width={465}
+              height={536}
               // @ts-expect-error - fetchpriority is valid HTML attribute
               fetchpriority="high"
               className="w-full h-full object-contain pointer-events-none"

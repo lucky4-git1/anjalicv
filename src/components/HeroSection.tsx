@@ -258,8 +258,8 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
             const maxDist = 240
             if (dist < maxDist) {
               const factor = 1 - dist / maxDist
-              const nudgeY = -6 * factor
-              const weight = Math.round(700 + 200 * factor)
+              const nudgeY = -7 * factor
+              const weight = Math.round(800 + 100 * factor)
               gsap.to(char, {
                 y: nudgeY,
                 fontWeight: weight,
@@ -270,7 +270,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
             } else {
               gsap.to(char, {
                 y: 0,
-                fontWeight: 700,
+                fontWeight: 800,
                 duration: 0.35,
                 ease: "power2.out",
                 overwrite: "auto"
@@ -293,7 +293,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           if (prevBtnRef.current) gsap.to(prevBtnRef.current, { x: 0, y: 0, duration: 0.3 })
           if (nextBtnRef.current) gsap.to(nextBtnRef.current, { x: 0, y: 0, duration: 0.3 })
           letterCharRefs.current.forEach((char) => {
-            if (char) gsap.to(char, { y: 0, fontWeight: 700, duration: 0.3 })
+            if (char) gsap.to(char, { y: 0, fontWeight: 800, duration: 0.3 })
           })
         }
 
@@ -386,17 +386,18 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         {/* ── CENTERPIECE: HUGE HEADLINE + PINK DISC + LILY BLOOM (Layers 10, 20, 30) ── */}
         <div className="relative z-10 w-full flex-1 flex items-center justify-center px-4 sm:px-8">
           
-          {/* ── LAYER 10: Giant Headline "Anjali" ── */}
+          {/* ── LAYER 10: Giant Headline "Anjali" (Bigger & Highly Visible) ── */}
           <div
             ref={headlineWrapRef}
             className="absolute inset-0 flex items-center justify-center pointer-events-none"
             style={{ zIndex: 10, willChange: "transform" }}
           >
             <h1
-              className="hero-headline-font text-[#161616] tracking-[-0.04em] leading-[0.88] whitespace-nowrap uppercase select-none text-center"
+              className="hero-headline-font text-[#111111] tracking-[-0.03em] leading-[0.86] whitespace-nowrap uppercase select-none text-center"
               style={{
-                fontSize: "clamp(5.2rem, 16vw, 13.8rem)",
-                fontWeight: 700
+                fontSize: "clamp(6.2rem, 19.5vw, 17rem)",
+                fontWeight: 800,
+                textShadow: "0 2px 20px rgba(0, 0, 0, 0.04)"
               }}
               aria-label="Anjali"
             >
@@ -419,11 +420,11 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
             className="absolute rounded-full pointer-events-none"
             style={{
               zIndex: 20,
-              width: "clamp(240px, 31vw, 410px)",
-              height: "clamp(240px, 31vw, 410px)",
+              width: "clamp(230px, 30vw, 390px)",
+              height: "clamp(230px, 30vw, 390px)",
               backgroundColor: "var(--hero-circle, #FDE8EC)",
               left: "var(--flower-x, 50%)",
-              top: "49%",
+              top: "48.5%",
               transform: "translate(-50%, -50%)",
               willChange: "transform, opacity"
             }}
@@ -436,8 +437,8 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
             className="absolute pointer-events-none flex items-center justify-center"
             style={{
               zIndex: 30,
-              width: "clamp(340px, 46vw, 580px)",
-              height: "clamp(340px, 46vw, 580px)",
+              width: "clamp(310px, 42vw, 530px)",
+              height: "clamp(310px, 42vw, 530px)",
               left: "var(--flower-x, 50%)",
               top: "48%",
               transform: "translate(-50%, -50%)",

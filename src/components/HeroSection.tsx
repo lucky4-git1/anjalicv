@@ -20,7 +20,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
   const headlineWrapRef = useRef<HTMLDivElement | null>(null)
   const letterCharRefs = useRef<(HTMLSpanElement | null)[]>([])
   const subtitleRef = useRef<HTMLDivElement | null>(null)
-  const flowerDiscRef = useRef<HTMLDivElement | null>(null)
 
   const letters = ["A", "n", "j", "a", "l", "i"]
 
@@ -29,7 +28,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
     const ctx = gsap.context(() => {
       if (prefersReducedMotion) {
         gsap.set(letterCharRefs.current, { y: 0, opacity: 1, scale: 1, filter: "none" })
-        gsap.set(flowerDiscRef.current, { scale: 1, opacity: 1 })
         gsap.set(subtitleRef.current, { y: 0, opacity: 1, filter: "none" })
         return
       }
@@ -41,7 +39,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
 
       // Initial positions
       gsap.set(letterCharRefs.current, { y: 75, opacity: 0, scale: 0.94, filter: "blur(6px)" })
-      gsap.set(flowerDiscRef.current, { scale: 0, opacity: 0 })
       gsap.set(subtitleRef.current, { y: 25, opacity: 0, filter: "blur(4px)" })
 
       masterTl
@@ -56,22 +53,14 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           ease: "power4.out"
         }, 0.15)
 
-        // 2. Soft pastel pink disc scales in behind bloom
-        .to(flowerDiscRef.current, {
-          scale: 1,
-          opacity: 1,
-          duration: 1.2,
-          ease: "back.out(1.35)"
-        }, 0.3)
-
-        // 3. Subtitle "Social Media Manager" rises and expands smoothly
+        // 2. Subtitle "Social Media Manager" rises and expands smoothly
         .to(subtitleRef.current, {
           y: 0,
           opacity: 1,
           filter: "blur(0px)",
           duration: 0.95,
           ease: "power3.out"
-        }, 0.55)
+        }, 0.45)
 
       // Skip intro on click anywhere in hero
       const handleHeroClick = () => {
@@ -88,8 +77,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
       // B. POINTER PARALLAX & VARIABLE-FONT WAVE (Desktop hover)
       // ======================================================================
       if (window.matchMedia("(hover: hover)").matches && sectionEl) {
-        const quickDiscX = gsap.quickTo(flowerDiscRef.current, "x", { duration: 0.75, ease: "power2.out" })
-        const quickDiscY = gsap.quickTo(flowerDiscRef.current, "y", { duration: 0.75, ease: "power2.out" })
         const quickHeadlineX = gsap.quickTo(headlineWrapRef.current, "x", { duration: 0.8, ease: "power2.out" })
         const quickHeadlineY = gsap.quickTo(headlineWrapRef.current, "y", { duration: 0.8, ease: "power2.out" })
         const quickSubtitleX = gsap.quickTo(subtitleRef.current, "x", { duration: 0.85, ease: "power2.out" })
@@ -100,8 +87,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           const normX = ((e.clientX - rect.left) / rect.width) * 2 - 1
           const normY = ((e.clientY - rect.top) / rect.height) * 2 - 1
 
-          quickDiscX(normX * 6)
-          quickDiscY(normY * 5)
           quickHeadlineX(normX * -3.5)
           quickHeadlineY(normY * -2.5)
           quickSubtitleX(normX * -2.5)
@@ -138,8 +123,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         }
 
         const handlePointerLeave = () => {
-          quickDiscX(0)
-          quickDiscY(0)
           quickHeadlineX(0)
           quickHeadlineY(0)
           quickSubtitleX(0)
@@ -154,20 +137,8 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
       }
 
       // ======================================================================
-      // C. SCROLL DISCS & HEADLINE FADE
+      // C. HEADLINE & SUBTITLE SCROLL FADE
       // ======================================================================
-      gsap.to(flowerDiscRef.current, {
-        scrollTrigger: {
-          trigger: "#hero",
-          start: "top top",
-          end: "45% top",
-          scrub: 1
-        },
-        scale: 0.2,
-        opacity: 0,
-        ease: "power1.out"
-      })
-
       gsap.to(headlineWrapRef.current, {
         scrollTrigger: {
           trigger: "#hero",
@@ -257,23 +228,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
             width: "4px",
             height: "4px",
             transform: "translate(-50%, -50%)"
-          }}
-          aria-hidden="true"
-        />
-
-        {/* ── LAYER 20: Soft Pastel Pink Disc (Perched behind bloom atop "j") ── */}
-        <div
-          ref={flowerDiscRef}
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            zIndex: 20,
-            width: "clamp(190px, 23vw, 310px)",
-            height: "clamp(190px, 23vw, 310px)",
-            backgroundColor: "var(--hero-circle, #FDE8EC)",
-            left: "48%",
-            top: "32%",
-            transform: "translate(-50%, -50%)",
-            willChange: "transform, opacity"
           }}
           aria-hidden="true"
         />

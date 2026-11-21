@@ -1,11 +1,9 @@
-import React, { useEffect, useRef, useState, useMemo } from "react"
+import React, { useEffect, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { ChevronLeft, ChevronRight } from "lucide-react"
 import { ContourBackground } from "./hero/ContourBackground"
 import { LilyFlower } from "./hero/LilyFlower"
 import { PollenParticles } from "./hero/PollenParticles"
-import { PORTFOLIO_DATA } from "../data/portfolioData"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -14,30 +12,8 @@ interface HeroSectionProps {
   onOpenContactModal: () => void
 }
 
-interface SlideItem {
-  id: string
-  name: string
-  thumb: string
-  alt: string
-}
-
 export const HeroSection: React.FC<HeroSectionProps> = () => {
-  const { personal } = PORTFOLIO_DATA
-
-  // Slides dataset
-  const slides: SlideItem[] = useMemo(() => [
-    {
-      id: "stargazer",
-      name: "Stargazer Lily",
-      thumb: "/assets/lily/thumb.png",
-      alt: "Stargazer Lily Bloom"
-    }
-  ], [])
-
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
-  const [isBreathing, setIsBreathing] = useState(false)
-
-  // Container refs
+  // Container ref
   const sectionRef = useRef<HTMLElement | null>(null)
 
   // Element animation refs
@@ -46,24 +22,9 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
   const flowerDiscRef = useRef<HTMLDivElement | null>(null)
   const flowerContainerRef = useRef<HTMLDivElement | null>(null)
   const bloomRef = useRef<HTMLDivElement | null>(null)
-  const bottomBarRef = useRef<HTMLDivElement | null>(null)
   const cursorRef = useRef<HTMLDivElement | null>(null)
-  const prevBtnRef = useRef<HTMLButtonElement | null>(null)
-  const nextBtnRef = useRef<HTMLButtonElement | null>(null)
 
-  const currentSlide = slides[currentSlideIndex]
   const letters = ["A", "n", "j", "a", "l", "i"]
-
-  const handleChevronClick = (direction: "prev" | "next") => {
-    if (slides.length > 1) {
-      setCurrentSlideIndex((prev) =>
-        direction === "next" ? (prev + 1) % slides.length : (prev - 1 + slides.length) % slides.length
-      )
-    } else {
-      setIsBreathing(true)
-      setTimeout(() => setIsBreathing(false), 700)
-    }
-  }
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -72,23 +33,21 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         gsap.set(letterCharRefs.current, { y: 0, opacity: 1 })
         gsap.set(flowerDiscRef.current, { scale: 1, opacity: 1 })
         gsap.set(flowerContainerRef.current, { scale: 1, opacity: 1, rotation: 0, x: 0, y: 0 })
-        gsap.set(bottomBarRef.current, { opacity: 1, y: 0 })
         return
       }
 
       // ======================================================================
-      // A. MASTER INTRO SEQUENCE (2.2s total, skippable by click)
+      // A. MASTER INTRO SEQUENCE (2.0s, skippable by click)
       // ======================================================================
       const masterTl = gsap.timeline({ defaults: { ease: "power3.out" } })
 
-      // Initial states
-      gsap.set(letterCharRefs.current, { y: 60, opacity: 0 })
+      // Initial positions
+      gsap.set(letterCharRefs.current, { y: 55, opacity: 0 })
       gsap.set(flowerDiscRef.current, { scale: 0, opacity: 0 })
-      gsap.set(flowerContainerRef.current, { scale: 0.75, rotation: -8, opacity: 0 })
-      gsap.set(bottomBarRef.current, { opacity: 0, y: 14 })
+      gsap.set(flowerContainerRef.current, { scale: 0.72, rotation: -8, opacity: 0 })
 
       masterTl
-        // 1. Letters of "Anjali" rise and settle with pristine clarity
+        // 1. Letters of "Anjali" rise and settle
         .to(letterCharRefs.current, {
           y: 0,
           opacity: 1,
@@ -97,7 +56,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           ease: "power4.out"
         }, 0.15)
 
-        // 2. Soft pastel pink disc scales in
+        // 2. Soft pastel pink disc scales in behind bloom
         .to(flowerDiscRef.current, {
           scale: 1,
           opacity: 1,
@@ -105,7 +64,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           ease: "back.out(1.25)"
         }, 0.3)
 
-        // 3. Flower rotates into position and blossoms
+        // 3. Flower crowns the "j" and blossoms
         .to(flowerContainerRef.current, {
           scale: 1,
           rotation: 0,
@@ -113,14 +72,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           duration: 1.25,
           ease: "expo.out"
         }, 0.45)
-
-        // 4. Bottom UI bar fades and slides in
-        .to(bottomBarRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          ease: "power2.out"
-        }, 0.85)
 
       // Skip intro on click anywhere in hero
       const handleHeroClick = () => {
@@ -147,7 +98,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
       })
 
       // ======================================================================
-      // C. POINTER PARALLAX & VARIABLE-FONT WAVE (Desktop hover: hover)
+      // C. POINTER PARALLAX & VARIABLE-FONT WAVE (Desktop hover)
       // ======================================================================
       if (window.matchMedia("(hover: hover)").matches && sectionEl) {
         const quickBloomX = gsap.quickTo(flowerContainerRef.current, "x", { duration: 0.55, ease: "power2.out" })
@@ -157,35 +108,17 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         const quickHeadlineX = gsap.quickTo(headlineWrapRef.current, "x", { duration: 0.8, ease: "power2.out" })
         const quickHeadlineY = gsap.quickTo(headlineWrapRef.current, "y", { duration: 0.8, ease: "power2.out" })
 
-        const handleMagnetic = (btn: HTMLElement | null, e: MouseEvent) => {
-          if (!btn) return
-          const rect = btn.getBoundingClientRect()
-          const centerX = rect.left + rect.width / 2
-          const centerY = rect.top + rect.height / 2
-          const distX = e.clientX - centerX
-          const distY = e.clientY - centerY
-          const dist = Math.hypot(distX, distY)
-          if (dist < 60) {
-            gsap.to(btn, { x: distX * 0.35, y: distY * 0.35, duration: 0.25, ease: "power2.out" })
-          } else {
-            gsap.to(btn, { x: 0, y: 0, duration: 0.35, ease: "elastic.out(1, 0.4)" })
-          }
-        }
-
         const handlePointerMove = (e: MouseEvent) => {
           const rect = sectionEl.getBoundingClientRect()
           const normX = ((e.clientX - rect.left) / rect.width) * 2 - 1
           const normY = ((e.clientY - rect.top) / rect.height) * 2 - 1
 
-          quickBloomX(normX * 13)
-          quickBloomY(normY * 11)
+          quickBloomX(normX * 12)
+          quickBloomY(normY * 10)
           quickDiscX(normX * 6)
           quickDiscY(normY * 5)
           quickHeadlineX(normX * -3.5)
           quickHeadlineY(normY * -2.5)
-
-          handleMagnetic(prevBtnRef.current, e)
-          handleMagnetic(nextBtnRef.current, e)
 
           if (cursorRef.current) {
             cursorRef.current.style.left = `${e.clientX}px`
@@ -229,8 +162,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           quickDiscY(0)
           quickHeadlineX(0)
           quickHeadlineY(0)
-          if (prevBtnRef.current) gsap.to(prevBtnRef.current, { x: 0, y: 0, duration: 0.3 })
-          if (nextBtnRef.current) gsap.to(nextBtnRef.current, { x: 0, y: 0, duration: 0.3 })
           letterCharRefs.current.forEach((char) => {
             if (char) gsap.to(char, { y: 0, fontWeight: 800, duration: 0.3 })
           })
@@ -241,28 +172,43 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
       }
 
       // ======================================================================
-      // D. SCROLL JOURNEY: FLOWER ROTATES & FLIES DOWN TO ABOUT ME PORTRAIT CORNER
-      // (NO BLACK OVERLAY / NO BLACKED EFFECT)
+      // D. SCROLL FLIGHT: FLOWER ROTATES & FLIES DOWN TO ABOUT ME PORTRAIT CORNER
+      // (Visible flight across viewport, zero blacked-out effect)
       // ======================================================================
+      const calculateFlightTarget = () => {
+        const portraitCard = document.getElementById("about-portrait-card")
+        if (!portraitCard || !flowerContainerRef.current) {
+          return { targetX: -140, targetY: 750 }
+        }
+        const pRect = portraitCard.getBoundingClientRect()
+        // Top-right corner of the portrait frame
+        const targetX = (pRect.right - 35) - (window.innerWidth / 2)
+        const targetY = (pRect.top + window.scrollY) - (window.innerHeight * 0.32)
+        return { targetX, targetY }
+      }
+
       gsap.to(flowerContainerRef.current, {
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: "#hero",
           start: "top top",
-          end: "bottom top",
-          scrub: 1.2
+          endTrigger: "#about-portrait-card",
+          end: "top 35%",
+          scrub: 1.2,
+          invalidateOnRefresh: true
         },
-        y: 420,
-        x: -160,
-        scale: 0.38,
-        rotation: -42,
+        x: () => calculateFlightTarget().targetX,
+        y: () => calculateFlightTarget().targetY,
+        scale: 0.28,
+        rotation: -28,
         ease: "power1.inOut"
       })
 
+      // Soft pink disc dissolves quickly so flower remains the focal star
       gsap.to(flowerDiscRef.current, {
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: "#hero",
           start: "top top",
-          end: "60% top",
+          end: "45% top",
           scrub: 1
         },
         scale: 0.2,
@@ -270,27 +216,28 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         ease: "power1.out"
       })
 
+      // Headline drifts up softly as user scrolls down
       gsap.to(headlineWrapRef.current, {
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: "#hero",
           start: "top top",
-          end: "70% top",
+          end: "60% top",
           scrub: 1
         },
-        y: -90,
-        opacity: 0.15,
+        y: -70,
+        opacity: 0.2,
         ease: "none"
       })
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [slides.length])
+  }, [])
 
   return (
     <section
       ref={sectionRef}
       id="hero"
-      className="relative w-full h-[100svh] min-h-[640px] flex flex-col justify-between overflow-hidden select-none cursor-default bg-[#F9EAE6]"
+      className="relative w-full h-[100svh] min-h-[640px] flex flex-col justify-between overflow-x-clip overflow-y-visible select-none cursor-default bg-[#F9EAE6]"
       style={{
         backgroundColor: "var(--hero-blush, #F9EAE6)",
         isolation: "isolate"
@@ -313,10 +260,10 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
       {/* Top Spacer for Global Fixed Navigation Header */}
       <div className="relative z-10 w-full h-20 sm:h-24 pointer-events-none" />
 
-      {/* ── CENTERPIECE: HUGE HEADLINE + PINK DISC + LILY BLOOM (Layers 10, 20, 30) ── */}
+      {/* ── CENTERPIECE: HUGE HEADLINE + CROWN FLOWER (Layers 10, 20, 50) ── */}
       <div className="relative z-10 w-full flex-1 flex items-center justify-center px-4 sm:px-8">
         
-        {/* ── LAYER 10: Headline "Anjali" (Properly Visible, Title Case with Visible Dots) ── */}
+        {/* ── LAYER 10: Headline "Anjali" (Full Visibility, Single-Storey Geometric, Round Dots) ── */}
         <div
           ref={headlineWrapRef}
           className="absolute inset-0 flex items-center justify-center pointer-events-none"
@@ -343,97 +290,47 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           </h1>
         </div>
 
-        {/* ── LAYER 20: Soft Pastel Pink Disc (--hero-circle, behind bloom) ── */}
+        {/* ── LAYER 20: Soft Pastel Pink Disc (Perched behind bloom atop "j") ── */}
         <div
           ref={flowerDiscRef}
           className="absolute rounded-full pointer-events-none"
           style={{
             zIndex: 20,
-            width: "clamp(200px, 24vw, 320px)",
-            height: "clamp(200px, 24vw, 320px)",
+            width: "clamp(190px, 23vw, 310px)",
+            height: "clamp(190px, 23vw, 310px)",
             backgroundColor: "var(--hero-circle, #FDE8EC)",
-            left: "var(--flower-x, 50%)",
-            top: "49.5%",
+            left: "48%",
+            top: "32%",
             transform: "translate(-50%, -50%)",
             willChange: "transform, opacity"
           }}
           aria-hidden="true"
         />
 
-        {/* ── LAYER 30: Botanical Lily & Orchid Bouquet (Center Balanced, Anjali Clearly Visible) ── */}
+        {/* ── LAYER 50: The Hero Lily Flower Bouquet (Perched right on top of "j" in Anjali) ── */}
         <div
           ref={flowerContainerRef}
           className="absolute pointer-events-none flex items-center justify-center"
           style={{
-            zIndex: 30,
-            width: "clamp(250px, 32vw, 420px)",
-            height: "clamp(290px, 37vw, 490px)",
-            left: "var(--flower-x, 50%)",
-            top: "49%",
+            zIndex: 50,
+            width: "clamp(240px, 30vw, 400px)",
+            height: "clamp(280px, 35vw, 460px)",
+            left: "48%",
+            top: "31%",
             transform: "translate(-50%, -50%)",
             willChange: "transform"
           }}
         >
-          <LilyFlower
-            bloomRef={bloomRef}
-            isBreathing={isBreathing}
-          />
+          <LilyFlower bloomRef={bloomRef} />
         </div>
 
       </div>
 
-      {/* ── LAYER 50: Canvas Bottom UI Bar (Thumbnail, Label, Chevrons) ── */}
+      {/* ── ORGANIC GRADIENT BRIDGE: Blends Hero (#F9EAE6) smoothly into About Me (#211D1D) ── */}
       <div
-        ref={bottomBarRef}
-        className="relative z-50 w-full flex items-center justify-between px-6 sm:px-12 pb-6 sm:pb-8 pointer-events-auto"
-      >
-        {/* Bottom-Left: Round Thumbnail + Label */}
-        <div className="flex items-center gap-3">
-          <div className="w-[28px] h-[28px] rounded-full overflow-hidden border border-[#ECECEC] bg-zinc-100 shadow-xs flex-shrink-0">
-            <img
-              src={currentSlide.thumb}
-              alt=""
-              width={28}
-              height={28}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <span className="font-sans font-medium text-[13.5px] tracking-[-0.015em] text-[#161616]">
-            {currentSlide.name}
-          </span>
-        </div>
-
-        {/* Bottom-Center: Subtle Role Tagline */}
-        <div className="hidden md:block">
-          <span className="font-mono text-[10px] tracking-[0.22em] uppercase text-zinc-500">
-            {personal.title}
-          </span>
-        </div>
-
-        {/* Bottom-Right: Outlined Chevron Arrows */}
-        <div className="flex items-center gap-2">
-          <button
-            ref={prevBtnRef}
-            onClick={() => handleChevronClick("prev")}
-            className="w-[32px] h-[32px] sm:w-[30px] sm:h-[30px] rounded-full border border-[#D1D1D1] bg-white/80 hover:bg-white hover:border-[#161616] text-[#161616] flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs active:scale-95"
-            aria-label="Previous flower slide"
-            type="button"
-          >
-            <ChevronLeft className="w-3.5 h-3.5 stroke-[2]" />
-          </button>
-
-          <button
-            ref={nextBtnRef}
-            onClick={() => handleChevronClick("next")}
-            className="w-[32px] h-[32px] sm:w-[30px] sm:h-[30px] rounded-full border border-[#D1D1D1] bg-white/80 hover:bg-white hover:border-[#161616] text-[#161616] flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs active:scale-95"
-            aria-label="Next flower slide"
-            type="button"
-          >
-            <ChevronRight className="w-3.5 h-3.5 stroke-[2]" />
-          </button>
-        </div>
-      </div>
-
+        className="absolute bottom-0 left-0 right-0 h-44 pointer-events-none bg-gradient-to-b from-transparent via-[#F9EAE6]/60 to-[#211D1D] z-20"
+        aria-hidden="true"
+      />
     </section>
   )
 }

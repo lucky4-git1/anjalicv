@@ -90,9 +90,9 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
 
       // Initial positions
       gsap.set(canvasRef.current, { opacity: 0.9, scale: 0.985 })
-      gsap.set(letterCharRefs.current, { yPercent: 115, opacity: 0 })
+      gsap.set(letterCharRefs.current, { y: 60, opacity: 0 })
       gsap.set(flowerDiscRef.current, { scale: 0, opacity: 0 })
-      gsap.set(flowerContainerRef.current, { scale: 0.72, rotation: -10, opacity: 0 })
+      gsap.set(flowerContainerRef.current, { scale: 0.75, rotation: -8, opacity: 0 })
       gsap.set(budRef.current, { scale: 0.8, rotation: -6, opacity: 0 })
       gsap.set(leavesRef.current, { scale: 0.82, rotation: -12, opacity: 0 })
       gsap.set(bottomBarRef.current, { opacity: 0, y: 14 })
@@ -106,12 +106,12 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           ease: "power2.out"
         }, 0)
 
-        // 2. Letters of "Anjali" rise out of masked container
+        // 2. Letters of "Anjali" rise and settle with pristine clarity
         .to(letterCharRefs.current, {
-          yPercent: 0,
+          y: 0,
           opacity: 1,
           duration: 1.05,
-          stagger: 0.055,
+          stagger: 0.05,
           ease: "power4.out"
         }, 0.2)
 
@@ -386,18 +386,17 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         {/* ── CENTERPIECE: HUGE HEADLINE + PINK DISC + LILY BLOOM (Layers 10, 20, 30) ── */}
         <div className="relative z-10 w-full flex-1 flex items-center justify-center px-4 sm:px-8">
           
-          {/* ── LAYER 10: Giant Headline "Anjali" (Bigger & Highly Visible) ── */}
+          {/* ── LAYER 10: Headline "Anjali" (Properly Visible, Title Case with Visible Dots) ── */}
           <div
             ref={headlineWrapRef}
             className="absolute inset-0 flex items-center justify-center pointer-events-none"
             style={{ zIndex: 10, willChange: "transform" }}
           >
             <h1
-              className="hero-headline-font text-[#111111] tracking-[-0.03em] leading-[0.86] whitespace-nowrap uppercase select-none text-center"
+              className="hero-headline-font text-[#161616] tracking-[-0.015em] leading-[0.88] whitespace-nowrap select-none text-center"
               style={{
-                fontSize: "clamp(6.2rem, 19.5vw, 17rem)",
-                fontWeight: 800,
-                textShadow: "0 2px 20px rgba(0, 0, 0, 0.04)"
+                fontSize: "clamp(6.2rem, 19.5vw, 17.5rem)",
+                fontWeight: 800
               }}
               aria-label="Anjali"
             >
@@ -414,33 +413,33 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
             </h1>
           </div>
 
-          {/* ── LAYER 20: Soft Pastel Pink Disc (--hero-circle, ~60% flower width) ── */}
+          {/* ── LAYER 20: Soft Pastel Pink Disc (--hero-circle, behind bloom) ── */}
           <div
             ref={flowerDiscRef}
             className="absolute rounded-full pointer-events-none"
             style={{
               zIndex: 20,
-              width: "clamp(230px, 30vw, 390px)",
-              height: "clamp(230px, 30vw, 390px)",
+              width: "clamp(200px, 24vw, 320px)",
+              height: "clamp(200px, 24vw, 320px)",
               backgroundColor: "var(--hero-circle, #FDE8EC)",
               left: "var(--flower-x, 50%)",
-              top: "48.5%",
+              top: "49.5%",
               transform: "translate(-50%, -50%)",
               willChange: "transform, opacity"
             }}
             aria-hidden="true"
           />
 
-          {/* ── LAYER 30: Stargazer Lily Bloom, Bud & Leaves (45-50% canvas height) ── */}
+          {/* ── LAYER 30: Botanical Lily & Orchid Bouquet (Center Balanced, Anjali Clearly Visible) ── */}
           <div
             ref={flowerContainerRef}
             className="absolute pointer-events-none flex items-center justify-center"
             style={{
               zIndex: 30,
-              width: "clamp(310px, 42vw, 530px)",
-              height: "clamp(310px, 42vw, 530px)",
+              width: "clamp(250px, 32vw, 420px)",
+              height: "clamp(290px, 37vw, 490px)",
               left: "var(--flower-x, 50%)",
-              top: "48%",
+              top: "49%",
               transform: "translate(-50%, -50%)",
               willChange: "transform"
             }}

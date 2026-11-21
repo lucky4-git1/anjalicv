@@ -112,8 +112,8 @@
 /* Clip paths and smooth reveal masks */
 .letter-mask {
   display: inline-block;
-  overflow: hidden;
-  vertical-align: top;
+  overflow: visible;
+  vertical-align: middle;
 }
 
 .letter-char {

@@ -21,7 +21,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
   const letterCharRefs = useRef<(HTMLSpanElement | null)[]>([])
   const subtitleRef = useRef<HTMLDivElement | null>(null)
   const flowerDiscRef = useRef<HTMLDivElement | null>(null)
-  const cursorRef = useRef<HTMLDivElement | null>(null)
 
   const letters = ["A", "n", "j", "a", "l", "i"]
 
@@ -107,11 +106,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           quickHeadlineY(normY * -2.5)
           quickSubtitleX(normX * -2.5)
           quickSubtitleY(normY * -1.8)
-
-          if (cursorRef.current) {
-            cursorRef.current.style.left = `${e.clientX}px`
-            cursorRef.current.style.top = `${e.clientY}px`
-          }
 
           letterCharRefs.current.forEach((char) => {
             if (!char) return
@@ -200,13 +194,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
       }}
       aria-label="Hero Showcase"
     >
-      {/* Soft Custom Magnetic Cursor */}
-      <div
-        ref={cursorRef}
-        className="hero-cursor-dot hidden lg:block"
-        aria-hidden="true"
-      />
-
       {/* ── LAYER 0: Topographic Contour Pattern (Full-Bleed Across Viewport) ── */}
       <ContourBackground />
 
@@ -246,16 +233,16 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
             ))}
           </h1>
 
-          {/* ── SUBTITLE: Social Media Manager ── */}
+          {/* ── SUBTITLE: Social Media Manager (Same Black Text as Anjali #161616) ── */}
           <div
             ref={subtitleRef}
-            className="mt-3 sm:mt-5 flex items-center gap-2.5 sm:gap-3 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-white/75 border border-[#E9E9E9] backdrop-blur-xs shadow-xs pointer-events-auto"
+            className="mt-3 sm:mt-5 flex items-center gap-2.5 sm:gap-3 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-white/80 border border-[#E9E9E9] backdrop-blur-xs shadow-xs pointer-events-auto"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#CB7885] animate-pulse" />
-            <span className="font-mono text-[11px] sm:text-xs md:text-[13px] tracking-[0.24em] uppercase font-bold text-[#893941]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#161616]" />
+            <span className="hero-headline-font text-[11px] sm:text-xs md:text-[13px] tracking-[0.24em] uppercase font-bold text-[#161616]">
               Social Media Manager
             </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#5E6623]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#161616]" />
           </div>
         </div>
 

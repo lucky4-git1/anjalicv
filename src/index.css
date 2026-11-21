@@ -1,0 +1,91 @@
+@import "tailwindcss";
+@source "../components/originkit";
+@source "../src";
+
+@theme {
+  --color-burgundy: #893941;
+  --color-dustyrose: #CB7885;
+  --color-limesage: #D4D994;
+  --color-olive: #5E6623;
+  --color-ivory: #F5F3EC;
+  --color-softwhite: #FFFEFA;
+  --color-nearblack: #211D1D;
+
+  --font-serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --font-editorial: "Playfair Display", "Cormorant Garamond", serif;
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Syne", "Plus Jakarta Sans", sans-serif;
+  --font-label: "Space Grotesk", monospace;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    background-color: #211D1D;
+    color: #F5F3EC;
+  }
+
+  ::selection {
+    background-color: #CB7885;
+    color: #FFFEFA;
+  }
+
+  /* Custom luxury scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #211D1D;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #893941;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #CB7885;
+  }
+}
+
+/* Editorial paper and panel textures */
+.panel-paper-ivory {
+  background-color: #F5F3EC;
+  color: #211D1D;
+}
+
+.panel-dusty-rose {
+  background-color: #CB7885;
+  color: #FFFEFA;
+}
+
+.panel-burgundy {
+  background-color: #893941;
+  color: #FFFEFA;
+}
+
+.panel-sage {
+  background-color: #D4D994;
+  color: #211D1D;
+}
+
+.panel-olive {
+  background-color: #5E6623;
+  color: #FFFEFA;
+}
+
+.panel-nearblack {
+  background-color: #211D1D;
+  color: #F5F3EC;
+}
+
+/* Subtle botanical hairline borders */
+.editorial-border {
+  border: 1px solid rgba(203, 120, 133, 0.25);
+}
+
+.editorial-border-light {
+  border: 1px solid rgba(245, 243, 236, 0.15);
+}
+
+.editorial-border-dark {
+  border: 1px solid rgba(33, 29, 29, 0.18);
+}

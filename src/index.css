@@ -21,8 +21,8 @@
 @layer base {
   html {
     font-family: var(--font-sans);
-    background-color: #211D1D;
-    color: #F5F3EC;
+    background-color: #F9EAE6;
+    color: #211D1D;
   }
 
   ::selection {
@@ -35,14 +35,14 @@
     width: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #211D1D;
+    background: #F9EAE6;
   }
   ::-webkit-scrollbar-thumb {
-    background: #893941;
+    background: #CB7885;
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #CB7885;
+    background: #893941;
   }
 }
 

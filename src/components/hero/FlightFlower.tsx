@@ -1,5 +1,8 @@
 import React, { useEffect, useRef } from "react"
 import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+gsap.registerPlugin(ScrollTrigger)
 
 export const FlightFlower: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -10,63 +13,67 @@ export const FlightFlower: React.FC = () => {
     const container = containerRef.current
     if (!container) return
 
-    let animFrame: number
-    let mouseX = 0
-    let mouseY = 0
-    let isHoveringHero = true
+    // Flight state object driven by ScrollTrigger
+    const flight = { p: 0 }
 
-    // Pointer parallax while in hero
+    // Subtle pointer parallax when resting in hero
+    const mousePos = { currentX: 0, currentY: 0, targetX: 0, targetY: 0 }
+
     const handleMouseMove = (e: MouseEvent) => {
-      if (window.scrollY > window.innerHeight * 0.4) {
-        isHoveringHero = false
-        return
-      }
-      isHoveringHero = true
+      if (flight.p > 0.08) return
       const normX = (e.clientX / window.innerWidth) * 2 - 1
       const normY = (e.clientY / window.innerHeight) * 2 - 1
-      mouseX = normX * 14
-      mouseY = normY * 11
+      mousePos.targetX = normX * 12
+      mousePos.targetY = normY * 8
     }
-    window.addEventListener("mousemove", handleMouseMove, { passive: true })
 
-    // Flight calculation function
-    const updateFlight = () => {
+    if (window.matchMedia("(hover: hover)").matches) {
+      window.addEventListener("mousemove", handleMouseMove, { passive: true })
+    }
+
+    // ScrollTrigger to scrub flight progress with smooth physics momentum
+    const trigger = ScrollTrigger.create({
+      trigger: "#hero",
+      start: "top top",
+      endTrigger: "#portrait-flower-anchor",
+      end: "center 42%",
+      scrub: 1.2,
+      onUpdate: (self) => {
+        flight.p = self.progress
+      }
+    })
+
+    // GSAP Ticker ensures buttery 60/120fps sync with zero coordinate drift
+    const renderFrame = () => {
       if (!container) return
 
-      const scrollY = window.scrollY
-      const winW = window.innerWidth
-      const winH = window.innerHeight
+      const heroAnchor =
+        document.getElementById("hero-flower-anchor") ||
+        document.getElementById("hero-letter-j")
+      const portraitAnchor = document.getElementById("portrait-flower-anchor")
 
-      // 1. Initial Hero Anchor atop the "j" in Anjali
-      const heroX = winW * 0.48 + (isHoveringHero ? mouseX : 0)
-      const heroY = winH * 0.31 + (isHoveringHero ? mouseY : 0)
-      const heroScale = 1.0
-      const heroRotation = 0
+      if (!heroAnchor || !portraitAnchor) return
 
-      // 2. Target Anchor at Top-Right of About Me Portrait Card
-      const portraitCard = document.getElementById("about-portrait-card")
-      let targetX = heroX
-      let targetY = heroY + winH * 0.8
-      let targetScale = 0.24
-      const targetRotation = -28
-      let dockScrollY = winH * 0.85
+      const heroRect = heroAnchor.getBoundingClientRect()
+      const portRect = portraitAnchor.getBoundingClientRect()
 
-      if (portraitCard) {
-        const pRect = portraitCard.getBoundingClientRect()
-        // Top-right corner of the portrait photo frame
-        targetX = pRect.right - 28
-        targetY = pRect.top + 28
-        // When portrait reaches the upper-middle of viewport
-        dockScrollY = Math.max(portraitCard.offsetTop - winH * 0.35, 1)
-      }
+      const p = Math.min(Math.max(flight.p, 0), 1)
 
-      // Calculate travel progress between hero (0) and about card (1)
-      const progress = Math.min(Math.max(scrollY / dockScrollY, 0), 1)
+      // Smooth pointer parallax falloff
+      mousePos.currentX += (mousePos.targetX - mousePos.currentX) * 0.1
+      mousePos.currentY += (mousePos.targetY - mousePos.currentY) * 0.1
+      const mouseFactor = Math.max(0, 1 - p * 6)
 
-      // Smooth ease for flight
-      const easedProgress = progress < 0.5
-        ? 2 * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 2) / 2
+      // Start position (pinned atop "j" in hero)
+      const startX = heroRect.left + heroRect.width / 2 + mousePos.currentX * mouseFactor
+      const startY = heroRect.top + heroRect.height / 2 + mousePos.currentY * mouseFactor
+
+      // End position (docked on top-right of portrait photo)
+      const endX = portRect.left + portRect.width / 2
+      const endY = portRect.top + portRect.height / 2
+
+      // Silky cubic-bezier easing for the journey
+      const easedP = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2
 
       let curX: number
       let curY: number
@@ -74,53 +81,52 @@ export const FlightFlower: React.FC = () => {
       let curRot: number
       let curOpacity = 1
 
-      if (progress < 1) {
-        // In flight between hero and about portrait
-        curX = heroX + (targetX - heroX) * easedProgress
-        curY = heroY + (targetY - heroY) * easedProgress
-        curScale = heroScale + (targetScale - heroScale) * easedProgress
-        curRot = heroRotation + (targetRotation - heroRotation) * easedProgress
-        curOpacity = 1
-      } else {
-        // Docked onto the portrait card, moving with it
-        curX = targetX
-        curY = targetY
-        curScale = targetScale
-        curRot = targetRotation
+      if (p < 1) {
+        // In flight: smooth glide with botanical arc (lift + drift)
+        curX = startX + (endX - startX) * easedP
+        curY = startY + (endY - startY) * easedP
 
-        // Fade out only if the portrait scrolls completely past the top of the viewport
-        if (portraitCard) {
-          const pRect = portraitCard.getBoundingClientRect()
-          if (pRect.bottom < 50) {
-            curOpacity = Math.max(0, (pRect.bottom + 50) / 100)
-          } else {
-            curOpacity = 1
-          }
+        // Organic arc trajectory: gentle aerodynamic lift as flower travels
+        const arc = Math.sin(p * Math.PI)
+        curX += arc * -32
+        curY += arc * -48
+
+        curScale = 1.0 + (0.25 - 1.0) * easedP
+        curRot = 0 + (-26 - 0) * easedP
+      } else {
+        // Perfectly docked to portrait card, moves with it as user scrolls
+        curX = endX
+        curY = endY
+        curScale = 0.25
+        curRot = -26
+
+        // Fade out gracefully only when portrait scrolls past the top of the viewport
+        if (portRect.bottom < 80) {
+          curOpacity = Math.max(0, portRect.bottom / 80)
         }
       }
 
       if (prefersReducedMotion) {
-        curX = heroX
-        curY = heroY
-        curScale = heroScale
-        curRot = 0
+        curX = p > 0.5 ? endX : startX
+        curY = p > 0.5 ? endY : startY
+        curScale = p > 0.5 ? 0.25 : 1.0
+        curRot = p > 0.5 ? -26 : 0
       }
 
-      // Apply transform using hardware acceleration
+      // Apply transform with GPU acceleration
       container.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, -50%) scale(${curScale}) rotate(${curRot}deg)`
       container.style.opacity = `${curOpacity}`
-
-      animFrame = requestAnimationFrame(updateFlight)
     }
 
-    animFrame = requestAnimationFrame(updateFlight)
+    gsap.ticker.add(renderFrame)
 
-    // Gentle idle float on flower image when in hero
+    // Gentle organic breathing float when resting in the hero
+    let floatTween: gsap.core.Tween | null = null
     if (!prefersReducedMotion && imgRef.current) {
-      gsap.to(imgRef.current, {
+      floatTween = gsap.to(imgRef.current, {
         y: -6,
         rotation: 0.8,
-        duration: 3.0,
+        duration: 3.2,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut"
@@ -128,7 +134,9 @@ export const FlightFlower: React.FC = () => {
     }
 
     return () => {
-      cancelAnimationFrame(animFrame)
+      gsap.ticker.remove(renderFrame)
+      trigger.kill()
+      if (floatTween) floatTween.kill()
       window.removeEventListener("mousemove", handleMouseMove)
     }
   }, [])
@@ -140,10 +148,10 @@ export const FlightFlower: React.FC = () => {
       className="fixed top-0 left-0 pointer-events-none select-none"
       style={{
         zIndex: 45,
-        width: "clamp(240px, 30vw, 400px)",
-        height: "clamp(280px, 35vw, 460px)",
+        width: "clamp(260px, 32vw, 420px)",
+        height: "clamp(300px, 37vw, 480px)",
         willChange: "transform, opacity",
-        filter: "drop-shadow(0 20px 32px rgba(0, 0, 0, 0.12)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.05))"
+        filter: "drop-shadow(0 20px 32px rgba(0, 0, 0, 0.14)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.06))"
       }}
       aria-hidden="true"
     >
@@ -152,7 +160,7 @@ export const FlightFlower: React.FC = () => {
           <img
             ref={imgRef}
             src="/assets/lily/lily-full.png"
-            alt="Botanical Flower Bouquet"
+            alt="Botanical Lily Bouquet"
             width={465}
             height={536}
             // @ts-expect-error - fetchpriority is valid HTML attribute

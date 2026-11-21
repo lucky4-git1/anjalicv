@@ -10,7 +10,7 @@ export default function App() {
   const [contactModalOpen, setContactModalOpen] = useState(false)
 
   return (
-    <div className="relative min-h-screen bg-[#211D1D] text-[#F5F3EC] selection:bg-[#CB7885] selection:text-white font-sans antialiased overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#F9EAE6] text-[#211D1D] selection:bg-[#CB7885] selection:text-white font-sans antialiased overflow-x-hidden">
       {/* Editorial Navigation */}
       <Navigation
         onOpenCvModal={() => setCvModalOpen(true)}

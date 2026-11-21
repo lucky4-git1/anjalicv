@@ -31,7 +31,7 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
   }
 
   return (
-    <div id="portfolio-board" className="relative bg-[#211D1D] py-16 md:py-24 text-[#F5F3EC]">
+    <div id="portfolio-board" className="relative bg-[#F9EAE6] py-16 md:py-24 text-[#211D1D]">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 space-y-12 md:space-y-16">
 
         {/* ════════════════════════════════════════════════════════════════════
@@ -40,7 +40,7 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* PANEL 2: ABOUT ME + PROFILE (7 cols) — Dusty Rose & Ivory Editorial Panel */}
-          <div className="lg:col-span-7 rounded-2xl bg-[#CB7885] text-[#211D1D] p-7 sm:p-10 flex flex-col justify-between shadow-[0_12px_40px_rgba(0,0,0,0.3)] relative overflow-hidden border border-[#D4D994]/30">
+          <div className="lg:col-span-7 rounded-2xl bg-[#CB7885] text-[#211D1D] p-7 sm:p-10 flex flex-col justify-between shadow-[0_12px_40px_rgba(0,0,0,0.12)] relative overflow-hidden border border-[#D4D994]/30">
             {/* Subtle botanical corner mark */}
             <div className="absolute top-4 right-5 text-[10px] font-mono tracking-widest uppercase text-[#893941] font-bold">
               01 / PROFILE & EDITORIAL
@@ -54,6 +54,12 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
               <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start mb-6">
                 {/* Portrait Image Frame — Target landing point for the traveling hero flower */}
                 <div id="about-portrait-card" className="relative sm:col-span-5 rounded-xl border-2 border-[#893941]/20 bg-[#F5F3EC] shadow-md group">
+                  {/* Landing anchor for the traveling flower */}
+                  <div
+                    id="portrait-flower-anchor"
+                    className="absolute -top-3 -right-3 w-6 h-6 pointer-events-none z-30"
+                    aria-hidden="true"
+                  />
                   <div className="rounded-xl overflow-hidden">
                     <img
                       src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"

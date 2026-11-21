@@ -218,6 +218,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
                 <span
                   ref={(el) => (letterCharRefs.current[idx] = el)}
                   className="letter-char"
+                  id={char === "j" ? "hero-letter-j" : undefined}
                 >
                   {char}
                 </span>
@@ -225,6 +226,21 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
             ))}
           </h1>
         </div>
+
+        {/* ── LAYER 15: Flower Resting Anchor (Centered atop "j") ── */}
+        <div
+          id="hero-flower-anchor"
+          className="absolute pointer-events-none"
+          style={{
+            zIndex: 15,
+            left: "48%",
+            top: "31%",
+            width: "4px",
+            height: "4px",
+            transform: "translate(-50%, -50%)"
+          }}
+          aria-hidden="true"
+        />
 
         {/* ── LAYER 20: Soft Pastel Pink Disc (Perched behind bloom atop "j") ── */}
         <div
@@ -248,9 +264,9 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
       {/* ── LAYER 45: Persistent Flight Flower (Travels from top of "j" in Hero to About Portrait) ── */}
       <FlightFlower />
 
-      {/* ── ORGANIC GRADIENT BRIDGE: Blends Hero (#F9EAE6) smoothly into About Me (#211D1D) ── */}
+      {/* ── ORGANIC SEAMLESS TRANSITION: Hero (#F9EAE6) gently flows into Editorial Board ── */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none bg-gradient-to-b from-transparent via-[#F9EAE6]/50 to-[#211D1D] z-10"
+        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none bg-gradient-to-b from-transparent to-[#F9EAE6] z-10"
         aria-hidden="true"
       />
     </section>

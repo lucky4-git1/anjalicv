@@ -52,20 +52,35 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start mb-6">
-                {/* Portrait Image Frame */}
-                <div className="sm:col-span-5 rounded-xl overflow-hidden border-2 border-[#893941]/20 bg-[#F5F3EC] shadow-md">
-                  <img
-                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
-                    alt="Anjali Verma — Creative Director"
-                    className="w-full aspect-[4/5] object-cover grayscale contrast-110 hover:grayscale-0 transition-all duration-500"
-                  />
-                  <div className="p-2.5 bg-[#F5F3EC] text-center border-t border-[#893941]/10">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#893941] font-bold block">
-                      Anjali Verma
-                    </span>
-                    <span className="text-[9px] font-mono text-[#5E6623]">
-                      London • Creative Direction
-                    </span>
+                {/* Portrait Image Frame with Botanical Flower at Top Corner */}
+                <div className="relative sm:col-span-5 rounded-xl border-2 border-[#893941]/20 bg-[#F5F3EC] shadow-md group">
+                  {/* Botanical Lily at Top Corner of Portrait */}
+                  <div
+                    id="about-portrait-flower"
+                    className="absolute -top-6 -right-6 sm:-top-7 sm:-right-7 w-20 h-20 sm:w-24 sm:h-24 z-20 pointer-events-none drop-shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
+                    aria-hidden="true"
+                  >
+                    <img
+                      src="/assets/lily/lily-full.png"
+                      alt="Botanical Flower Accent"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  
+                  <div className="rounded-xl overflow-hidden">
+                    <img
+                      src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
+                      alt="Anjali Verma — Creative Director"
+                      className="w-full aspect-[4/5] object-cover grayscale contrast-110 hover:grayscale-0 transition-all duration-500"
+                    />
+                    <div className="p-2.5 bg-[#F5F3EC] text-center border-t border-[#893941]/10">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-[#893941] font-bold block">
+                        Anjali Verma
+                      </span>
+                      <span className="text-[9px] font-mono text-[#5E6623]">
+                        London • Creative Direction
+                      </span>
+                    </div>
                   </div>
                 </div>
 

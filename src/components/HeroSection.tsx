@@ -17,8 +17,9 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
   const sectionRef = useRef<HTMLElement | null>(null)
 
   // Element animation refs
-  const headlineWrapRef = useRef<HTMLHeadingElement | null>(null)
+  const headlineWrapRef = useRef<HTMLDivElement | null>(null)
   const letterCharRefs = useRef<(HTMLSpanElement | null)[]>([])
+  const subtitleRef = useRef<HTMLDivElement | null>(null)
   const flowerDiscRef = useRef<HTMLDivElement | null>(null)
   const cursorRef = useRef<HTMLDivElement | null>(null)
 
@@ -28,26 +29,30 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     const ctx = gsap.context(() => {
       if (prefersReducedMotion) {
-        gsap.set(letterCharRefs.current, { y: 0, opacity: 1 })
+        gsap.set(letterCharRefs.current, { y: 0, opacity: 1, scale: 1, filter: "none" })
         gsap.set(flowerDiscRef.current, { scale: 1, opacity: 1 })
+        gsap.set(subtitleRef.current, { y: 0, opacity: 1, filter: "none" })
         return
       }
 
       // ======================================================================
-      // A. MASTER INTRO SEQUENCE (2.0s, skippable by click)
+      // A. MASTER INTRO SEQUENCE (Animated entry for whole hero text)
       // ======================================================================
       const masterTl = gsap.timeline({ defaults: { ease: "power3.out" } })
 
       // Initial positions
-      gsap.set(letterCharRefs.current, { y: 55, opacity: 0 })
+      gsap.set(letterCharRefs.current, { y: 75, opacity: 0, scale: 0.94, filter: "blur(6px)" })
       gsap.set(flowerDiscRef.current, { scale: 0, opacity: 0 })
+      gsap.set(subtitleRef.current, { y: 25, opacity: 0, filter: "blur(4px)" })
 
       masterTl
-        // 1. Letters of "Anjali" rise and settle with high legibility
+        // 1. Letters of "Anjali" rise and settle with high legibility and spring easing
         .to(letterCharRefs.current, {
           y: 0,
           opacity: 1,
-          duration: 1.05,
+          scale: 1,
+          filter: "blur(0px)",
+          duration: 1.15,
           stagger: 0.05,
           ease: "power4.out"
         }, 0.15)
@@ -56,9 +61,18 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         .to(flowerDiscRef.current, {
           scale: 1,
           opacity: 1,
-          duration: 1.15,
-          ease: "back.out(1.25)"
+          duration: 1.2,
+          ease: "back.out(1.35)"
         }, 0.3)
+
+        // 3. Subtitle "Social Media Manager" rises and expands smoothly
+        .to(subtitleRef.current, {
+          y: 0,
+          opacity: 1,
+          filter: "blur(0px)",
+          duration: 0.95,
+          ease: "power3.out"
+        }, 0.55)
 
       // Skip intro on click anywhere in hero
       const handleHeroClick = () => {
@@ -79,6 +93,8 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         const quickDiscY = gsap.quickTo(flowerDiscRef.current, "y", { duration: 0.75, ease: "power2.out" })
         const quickHeadlineX = gsap.quickTo(headlineWrapRef.current, "x", { duration: 0.8, ease: "power2.out" })
         const quickHeadlineY = gsap.quickTo(headlineWrapRef.current, "y", { duration: 0.8, ease: "power2.out" })
+        const quickSubtitleX = gsap.quickTo(subtitleRef.current, "x", { duration: 0.85, ease: "power2.out" })
+        const quickSubtitleY = gsap.quickTo(subtitleRef.current, "y", { duration: 0.85, ease: "power2.out" })
 
         const handlePointerMove = (e: MouseEvent) => {
           const rect = sectionEl.getBoundingClientRect()
@@ -89,6 +105,8 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           quickDiscY(normY * 5)
           quickHeadlineX(normX * -3.5)
           quickHeadlineY(normY * -2.5)
+          quickSubtitleX(normX * -2.5)
+          quickSubtitleY(normY * -1.8)
 
           if (cursorRef.current) {
             cursorRef.current.style.left = `${e.clientX}px`
@@ -130,6 +148,8 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           quickDiscY(0)
           quickHeadlineX(0)
           quickHeadlineY(0)
+          quickSubtitleX(0)
+          quickSubtitleY(0)
           letterCharRefs.current.forEach((char) => {
             if (char) gsap.to(char, { y: 0, fontWeight: 800, duration: 0.3 })
           })
@@ -199,10 +219,10 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
       {/* ── CENTERPIECE: HUGE HEADLINE + CROWN FLOWER (Layers 10, 20) ── */}
       <div className="relative z-10 w-full flex-1 flex items-center justify-center px-4 sm:px-8">
         
-        {/* ── LAYER 10: Headline "Anjali" (Full Visibility, Single-Storey Geometric, Round Dots) ── */}
+        {/* ── LAYER 10: Headline "Anjali" + Subtitle "Social Media Manager" ── */}
         <div
           ref={headlineWrapRef}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
           style={{ zIndex: 10, willChange: "transform" }}
         >
           <h1
@@ -225,6 +245,18 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
               </span>
             ))}
           </h1>
+
+          {/* ── SUBTITLE: Social Media Manager ── */}
+          <div
+            ref={subtitleRef}
+            className="mt-3 sm:mt-5 flex items-center gap-2.5 sm:gap-3 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-white/75 border border-[#E9E9E9] backdrop-blur-xs shadow-xs pointer-events-auto"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#CB7885] animate-pulse" />
+            <span className="font-mono text-[11px] sm:text-xs md:text-[13px] tracking-[0.24em] uppercase font-bold text-[#893941]">
+              Social Media Manager
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#5E6623]" />
+          </div>
         </div>
 
         {/* ── LAYER 15: Flower Resting Anchor (Centered atop "j") ── */}

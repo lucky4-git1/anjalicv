@@ -6,6 +6,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 export const FlightFlower: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null)
+  const bloomRef = useRef<HTMLDivElement | null>(null)
   const imgRef = useRef<HTMLImageElement | null>(null)
 
   useEffect(() => {
@@ -54,7 +55,6 @@ export const FlightFlower: React.FC = () => {
 
       if (!heroAnchor || !portraitAnchor) return
 
-      const heroRect = heroAnchor.getBoundingClientRect()
       const portRect = portraitAnchor.getBoundingClientRect()
 
       const p = Math.min(Math.max(flight.p, 0), 1)
@@ -65,8 +65,19 @@ export const FlightFlower: React.FC = () => {
       const mouseFactor = Math.max(0, 1 - p * 6)
 
       // Start position (pinned atop "j" in hero)
-      const startX = heroRect.left + heroRect.width / 2 + mousePos.currentX * mouseFactor
-      const startY = heroRect.top + heroRect.height / 2 + mousePos.currentY * mouseFactor
+      let startX: number
+      let startY: number
+
+      const jEl = document.getElementById("hero-letter-j")
+      if (jEl) {
+        const jRect = jEl.getBoundingClientRect()
+        startX = jRect.left + jRect.width * 0.45 + mousePos.currentX * mouseFactor
+        startY = jRect.top - jRect.height * 0.08 + mousePos.currentY * mouseFactor
+      } else {
+        const heroRect = heroAnchor.getBoundingClientRect()
+        startX = heroRect.left + heroRect.width / 2 + mousePos.currentX * mouseFactor
+        startY = heroRect.top + heroRect.height / 2 + mousePos.currentY * mouseFactor
+      }
 
       // End position (docked on top-right of portrait photo)
       const endX = portRect.left + portRect.width / 2
@@ -120,6 +131,15 @@ export const FlightFlower: React.FC = () => {
 
     gsap.ticker.add(renderFrame)
 
+    // Coordinated blooming intro animation for flower
+    if (!prefersReducedMotion && bloomRef.current) {
+      gsap.fromTo(
+        bloomRef.current,
+        { scale: 0.7, opacity: 0, filter: "blur(4px)" },
+        { scale: 1.0, opacity: 1, filter: "blur(0px)", duration: 1.25, delay: 0.25, ease: "power3.out" }
+      )
+    }
+
     // Gentle organic breathing float when resting in the hero
     let floatTween: gsap.core.Tween | null = null
     if (!prefersReducedMotion && imgRef.current) {
@@ -155,7 +175,10 @@ export const FlightFlower: React.FC = () => {
       }}
       aria-hidden="true"
     >
-      <div className="relative w-full h-full flex items-center justify-center">
+      <div
+        ref={bloomRef}
+        className="relative w-full h-full flex items-center justify-center"
+      >
         <picture>
           <img
             ref={imgRef}

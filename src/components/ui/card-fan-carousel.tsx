@@ -67,7 +67,7 @@ function getSlotConfig(totalCards: number, slot: number) {
 }
 
 const ARROW_CLASSES =
-  "relative flex items-center justify-center rounded-full border-2 border-white/40 bg-white/15 hover:bg-[#D4D994] text-white hover:text-[#211D1D] shadow-[0_6px_24px_rgba(0,0,0,0.35)] backdrop-blur-md cursor-pointer shrink-0 z-40 outline-none hover:border-[#D4D994] active:scale-95 transition-all duration-300";
+  "relative flex items-center justify-center rounded-full border-2 border-white/50 bg-[#211D1D]/65 hover:bg-[#D4D994] text-white hover:text-[#211D1D] shadow-[0_8px_30px_rgba(0,0,0,0.45)] backdrop-blur-md cursor-pointer shrink-0 z-40 outline-none hover:border-[#D4D994] active:scale-95 transition-all duration-300";
 
 export default function SocialCards({ cards }: SocialCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -252,7 +252,7 @@ export default function SocialCards({ cards }: SocialCardsProps) {
   if (!totalCards) return null;
 
   const chevron = (direction: "left" | "right") => (
-    <svg className="relative z-[2] w-5 h-5 text-current" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg className="relative z-[2] w-5 h-5 text-current stroke-[2.8]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
       <polyline points={direction === "left" ? "15 18 9 12 15 6" : "9 18 15 12 9 6"} />
     </svg>
   );
@@ -277,23 +277,35 @@ export default function SocialCards({ cards }: SocialCardsProps) {
       </div>
 
       {needsPagination && (
-        <div className="flex items-center justify-center gap-4 mt-8 md:mt-12 z-40 relative">
-          <button className={`${ARROW_CLASSES} w-11 h-11 md:w-13 md:h-13`} onClick={() => cycle("left")} aria-label="Previous">
+        <div className="flex items-center justify-center gap-4 mt-10 md:mt-14 z-40 relative">
+          <button
+            type="button"
+            className={`${ARROW_CLASSES} w-11 h-11 md:w-12 md:h-12`}
+            onClick={() => cycle("left")}
+            aria-label="Previous card"
+            title="Previous card"
+          >
             {chevron("left")}
           </button>
-          <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-black/25 backdrop-blur-md border border-white/20">
+          <div className="flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-[#211D1D]/75 backdrop-blur-md border border-white/25 shadow-lg">
             {cards.map((_, i) => (
               <span
                 key={i}
                 className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
                   i === centerIndex
-                    ? "bg-[#D4D994] scale-125 shadow-[0_0_8px_rgba(212,217,148,0.7)]"
-                    : "bg-white/35 hover:bg-white/70"
+                    ? "bg-[#D4D994] scale-125 shadow-[0_0_10px_rgba(212,217,148,0.9)]"
+                    : "bg-white/40 hover:bg-white/70"
                 }`}
               />
             ))}
           </div>
-          <button className={`${ARROW_CLASSES} w-11 h-11 md:w-13 md:h-13`} onClick={() => cycle("right")} aria-label="Next">
+          <button
+            type="button"
+            className={`${ARROW_CLASSES} w-11 h-11 md:w-12 md:h-12`}
+            onClick={() => cycle("right")}
+            aria-label="Next card"
+            title="Next card"
+          >
             {chevron("right")}
           </button>
         </div>

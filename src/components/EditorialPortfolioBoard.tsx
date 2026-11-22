@@ -671,24 +671,26 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
             ))}
           </div>
 
-          {/* ── CARD FAN CAROUSEL: EDITORIAL CAMPAIGN ARCHIVE ── */}
-          <div className="mt-16 sm:mt-20 rounded-3xl bg-[#893941] text-[#F5F3EC] p-6 sm:p-10 lg:p-12 shadow-[0_16px_50px_rgba(0,0,0,0.35)] border border-[#CB7885]/30 flex flex-col items-center overflow-visible relative">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="text-center mb-6 sm:mb-8 max-w-2xl mx-auto"
-            >
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#FFFEFA] font-normal tracking-wide">
-                Visual Archives & Editorial Stills
-              </h3>
-              <p className="text-xs sm:text-sm font-mono text-[#D4D994] mt-2 leading-relaxed">
-                Hover or cycle cards to explore the dynamic deck • Interactive GSAP fan physics
-              </p>
-            </motion.div>
+          {/* ── CARD FAN CAROUSEL: EDITORIAL CAMPAIGN ARCHIVE (FULL-WIDTH SEAMLESS STRIP) ── */}
+          <div className="relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] bg-[#893941] text-[#F5F3EC] py-16 sm:py-24 my-14 sm:my-20 flex flex-col items-center overflow-visible">
+            <div className="max-w-7xl mx-auto px-5 sm:px-8 w-full flex flex-col items-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                className="text-center mb-8 sm:mb-12 max-w-2xl mx-auto"
+              >
+                <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#FFFEFA] font-normal tracking-wide">
+                  Visual Archives & Editorial Stills
+                </h3>
+                <p className="text-xs sm:text-sm font-mono text-[#D4D994] mt-2.5 leading-relaxed">
+                  Hover or cycle cards to explore the dynamic deck • Interactive GSAP fan physics
+                </p>
+              </motion.div>
 
-            <SocialCards cards={CAMPAIGN_FAN_CARDS} />
+              <SocialCards cards={CAMPAIGN_FAN_CARDS} />
+            </div>
           </div>
         </section>
 

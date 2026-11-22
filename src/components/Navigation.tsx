@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Menu, X, FileText, Plus } from "lucide-react"
+import { Menu, X, FileText, Plus, Heart } from "lucide-react"
 
 interface NavigationProps {
   onOpenCvModal: () => void
@@ -104,7 +104,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
                 >
                   <span className="flex items-center gap-1.5">
                     {isActive && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#893941] animate-pulse" />
+                      <Heart className="w-2.5 h-2.5 fill-[#893941] text-[#893941] shrink-0 animate-pulse" />
                     )}
                     {link.name}
                   </span>
@@ -165,7 +165,9 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
                   }`}
                 >
                   <span className="flex items-center gap-2">
-                    {isActive && <span className="w-2 h-2 rounded-full bg-[#893941]" />}
+                    {isActive && (
+                      <Heart className="w-3 h-3 fill-[#893941] text-[#893941] shrink-0" />
+                    )}
                     {link.name}
                   </span>
                   <span className="text-[10px] font-mono text-[#5E6623]">0{idx + 1}</span>

@@ -121,3 +121,19 @@
   will-change: transform, font-weight;
 }
 
+/* Pinteresty Cute Card Scrollbar */
+.custom-cute-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-cute-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 9999px;
+}
+.custom-cute-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(212, 217, 148, 0.4);
+  border-radius: 9999px;
+}
+.custom-cute-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #D4D994;
+}
+

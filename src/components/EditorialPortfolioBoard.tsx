@@ -1,7 +1,187 @@
 import React, { useState } from "react"
-import { ArrowUpRight, Award, GraduationCap, Briefcase, Mail, Copy, Check, Send, Sparkles, X } from "lucide-react"
+import {
+  ArrowUpRight,
+  Award,
+  GraduationCap,
+  Briefcase,
+  Mail,
+  Copy,
+  Check,
+  Send,
+  Sparkles,
+  X,
+  Heart,
+  Palette,
+  Layers,
+  Code2,
+  Wand2,
+  Star,
+  Zap,
+  Bookmark
+} from "lucide-react"
 import confetti from "canvas-confetti"
 import { PORTFOLIO_DATA, Project } from "../data/portfolioData"
+
+interface CuteSkill {
+  name: string
+  category: "design" | "tools" | "tech"
+  badge: string
+  icon: React.ComponentType<{ className?: string }>
+  affinity: string
+  cuteTag: string
+}
+
+const CUTE_SKILLS: CuteSkill[] = [
+  // Design Expertise
+  {
+    name: "Editorial Art Direction",
+    category: "design",
+    badge: "Haute",
+    icon: Palette,
+    affinity: "99%",
+    cuteTag: "Curated ✿"
+  },
+  {
+    name: "Haute Couture Brand Identity",
+    category: "design",
+    badge: "Luxury",
+    icon: Sparkles,
+    affinity: "98%",
+    cuteTag: "Obsessed ♡"
+  },
+  {
+    name: "Typography & Micro-Hierarchy",
+    category: "design",
+    badge: "Type",
+    icon: Bookmark,
+    affinity: "96%",
+    cuteTag: "Pixel-Pure ✦"
+  },
+  {
+    name: "Spatial Layout & Print Monographs",
+    category: "design",
+    badge: "Monograph",
+    icon: Layers,
+    affinity: "94%",
+    cuteTag: "Tactile ⋆"
+  },
+  {
+    name: "Design Systems & Token Architecture",
+    category: "design",
+    badge: "Systems",
+    icon: Wand2,
+    affinity: "97%",
+    cuteTag: "DesignOps ⚙"
+  },
+  {
+    name: "Creative Campaign Direction",
+    category: "design",
+    badge: "Campaign",
+    icon: Star,
+    affinity: "95%",
+    cuteTag: "Couture ✧"
+  },
+
+  // Creative Tools
+  {
+    name: "Figma / FigJam (Master)",
+    category: "tools",
+    badge: "Master ✦",
+    icon: Palette,
+    affinity: "100%",
+    cuteTag: "Daily Driver ♡"
+  },
+  {
+    name: "Adobe InDesign & Illustrator",
+    category: "tools",
+    badge: "Vector",
+    icon: Wand2,
+    affinity: "97%",
+    cuteTag: "Vector Art ✿"
+  },
+  {
+    name: "Adobe Photoshop & After Effects",
+    category: "tools",
+    badge: "Motion",
+    icon: Sparkles,
+    affinity: "95%",
+    cuteTag: "Keyframes ✧"
+  },
+  {
+    name: "Blender 3D Modeling",
+    category: "tools",
+    badge: "3D Craft",
+    icon: Layers,
+    affinity: "90%",
+    cuteTag: "Sculpting ✦"
+  },
+  {
+    name: "Glyphs (Type Design)",
+    category: "tools",
+    badge: "Kerning",
+    icon: Bookmark,
+    affinity: "92%",
+    cuteTag: "Bespoke ⋆"
+  },
+  {
+    name: "Cinema 4D / Octane",
+    category: "tools",
+    badge: "Render",
+    icon: Star,
+    affinity: "89%",
+    cuteTag: "Raytraced ☼"
+  },
+
+  // Technical Capabilities
+  {
+    name: "WebGL & Three.js Shaders",
+    category: "tech",
+    badge: "GLSL",
+    icon: Zap,
+    affinity: "93%",
+    cuteTag: "Realtime ⚡"
+  },
+  {
+    name: "React / TypeScript / Next.js",
+    category: "tech",
+    badge: "Modern Web",
+    icon: Code2,
+    affinity: "99%",
+    cuteTag: "Engineered ✦"
+  },
+  {
+    name: "Tailwind CSS Architecture",
+    category: "tech",
+    badge: "Styling",
+    icon: Palette,
+    affinity: "99%",
+    cuteTag: "Utility Art ✿"
+  },
+  {
+    name: "GSAP ScrollTrigger Animation",
+    category: "tech",
+    badge: "Motion",
+    icon: Sparkles,
+    affinity: "98%",
+    cuteTag: "Silk Scrub ♡"
+  },
+  {
+    name: "HTML5 Canvas & SVG Rendering",
+    category: "tech",
+    badge: "Canvas",
+    icon: Layers,
+    affinity: "95%",
+    cuteTag: "Math & Art ✧"
+  },
+  {
+    name: "WCAG AAA Accessibility",
+    category: "tech",
+    badge: "Universal",
+    icon: Check,
+    affinity: "99%",
+    cuteTag: "Inclusive ⋆"
+  }
+]
 
 interface EditorialPortfolioBoardProps {
   onOpenCvModal: () => void
@@ -17,6 +197,36 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
 
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [copied, setCopied] = useState(false)
+  const [activeSkillTab, setActiveSkillTab] = useState<"all" | "design" | "tools" | "tech">("all")
+  const [likedSkills, setLikedSkills] = useState<Record<string, boolean>>({
+    "Editorial Art Direction": true,
+    "Figma / FigJam (Master)": true,
+    "React / TypeScript / Next.js": true
+  })
+
+  const handleLikeSkill = (name: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    const willLike = !likedSkills[name]
+    setLikedSkills((prev) => ({ ...prev, [name]: willLike }))
+    if (willLike) {
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+      const x = (rect.left + rect.width / 2) / window.innerWidth
+      const y = (rect.top + rect.height / 2) / window.innerHeight
+      confetti({
+        particleCount: 22,
+        spread: 45,
+        origin: { x, y },
+        colors: ["#CB7885", "#D4D994", "#FDE8EC", "#FFB6C1"]
+      })
+    }
+  }
+
+  const filteredSkills =
+    activeSkillTab === "all"
+      ? CUTE_SKILLS
+      : CUTE_SKILLS.filter((s) => s.category === activeSkillTab)
+
+  const likedCount = Object.values(likedSkills).filter(Boolean).length
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(personal.email)
@@ -98,77 +308,152 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
             </div>
           </div>
 
-          {/* PANEL 3: SKILLS & CREATIVE MATRIX (5 cols) — Deep Burgundy & Lime Sage Panel */}
-          <div className="lg:col-span-5 rounded-2xl bg-[#893941] text-[#F5F3EC] p-7 sm:p-10 flex flex-col justify-between shadow-[0_12px_40px_rgba(0,0,0,0.3)] border border-[#CB7885]/20">
+          {/* PANEL 3: SKILLS & CREATIVE MATRIX (5 cols) — Pinteresty Cute Moodboard Panel */}
+          <div className="lg:col-span-5 rounded-2xl bg-[#893941] text-[#F5F3EC] p-6 sm:p-8 flex flex-col justify-between shadow-[0_12px_40px_rgba(0,0,0,0.25)] border border-[#CB7885]/20 relative overflow-hidden">
+            {/* Soft decorative background glows */}
+            <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-[#CB7885]/20 blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-[#D4D994]/15 blur-3xl pointer-events-none" />
+
             <div>
-              <div className="flex items-center justify-between pb-3 border-b border-[#CB7885]/30 mb-6">
-                <span className="text-[10px] font-mono tracking-widest uppercase text-[#D4D994] font-bold">
+              {/* Header with cute moodboard tag */}
+              <div className="flex items-center justify-between pb-3 border-b border-[#CB7885]/30 mb-4">
+                <span className="text-[10px] font-mono tracking-widest uppercase text-[#D4D994] font-bold flex items-center gap-1.5">
+                  <Sparkles className="w-3 h-3 text-[#D4D994]" />
                   02 / CAPABILITIES MATRIX
                 </span>
-                <span className="text-xs font-mono text-[#CB7885]">Competencies</span>
+                <span className="text-[10px] font-mono tracking-wider text-[#FDE8EC] bg-white/10 px-2.5 py-0.5 rounded-full border border-white/15 shadow-xs">
+                  ˚୨୧ Pinterest Moodboard ✿
+                </span>
               </div>
 
-              <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#FFFEFA] mb-6">
-                Skills & Disciplines
-              </h2>
+              {/* Title and cute description */}
+              <div className="mb-4">
+                <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#FFFEFA] leading-tight">
+                  Skills & Disciplines
+                </h2>
+                <p className="text-[11px] font-mono text-zinc-300 mt-1">
+                  Interactive creative arsenal • Click any card to favorite ♡
+                </p>
+              </div>
 
-              <div className="space-y-5 text-xs">
-                {/* Design Expertise */}
-                <div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#D4D994] block mb-1.5 font-bold">
-                    Design Expertise
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {skills.designExpertise.map((s, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2.5 py-1 rounded bg-[#211D1D]/50 border border-[#CB7885]/30 text-[11px] text-[#F5F3EC]"
-                      >
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+              {/* Interactive Category Tabs */}
+              <div className="flex items-center gap-1.5 mb-4 p-1 rounded-xl bg-black/25 border border-white/10">
+                {[
+                  { id: "all", label: "✿ All", count: 18 },
+                  { id: "design", label: "✦ Design", count: 6 },
+                  { id: "tools", label: "✎ Tools", count: 6 },
+                  { id: "tech", label: "⚡ Code", count: 6 }
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveSkillTab(tab.id as any)}
+                    className={`flex-1 py-1.5 px-1.5 rounded-lg text-[10px] sm:text-[11px] font-mono transition-all flex items-center justify-center gap-1 cursor-pointer active:scale-95 ${
+                      activeSkillTab === tab.id
+                        ? "bg-[#D4D994] text-[#211D1D] font-bold shadow-xs scale-[1.02]"
+                        : "text-white/70 hover:text-white hover:bg-white/5"
+                    }`}
+                  >
+                    <span>{tab.label}</span>
+                    <span
+                      className={`text-[9px] px-1.5 py-0.2 rounded-full ${
+                        activeSkillTab === tab.id
+                          ? "bg-[#211D1D]/15 text-[#211D1D]"
+                          : "bg-white/10 text-white/50"
+                      }`}
+                    >
+                      {tab.count}
+                    </span>
+                  </button>
+                ))}
+              </div>
 
-                {/* Creative Tools */}
-                <div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#D4D994] block mb-1.5 font-bold">
-                    Creative Tools
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {skills.creativeTools.map((s, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2.5 py-1 rounded bg-[#211D1D]/50 border border-[#CB7885]/30 text-[11px] text-[#F5F3EC]"
-                      >
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+              {/* Cute Cards Grid with Custom Scrollbar */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[460px] overflow-y-auto pr-1 sm:pr-1.5 custom-cute-scrollbar">
+                {filteredSkills.map((skill) => {
+                  const Icon = skill.icon
+                  const isLiked = likedSkills[skill.name]
 
-                {/* Technical Capabilities */}
-                <div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#D4D994] block mb-1.5 font-bold">
-                    Technical Capabilities
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {skills.technicalCapabilities.map((s, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2.5 py-1 rounded bg-[#211D1D]/50 border border-[#CB7885]/30 text-[11px] text-[#F5F3EC]"
-                      >
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                  return (
+                    <div
+                      key={skill.name}
+                      onClick={(e) => handleLikeSkill(skill.name, e)}
+                      className="relative p-3 rounded-2xl bg-white/[0.08] hover:bg-white/[0.15] border border-[#CB7885]/30 hover:border-[#D4D994] transition-all duration-300 group cursor-pointer overflow-hidden shadow-xs hover:shadow-lg hover:-translate-y-1 active:scale-[0.97] flex flex-col justify-between"
+                    >
+                      {/* Pinterest-style soft ambient sheen */}
+                      <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
+
+                      <div>
+                        {/* Card Top: Micro Icon + Badge + Like Button */}
+                        <div className="flex items-center justify-between gap-1.5 mb-2">
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-7 h-7 rounded-lg bg-[#D4D994]/20 text-[#D4D994] flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 group-hover:bg-[#D4D994] group-hover:text-[#211D1D] transition-all duration-300 shrink-0 shadow-xs">
+                              <Icon className="w-3.5 h-3.5" />
+                            </div>
+                            <span className="text-[9px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/10 text-[#D4D994] border border-[#D4D994]/20 group-hover:border-[#D4D994]/60 group-hover:bg-[#D4D994]/10 transition-colors">
+                              {skill.badge}
+                            </span>
+                          </div>
+
+                          {/* Interactive Heart Button */}
+                          <button
+                            type="button"
+                            onClick={(e) => handleLikeSkill(skill.name, e)}
+                            className="p-1 rounded-full text-white/40 hover:text-white transition-transform active:scale-125"
+                            aria-label={`Favorite ${skill.name}`}
+                          >
+                            <Heart
+                              className={`w-3.5 h-3.5 transition-all duration-300 ${
+                                isLiked
+                                  ? "fill-[#FFB6C1] text-[#FFB6C1] scale-110"
+                                  : "text-white/40 group-hover:text-[#FFB6C1]"
+                              }`}
+                            />
+                          </button>
+                        </div>
+
+                        {/* Skill Title */}
+                        <h4 className="text-xs sm:text-[12.5px] font-medium text-[#FFFEFA] group-hover:text-[#D4D994] transition-colors leading-snug line-clamp-1">
+                          {skill.name}
+                        </h4>
+                      </div>
+
+                      {/* Card Bottom: Animated Micro Elements inside the card */}
+                      <div className="mt-2.5 pt-2 border-t border-white/10">
+                        <div className="flex items-center justify-between text-[10px] font-mono">
+                          <span className="text-[#D4D994] group-hover:text-white transition-colors flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#D4D994] group-hover:animate-ping" />
+                            {skill.cuteTag}
+                          </span>
+                          <span className="text-white/60 group-hover:text-[#D4D994] transition-colors font-bold">
+                            {skill.affinity}
+                          </span>
+                        </div>
+
+                        {/* Animated progress bar that fills and glows smoothly on hover */}
+                        <div className="w-full h-1 bg-black/25 rounded-full overflow-hidden mt-1.5">
+                          <div
+                            className="h-full bg-gradient-to-r from-[#CB7885] via-[#FDE8EC] to-[#D4D994] rounded-full transition-all duration-500 ease-out group-hover:brightness-125"
+                            style={{ width: skill.affinity }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
 
-            <div className="pt-6 border-t border-[#CB7885]/20 mt-6 flex items-center justify-between text-[11px] font-mono text-[#D4D994]">
-              <span>Executive Advisory</span>
-              <span>100% Code & Craft</span>
+            {/* Bottom Plaque with Live Favorite Counter */}
+            <div className="pt-4 border-t border-[#CB7885]/20 mt-4 flex items-center justify-between text-[11px] font-mono text-[#D4D994]">
+              <span className="flex items-center gap-1.5">
+                <Heart className="w-3.5 h-3.5 fill-[#FFB6C1] text-[#FFB6C1] animate-pulse" />
+                <span className="text-[#FFFEFA]">
+                  {likedCount > 0
+                    ? `${likedCount} / ${CUTE_SKILLS.length} Skills Favorited ♡`
+                    : "Tap card heart to favorite ♡"}
+                </span>
+              </span>
+              <span className="text-[#D4D994]">100% Code & Craft</span>
             </div>
           </div>
         </div>

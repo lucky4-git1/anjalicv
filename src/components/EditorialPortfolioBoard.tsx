@@ -247,7 +247,7 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
         {/* ════════════════════════════════════════════════════════════════════
             TWO-COLUMN ROW 1: ABOUT ME (LEFT) + SKILLS & EXPERTISE (RIGHT)
         ════════════════════════════════════════════════════════════════════ */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        <div id="about" className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch scroll-mt-24">
           
           {/* PANEL 2: ABOUT ME + PROFILE (7 cols) — Dusty Rose & Ivory Editorial Panel */}
           <div className="lg:col-span-7 rounded-2xl bg-[#CB7885] text-[#211D1D] p-7 sm:p-10 flex flex-col justify-between shadow-[0_12px_40px_rgba(0,0,0,0.12)] relative overflow-hidden border border-[#D4D994]/30">
@@ -462,7 +462,7 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
         {/* ════════════════════════════════════════════════════════════════════
             TWO-COLUMN ROW 2: UI/UX DESIGN (LEFT) + GRAPHIC DESIGN (RIGHT)
         ════════════════════════════════════════════════════════════════════ */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        <div id="work" className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch scroll-mt-24">
 
           {/* PANEL 4: UI / UX DESIGN SHOWCASE (6 cols) — Warm Ivory Editorial Panel */}
           <div className="lg:col-span-6 rounded-2xl bg-[#F5F3EC] text-[#211D1D] p-7 sm:p-9 flex flex-col justify-between shadow-[0_12px_40px_rgba(0,0,0,0.25)] border border-[#893941]/15">
@@ -718,7 +718,7 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
         {/* ════════════════════════════════════════════════════════════════════
             SECTION 8: FULL-WIDTH COLLABORATION & CONTACT PANEL
         ════════════════════════════════════════════════════════════════════ */}
-        <div id="contact" className="rounded-2xl bg-[#893941] text-[#F5F3EC] p-8 sm:p-14 shadow-[0_16px_50px_rgba(0,0,0,0.35)] border border-[#CB7885]/30 text-center flex flex-col items-center">
+        <div id="contact" className="rounded-2xl bg-[#893941] text-[#F5F3EC] p-8 sm:p-14 shadow-[0_16px_50px_rgba(0,0,0,0.35)] border border-[#CB7885]/30 text-center flex flex-col items-center scroll-mt-24">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#211D1D]/50 border border-[#D4D994]/30 text-[10px] font-mono tracking-widest uppercase text-[#D4D994] mb-4 font-bold">
             07 / INVITATION TO COLLABORATE
           </div>

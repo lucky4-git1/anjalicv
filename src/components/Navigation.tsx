@@ -9,21 +9,56 @@ interface NavigationProps {
 export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenContactModal }) => {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState<string>("hero")
+
+  const navLinks = [
+    { id: "hero", name: "Home", href: "#hero" },
+    { id: "about", name: "About", href: "#about" },
+    { id: "work", name: "Work", href: "#work" },
+    { id: "contact", name: "Contact", href: "#contact" },
+  ]
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 30)
+      const scrollY = window.scrollY
+      setScrolled(scrollY > 30)
+
+      // 1. If near the top of the page:
+      if (scrollY < 120) {
+        setActiveSection("hero")
+        return
+      }
+
+      // 2. If at the bottom of the page:
+      const scrollBottom = window.innerHeight + scrollY
+      const docHeight = document.documentElement.scrollHeight
+      if (scrollBottom >= docHeight - 80) {
+        setActiveSection("contact")
+        return
+      }
+
+      // 3. Check section positions relative to viewport threshold
+      const sectionIds = ["hero", "about", "work", "contact"]
+      const viewportThreshold = window.innerHeight * 0.38
+      let current = "hero"
+
+      for (const id of sectionIds) {
+        const el = document.getElementById(id)
+        if (el) {
+          const rect = el.getBoundingClientRect()
+          if (rect.top <= viewportThreshold) {
+            current = id
+          }
+        }
+      }
+
+      setActiveSection(current)
     }
+
     window.addEventListener("scroll", handleScroll, { passive: true })
+    handleScroll() // Initial check on mount
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
-
-  const navLinks = [
-    { name: "Home", href: "#hero" },
-    { name: "About", href: "#about-portrait-card" },
-    { name: "Work", href: "#portfolio-board" },
-    { name: "Contact", href: "#contact" },
-  ]
 
   return (
     <>
@@ -54,20 +89,28 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-2" role="menubar">
-            {navLinks.map((link, idx) => (
-              <a
-                key={link.name}
-                href={link.href}
-                role="menuitem"
-                className={`text-[12px] font-sans font-medium px-4 py-1.5 rounded-full border border-[#E9E9E9] transition-all duration-200 ${
-                  idx === 0
-                    ? "text-[#161616] border-[#D1D1D1] bg-white shadow-xs"
-                    : "text-[#555] hover:text-[#161616] hover:border-[#D1D1D1] bg-white/70 backdrop-blur-xs"
-                }`}
-              >
-                {link.name}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.id
+              return (
+                <a
+                  key={link.id}
+                  href={link.href}
+                  role="menuitem"
+                  className={`text-[12px] font-sans font-medium px-4 py-1.5 rounded-full border transition-all duration-300 relative cursor-pointer ${
+                    isActive
+                      ? "text-[#161616] border-[#161616]/25 bg-white shadow-xs font-semibold scale-[1.03]"
+                      : "text-[#555] hover:text-[#161616] hover:border-[#D1D1D1] bg-white/70 backdrop-blur-xs border-[#E9E9E9]"
+                  }`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    {isActive && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#893941] animate-pulse" />
+                    )}
+                    {link.name}
+                  </span>
+                </a>
+              )
+            })}
           </nav>
 
           {/* Action CTAs */}
@@ -108,17 +151,27 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-40 bg-[#F9EAE6]/98 backdrop-blur-xl md:hidden flex flex-col justify-between p-6 pt-24 border-b border-[#CB7885]/20 text-[#211D1D]">
           <nav className="flex flex-col gap-4">
-            {navLinks.map((link, idx) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-lg font-serif text-[#211D1D] hover:text-[#893941] py-2 border-b border-[#CB7885]/15 flex items-center justify-between"
-              >
-                <span>{link.name}</span>
-                <span className="text-[10px] font-mono text-[#5E6623]">0{idx + 1}</span>
-              </a>
-            ))}
+            {navLinks.map((link, idx) => {
+              const isActive = activeSection === link.id
+              return (
+                <a
+                  key={link.id}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`text-lg font-serif py-2 border-b border-[#CB7885]/15 flex items-center justify-between transition-colors ${
+                    isActive
+                      ? "text-[#893941] font-bold pl-2"
+                      : "text-[#211D1D] hover:text-[#893941]"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    {isActive && <span className="w-2 h-2 rounded-full bg-[#893941]" />}
+                    {link.name}
+                  </span>
+                  <span className="text-[10px] font-mono text-[#5E6623]">0{idx + 1}</span>
+                </a>
+              )
+            })}
           </nav>
 
           <div className="flex flex-col gap-2.5 mt-6">

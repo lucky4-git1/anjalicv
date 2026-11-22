@@ -19,46 +19,82 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
   ]
 
   useEffect(() => {
-    const handleScroll = () => {
+    let ticking = false
+
+    const updateActiveSection = () => {
       const scrollY = window.scrollY
-      setScrolled(scrollY > 30)
-
-      // 1. If near the top of the page:
-      if (scrollY < 120) {
-        setActiveSection("hero")
-        return
-      }
-
-      // 2. If at the bottom of the page:
-      const scrollBottom = window.innerHeight + scrollY
+      const winHeight = window.innerHeight
       const docHeight = document.documentElement.scrollHeight
-      if (scrollBottom >= docHeight - 80) {
-        setActiveSection("contact")
+
+      setScrolled(scrollY > 25)
+
+      // 1. Top of page
+      if (scrollY < 100) {
+        setActiveSection("hero")
+        ticking = false
         return
       }
 
-      // 3. Check section positions relative to viewport threshold
+      // 2. Bottom of page
+      if (winHeight + scrollY >= docHeight - 70) {
+        setActiveSection("contact")
+        ticking = false
+        return
+      }
+
+      // 3. Focal point at 38% of viewport
+      const focalY = winHeight * 0.38
       const sectionIds = ["hero", "about", "work", "contact"]
-      const viewportThreshold = window.innerHeight * 0.38
-      let current = "hero"
+      let current = ""
 
       for (const id of sectionIds) {
         const el = document.getElementById(id)
-        if (el) {
-          const rect = el.getBoundingClientRect()
-          if (rect.top <= viewportThreshold) {
+        if (!el) continue
+        const rect = el.getBoundingClientRect()
+        // Section currently contains the focal line
+        if (rect.top <= focalY && rect.bottom > focalY) {
+          current = id
+          break
+        }
+      }
+
+      // Smooth fallback to last section whose top was passed
+      if (!current) {
+        for (const id of sectionIds) {
+          const el = document.getElementById(id)
+          if (el && el.getBoundingClientRect().top <= focalY) {
             current = id
           }
         }
       }
 
-      setActiveSection(current)
+      if (current) {
+        setActiveSection(current)
+      }
+      ticking = false
     }
 
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    handleScroll() // Initial check on mount
-    return () => window.removeEventListener("scroll", handleScroll)
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateActiveSection)
+        ticking = true
+      }
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true })
+    updateActiveSection() // Initial check on mount
+
+    return () => window.removeEventListener("scroll", onScroll)
   }, [])
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
+    setMobileMenuOpen(false)
+    const target = document.querySelector(href)
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" })
+    }
+  }
 
   return (
     <>
@@ -74,6 +110,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
           {/* Logo Group */}
           <a
             href="#hero"
+            onClick={(e) => handleNavClick(e, "#hero")}
             className="flex items-center gap-2.5 group cursor-pointer"
             aria-label="Anjali Home"
           >
@@ -95,6 +132,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
                 <a
                   key={link.id}
                   href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   role="menuitem"
                   className={`text-[12px] font-sans font-medium px-4 py-1.5 rounded-full border transition-all duration-300 relative cursor-pointer ${
                     isActive
@@ -157,7 +195,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
                 <a
                   key={link.id}
                   href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   className={`text-lg font-serif py-2 border-b border-[#CB7885]/15 flex items-center justify-between transition-colors ${
                     isActive
                       ? "text-[#893941] font-bold pl-2"

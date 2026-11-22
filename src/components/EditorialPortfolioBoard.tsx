@@ -1,9 +1,5 @@
 import React, { useState } from "react"
 import {
-  ArrowUpRight,
-  Award,
-  GraduationCap,
-  Briefcase,
   Mail,
   Copy,
   Check,
@@ -17,10 +13,75 @@ import {
   Wand2,
   Star,
   Zap,
-  Bookmark
+  Bookmark,
+  Play
 } from "lucide-react"
 import confetti from "canvas-confetti"
-import { PORTFOLIO_DATA, Project } from "../data/portfolioData"
+import { PORTFOLIO_DATA } from "../data/portfolioData"
+
+export interface WorkSample {
+  id: string
+  title: string
+  client: string
+  category: string
+  views: string
+  reach: string
+  shares: string
+  image: string
+  description: string
+  tags: string[]
+}
+
+export const WORK_SAMPLES: WorkSample[] = [
+  {
+    id: "sample-1",
+    title: "Aura Silk Elixir",
+    client: "Maison Botanique",
+    category: "Luxury Skincare Campaign",
+    views: "2.8M",
+    reach: "1.4M",
+    shares: "128K",
+    image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80",
+    description: "Multi-sensory skincare macro visual reel capturing silk texture, organic serum droplets, and botanical radiance. Directed for high-conversion organic social engagement.",
+    tags: ["Art Direction", "Macro Texture", "Viral Reel"]
+  },
+  {
+    id: "sample-2",
+    title: "Sculpted Touch",
+    client: "L'Or Atelier",
+    category: "Haute Jewelry & Rituals",
+    views: "3.4M",
+    reach: "1.9M",
+    shares: "174K",
+    image: "https://images.unsplash.com/photo-1608248597358-1e4242fa5214?auto=format&fit=crop&w=800&q=80",
+    description: "Tactile editorial hand choreography highlighting gold vermeil rings and bespoke craftsmanship with ambient sunlight and warm linen tones.",
+    tags: ["Jewelry Styling", "Hand Choreography", "Editorial"]
+  },
+  {
+    id: "sample-3",
+    title: "Atelier Céramique",
+    client: "Studio Terre",
+    category: "Artisanal Craft Process",
+    views: "1.6M",
+    reach: "980K",
+    shares: "86K",
+    image: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=800&q=80",
+    description: "Hypnotic wheel-throwing ceramics documentation exploring raw clay tactile physics, gentle water droplets, and artisanal stoneware forms.",
+    tags: ["Process Reel", "Artisanal", "Sound Design"]
+  },
+  {
+    id: "sample-4",
+    title: "Sovereign Muse",
+    client: "Komorebi Paris",
+    category: "Fashion Monograph Lookbook",
+    views: "4.2M",
+    reach: "2.3M",
+    shares: "245K",
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+    description: "Close-up cinematic beauty monologues and fluid camera movement authoring bespoke brand personality across TikTok and Instagram Reels.",
+    tags: ["Campaign Direction", "Talent Casting", "Motion Editorial"]
+  }
+]
 
 interface CuteSkill {
   name: string
@@ -192,10 +253,9 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
   onOpenCvModal,
   onOpenContactModal,
 }) => {
-  const { personal, skills, uiUxProjects, graphicProjects, socialProjects, experience, education, accolades } =
-    PORTFOLIO_DATA
+  const { personal } = PORTFOLIO_DATA
 
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const [selectedSample, setSelectedSample] = useState<WorkSample | null>(null)
   const [copied, setCopied] = useState(false)
   const [activeSkillTab, setActiveSkillTab] = useState<"all" | "design" | "tools" | "tech">("all")
   const [likedSkills, setLikedSkills] = useState<Record<string, boolean>>({
@@ -460,259 +520,99 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
 
 
         {/* ════════════════════════════════════════════════════════════════════
-            TWO-COLUMN ROW 2: UI/UX DESIGN (LEFT) + GRAPHIC DESIGN (RIGHT)
+            SECTION 3: WORK SAMPLE (MATCHES REFERENCE WITH 4 PHONE MODELS)
         ════════════════════════════════════════════════════════════════════ */}
-        <div id="work" className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch scroll-mt-24">
+        <section id="work" className="scroll-mt-24 pt-6 pb-6">
+          {/* Section Header: Matching Reference Screenshot */}
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif text-[#893941] font-normal tracking-wide">
+              Work Sample
+            </h2>
 
-          {/* PANEL 4: UI / UX DESIGN SHOWCASE (6 cols) — Warm Ivory Editorial Panel */}
-          <div className="lg:col-span-6 rounded-2xl bg-[#F5F3EC] text-[#211D1D] p-7 sm:p-9 flex flex-col justify-between shadow-[0_12px_40px_rgba(0,0,0,0.25)] border border-[#893941]/15">
-            <div>
-              <div className="flex items-center justify-between pb-3 border-b border-[#211D1D]/15 mb-6">
-                <span className="text-[10px] font-mono tracking-widest uppercase text-[#893941] font-bold">
-                  03 / DIGITAL ARCHITECTURE
-                </span>
-                <span className="text-xs font-mono text-[#5E6623]">Interactive Flagships</span>
-              </div>
-
-              <h2 className="text-3xl sm:text-5xl font-serif font-bold text-[#893941] mb-6">
-                UI / UX Design
-              </h2>
-
-              <div className="space-y-6">
-                {uiUxProjects.map((project) => (
-                  <div
-                    key={project.id}
-                    onClick={() => setSelectedProject(project)}
-                    className="group rounded-xl overflow-hidden border border-[#211D1D]/10 bg-white p-3.5 hover:border-[#893941] transition-all cursor-pointer shadow-sm hover:shadow-md"
-                  >
-                    <div className="aspect-[16/9] w-full rounded-lg overflow-hidden bg-[#211D1D] mb-3 relative">
-                      <img
-                        src={project.heroImage}
-                        alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-[#211D1D]/80 text-[9px] font-mono uppercase text-[#F5F3EC]">
-                        {project.client}
-                      </div>
-                      <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-[#893941] text-[9px] font-mono text-[#FFFEFA]">
-                        {project.year}
-                      </div>
-                    </div>
-
-                    <div className="flex items-baseline justify-between mb-1">
-                      <h3 className="font-serif text-lg font-bold text-[#893941] group-hover:text-[#CB7885] transition-colors">
-                        {project.title}
-                      </h3>
-                      <ArrowUpRight className="w-4 h-4 text-[#893941] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    </div>
-
-                    <p className="text-xs font-serif italic text-[#5E6623] mb-1.5">
-                      {project.subtitle}
-                    </p>
-
-                    <p className="text-xs text-[#211D1D]/80 leading-relaxed line-clamp-2">
-                      {project.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-[#211D1D]/10 mt-6 flex items-center justify-between text-xs font-mono text-[#893941]">
-              <span>2 Featured Digital Systems</span>
-              <span className="font-bold underline cursor-pointer" onClick={() => setSelectedProject(uiUxProjects[0])}>Inspect Architecture</span>
+            {/* Cursive Subtitle with Hairline and Sparkles */}
+            <div className="flex items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto mt-3 px-4">
+              <span className="text-[#CB7885] text-base sm:text-xl select-none animate-pulse">✦</span>
+              <span className="font-serif italic text-base sm:text-xl text-[#CB7885] tracking-wide whitespace-nowrap">
+                sample work sample
+              </span>
+              <div className="h-[1px] bg-gradient-to-r from-[#CB7885]/40 via-[#CB7885]/20 to-transparent flex-1 hidden sm:block" />
+              <span className="text-[#CB7885] text-xs sm:text-sm select-none">✧</span>
             </div>
           </div>
 
-          {/* PANEL 5: GRAPHIC DESIGN SHOWCASE (6 cols) — Olive & Sage Editorial Panel */}
-          <div className="lg:col-span-6 rounded-2xl bg-[#211D1D] text-[#F5F3EC] p-7 sm:p-9 flex flex-col justify-between shadow-[0_12px_40px_rgba(0,0,0,0.25)] border border-[#CB7885]/30">
-            <div>
-              <div className="flex items-center justify-between pb-3 border-b border-[#CB7885]/20 mb-6">
-                <span className="text-[10px] font-mono tracking-widest uppercase text-[#D4D994] font-bold">
-                  04 / BRAND & PACKAGING
-                </span>
-                <span className="text-xs font-mono text-[#CB7885]">Visual Identity</span>
-              </div>
+          {/* 4 Phone Mockup Showcase Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6 lg:gap-8 items-end max-w-6xl mx-auto px-4">
+            {WORK_SAMPLES.map((sample) => (
+              <div
+                key={sample.id}
+                onClick={() => setSelectedSample(sample)}
+                className="group relative flex flex-col items-center cursor-pointer select-none"
+              >
+                {/* Phone Container */}
+                <div className="relative w-full max-w-[250px] sm:max-w-[230px] lg:max-w-[250px] aspect-[194/402] transition-all duration-500 ease-out group-hover:-translate-y-3 group-hover:scale-[1.02]">
+                  {/* Grounding shadow beneath phone */}
+                  <div className="absolute -bottom-5 inset-x-5 h-8 bg-[#893941]/25 blur-xl rounded-full transition-all duration-500 group-hover:scale-115 group-hover:bg-[#893941]/35 pointer-events-none" />
 
-              <h2 className="text-3xl sm:text-5xl font-serif font-bold text-[#FFFEFA] mb-6">
-                Graphic Design
-              </h2>
+                  {/* Inner Screen Content */}
+                  <div className="absolute inset-[3px] rounded-[26px] overflow-hidden bg-[#211D1D] shadow-inner">
+                    <img
+                      src={sample.image}
+                      alt={sample.title}
+                      className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out brightness-[0.95] group-hover:brightness-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/65 pointer-events-none" />
 
-              <div className="space-y-6">
-                {graphicProjects.map((project) => (
-                  <div
-                    key={project.id}
-                    onClick={() => setSelectedProject(project)}
-                    className="group rounded-xl overflow-hidden border border-[#CB7885]/20 bg-white/[0.03] p-3.5 hover:border-[#D4D994] transition-all cursor-pointer shadow-sm hover:shadow-md"
-                  >
-                    <div className="aspect-[16/9] w-full rounded-lg overflow-hidden bg-[#211D1D] mb-3 relative">
-                      <img
-                        src={project.heroImage}
-                        alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-[#893941] text-[9px] font-mono uppercase text-[#F5F3EC]">
-                        {project.client}
-                      </div>
-                      <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-[#D4D994] text-[9px] font-mono text-[#211D1D] font-bold">
-                        {project.year}
+                    {/* Status Bar */}
+                    <div className="absolute top-2.5 inset-x-4 flex justify-between items-center text-[9px] font-mono text-white/80 pointer-events-none z-10">
+                      <span>9:41</span>
+                      <div className="flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-white/75" />
+                        <span className="w-3.5 h-1.5 rounded-xs border border-white/75 flex items-center p-[1px]">
+                          <span className="w-full h-full bg-white/75" />
+                        </span>
                       </div>
                     </div>
 
-                    <div className="flex items-baseline justify-between mb-1">
-                      <h3 className="font-serif text-lg font-bold text-[#FFFEFA] group-hover:text-[#D4D994] transition-colors">
-                        {project.title}
-                      </h3>
-                      <ArrowUpRight className="w-4 h-4 text-[#D4D994] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    {/* Center Play Button matching reference screenshot */}
+                    <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                      <div className="w-12 h-12 rounded-full bg-black/45 backdrop-blur-md flex items-center justify-center text-white border border-white/30 shadow-2xl transition-all duration-300 group-hover:scale-115 group-hover:bg-[#CB7885] group-hover:border-[#FFFEFA]">
+                        <Play className="w-4 h-4 fill-white text-white ml-0.5 transition-transform group-hover:scale-110" />
+                      </div>
                     </div>
 
-                    <p className="text-xs font-serif italic text-[#CB7885] mb-1.5">
-                      {project.subtitle}
-                    </p>
-
-                    <p className="text-xs text-zinc-300 leading-relaxed line-clamp-2">
-                      {project.description}
-                    </p>
+                    {/* Bottom Views Tag */}
+                    <div className="absolute bottom-3 inset-x-3 text-center z-10 pointer-events-none">
+                      <span className="text-[10px] font-mono tracking-wider text-white/95 bg-black/45 backdrop-blur-xs px-2.5 py-1 rounded-full border border-white/20 inline-flex items-center gap-1 shadow-xs">
+                        <Sparkles className="w-2.5 h-2.5 text-[#D4D994]" />
+                        {sample.views} Views
+                      </span>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </div>
 
-            <div className="pt-4 border-t border-[#CB7885]/20 mt-6 flex items-center justify-between text-xs font-mono text-[#D4D994]">
-              <span>Branding • Foiling • Silkscreening</span>
-              <span className="underline cursor-pointer" onClick={() => setSelectedProject(graphicProjects[0])}>View Monograph</span>
-            </div>
-          </div>
-        </div>
+                  {/* Phone Bezel Frame Overlay (Exact user-provided model) */}
+                  <img
+                    src="/assets/phone-frame.png"
+                    alt="Phone Frame"
+                    className="absolute inset-0 w-full h-full object-fill pointer-events-none z-20 select-none"
+                  />
+                </div>
 
-
-        {/* ════════════════════════════════════════════════════════════════════
-            TWO-COLUMN ROW 3: SOCIAL MEDIA DESIGN (LEFT) + EXPERIENCE & EDUCATION (RIGHT)
-        ════════════════════════════════════════════════════════════════════ */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-
-          {/* PANEL 6: SOCIAL MEDIA DESIGN SHOWCASE (6 cols) — Dusty Rose Panel */}
-          <div className="lg:col-span-6 rounded-2xl bg-[#CB7885] text-[#211D1D] p-7 sm:p-9 flex flex-col justify-between shadow-[0_12px_40px_rgba(0,0,0,0.25)] border border-[#893941]/20">
-            <div>
-              <div className="flex items-center justify-between pb-3 border-b border-[#893941]/20 mb-6">
-                <span className="text-[10px] font-mono tracking-widest uppercase text-[#893941] font-bold">
-                  05 / EDITORIAL CAMPAIGNS
-                </span>
-                <span className="text-xs font-mono text-[#5E6623]">Social Grids</span>
-              </div>
-
-              <h2 className="text-3xl sm:text-5xl font-serif font-bold text-[#893941] mb-6">
-                Social Media Design
-              </h2>
-
-              <div className="space-y-6">
-                {socialProjects.map((project) => (
-                  <div
-                    key={project.id}
-                    onClick={() => setSelectedProject(project)}
-                    className="group rounded-xl overflow-hidden border border-[#893941]/20 bg-[#F5F3EC] p-3.5 hover:border-[#893941] transition-all cursor-pointer shadow-sm"
-                  >
-                    <div className="aspect-[16/9] w-full rounded-lg overflow-hidden bg-[#211D1D] mb-3 relative">
-                      <img
-                        src={project.heroImage}
-                        alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-[#893941] text-[9px] font-mono uppercase text-[#F5F3EC]">
-                        {project.client}
-                      </div>
-                      <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-[#D4D994] text-[9px] font-mono text-[#211D1D] font-bold">
-                        {project.year}
-                      </div>
-                    </div>
-
-                    <div className="flex items-baseline justify-between mb-1">
-                      <h3 className="font-serif text-lg font-bold text-[#893941] group-hover:text-[#5E6623] transition-colors">
-                        {project.title}
-                      </h3>
-                      <ArrowUpRight className="w-4 h-4 text-[#893941] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    </div>
-
-                    <p className="text-xs font-serif italic text-[#5E6623] mb-1.5">
-                      {project.subtitle}
-                    </p>
-
-                    <p className="text-xs text-[#211D1D]/80 leading-relaxed line-clamp-2">
-                      {project.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-[#893941]/20 mt-6 flex items-center justify-between text-xs font-mono text-[#893941]">
-              <span>Editorial Lookbooks & Motion</span>
-              <span className="font-bold underline cursor-pointer" onClick={() => setSelectedProject(socialProjects[0])}>Inspect Campaign</span>
-            </div>
-          </div>
-
-          {/* PANEL 7: EXPERIENCE & EDUCATION (6 cols) — Warm Ivory Panel */}
-          <div className="lg:col-span-6 rounded-2xl bg-[#F5F3EC] text-[#211D1D] p-7 sm:p-9 flex flex-col justify-between shadow-[0_12px_40px_rgba(0,0,0,0.25)] border border-[#893941]/15">
-            <div>
-              <div className="flex items-center justify-between pb-3 border-b border-[#211D1D]/15 mb-6">
-                <span className="text-[10px] font-mono tracking-widest uppercase text-[#893941] font-bold">
-                  06 / PEDIGREE & TRAJECTORY
-                </span>
-                <span className="text-xs font-mono text-[#5E6623]">Credentials</span>
-              </div>
-
-              <h2 className="text-3xl sm:text-5xl font-serif font-bold text-[#893941] mb-6">
-                Experience & Education
-              </h2>
-
-              {/* Experience Timeline */}
-              <div className="space-y-4 mb-6">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#893941] font-bold block">
-                  Professional Experience
-                </span>
-                <div className="space-y-3">
-                  {experience.slice(0, 3).map((exp, idx) => (
-                    <div key={idx} className="pb-3 border-b border-[#211D1D]/10 last:border-b-0 last:pb-0">
-                      <div className="flex justify-between items-baseline">
-                        <h4 className="font-serif font-bold text-sm text-[#211D1D]">
-                          {exp.role} <span className="font-normal italic text-[#893941]">@ {exp.company}</span>
-                        </h4>
-                        <span className="text-[10px] font-mono text-[#5E6623]">{exp.period}</span>
-                      </div>
-                      <p className="text-xs text-[#211D1D]/75 mt-0.5 line-clamp-1">
-                        {exp.description}
-                      </p>
-                    </div>
-                  ))}
+                {/* Subtitle / Title under each phone */}
+                <div className="mt-4 text-center">
+                  <h3 className="font-serif text-base sm:text-lg font-bold text-[#893941] group-hover:text-[#CB7885] transition-colors leading-snug">
+                    {sample.title}
+                  </h3>
+                  <p className="text-[11px] font-mono text-[#5E6623] tracking-wider mt-0.5 uppercase">
+                    {sample.client}
+                  </p>
                 </div>
               </div>
-
-              {/* Academic Qualifications */}
-              <div className="pt-3 border-t border-[#211D1D]/15 space-y-3">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#893941] font-bold block">
-                  Academic Pedigree
-                </span>
-                {education.map((edu, idx) => (
-                  <div key={idx} className="text-xs">
-                    <div className="flex justify-between items-baseline">
-                      <h4 className="font-serif font-bold text-sm text-[#211D1D]">{edu.degree}</h4>
-                      <span className="text-[10px] font-mono text-[#5E6623]">{edu.period}</span>
-                    </div>
-                    <p className="font-serif italic text-[#893941] text-xs">{edu.institution}</p>
-                    <p className="text-[11px] text-[#211D1D]/70">{edu.honors}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-[#211D1D]/10 mt-6 flex items-center justify-between text-xs font-mono">
-              <span className="text-[#5E6623]">24+ International Accolades</span>
-              <button onClick={onOpenCvModal} className="text-[#893941] font-bold underline cursor-pointer">
-                Full Resume (PDF)
-              </button>
-            </div>
+            ))}
           </div>
-        </div>
+        </section>
+
+
+
 
 
         {/* ════════════════════════════════════════════════════════════════════
@@ -771,63 +671,64 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
 
       </div>
 
-      {/* ── IN-DEPTH CASE STUDY MODAL ── */}
-      {selectedProject && (
+      {/* ── WORK SAMPLE DETAIL MODAL ── */}
+      {selectedSample && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
           <div className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-[#F5F3EC] text-[#211D1D] border-2 border-[#893941] rounded-2xl p-6 sm:p-8 shadow-2xl">
             <button
-              onClick={() => setSelectedProject(null)}
-              className="absolute top-5 right-5 p-1.5 rounded-lg border border-[#893941]/30 text-[#893941] hover:bg-[#893941]/10"
+              onClick={() => setSelectedSample(null)}
+              className="absolute top-5 right-5 p-1.5 rounded-lg border border-[#893941]/30 text-[#893941] hover:bg-[#893941]/10 cursor-pointer transition-colors"
+              aria-label="Close modal"
             >
               <X className="w-4 h-4" />
             </button>
 
             <div className="mb-4">
               <span className="text-[10px] font-mono uppercase text-[#893941] font-bold">
-                {selectedProject.client} • {selectedProject.year}
+                {selectedSample.client} • {selectedSample.category}
               </span>
               <h3 className="text-2xl sm:text-3xl font-serif font-bold text-[#893941] mt-0.5">
-                {selectedProject.title}
+                {selectedSample.title}
               </h3>
-              <p className="text-xs font-serif italic text-[#5E6623]">
-                {selectedProject.subtitle}
-              </p>
             </div>
 
-            <div className="aspect-[16/9] w-full rounded-xl overflow-hidden border border-[#893941]/20 mb-6 bg-[#211D1D]">
-              <img src={selectedProject.heroImage} alt={selectedProject.title} className="w-full h-full object-cover" />
+            <div className="aspect-[16/9] w-full rounded-xl overflow-hidden border border-[#893941]/20 mb-6 bg-[#211D1D] relative group">
+              <img src={selectedSample.image} alt={selectedSample.title} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                <div className="w-14 h-14 rounded-full bg-[#CB7885] text-white flex items-center justify-center shadow-lg border border-white/50">
+                  <Play className="w-6 h-6 fill-white text-white ml-0.5" />
+                </div>
+              </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 p-3.5 rounded-xl bg-white border border-[#893941]/15 mb-6 text-xs font-mono">
+            <div className="grid grid-cols-3 gap-3 p-3.5 rounded-xl bg-white border border-[#893941]/15 mb-6 text-xs font-mono text-center">
               <div>
-                <span className="text-[10px] uppercase text-[#893941] font-bold block">Role</span>
-                <span className="text-[#211D1D]">{selectedProject.role}</span>
+                <span className="text-[10px] uppercase text-[#893941] font-bold block">Total Views</span>
+                <span className="text-[#211D1D] font-bold text-sm sm:text-base">{selectedSample.views}</span>
               </div>
               <div>
-                <span className="text-[10px] uppercase text-[#893941] font-bold block">Metrics / Impact</span>
-                <span className="text-[#5E6623] font-bold">{selectedProject.metrics}</span>
+                <span className="text-[10px] uppercase text-[#893941] font-bold block">Account Reach</span>
+                <span className="text-[#5E6623] font-bold text-sm sm:text-base">{selectedSample.reach}</span>
+              </div>
+              <div>
+                <span className="text-[10px] uppercase text-[#893941] font-bold block">Saves & Shares</span>
+                <span className="text-[#893941] font-bold text-sm sm:text-base">{selectedSample.shares}</span>
               </div>
             </div>
 
             <div className="space-y-4 mb-6 text-xs text-[#211D1D] font-sans leading-relaxed">
               <div>
                 <h4 className="text-xs font-semibold text-[#893941] uppercase font-mono tracking-wider mb-1">
-                  Design & Architecture Challenge
+                  Creative Direction & Reel Concept
                 </h4>
-                <p>{selectedProject.challenge}</p>
-              </div>
-              <div>
-                <h4 className="text-xs font-semibold text-[#893941] uppercase font-mono tracking-wider mb-1">
-                  Engineered Creative Solution
-                </h4>
-                <p>{selectedProject.solution}</p>
+                <p className="text-sm leading-relaxed text-[#211D1D]/85">{selectedSample.description}</p>
               </div>
             </div>
 
             <div>
-              <span className="text-[10px] font-mono uppercase text-[#893941] font-bold block mb-2">Applied Technologies & Mediums</span>
+              <span className="text-[10px] font-mono uppercase text-[#893941] font-bold block mb-2">Campaign Focus & Tags</span>
               <div className="flex flex-wrap gap-1.5">
-                {selectedProject.technologies.map((t, i) => (
+                {selectedSample.tags.map((t, i) => (
                   <span key={i} className="px-2.5 py-1 rounded bg-[#CB7885]/20 border border-[#893941]/20 text-[10px] font-mono text-[#893941] font-medium">
                     {t}
                   </span>

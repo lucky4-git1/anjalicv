@@ -672,22 +672,18 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
           </div>
 
           {/* ── CARD FAN CAROUSEL: EDITORIAL CAMPAIGN ARCHIVE ── */}
-          <div className="mt-14 sm:mt-20 pt-8 sm:pt-12 border-t border-[#CB7885]/20 flex flex-col items-center overflow-visible">
+          <div className="mt-16 sm:mt-20 rounded-3xl bg-[#893941] text-[#F5F3EC] p-6 sm:p-10 lg:p-12 shadow-[0_16px_50px_rgba(0,0,0,0.35)] border border-[#CB7885]/30 flex flex-col items-center overflow-visible relative">
             <motion.div
-              initial={{ opacity: 0, y: 25 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="text-center mb-6 sm:mb-8"
+              className="text-center mb-6 sm:mb-8 max-w-2xl mx-auto"
             >
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#893941]/10 text-[#893941] border border-[#893941]/20 text-[10px] font-mono uppercase tracking-widest font-semibold mb-2 shadow-xs">
-                <Sparkles className="w-3 h-3 text-[#CB7885]" />
-                Curated Campaign Fan Deck
-              </div>
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif text-[#893941] font-normal">
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#FFFEFA] font-normal tracking-wide">
                 Visual Archives & Editorial Stills
               </h3>
-              <p className="text-xs font-mono text-[#5E6623] mt-1 max-w-md mx-auto">
+              <p className="text-xs sm:text-sm font-mono text-[#D4D994] mt-2 leading-relaxed">
                 Hover or cycle cards to explore the dynamic deck • Interactive GSAP fan physics
               </p>
             </motion.div>

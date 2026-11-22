@@ -67,7 +67,7 @@ function getSlotConfig(totalCards: number, slot: number) {
 }
 
 const ARROW_CLASSES =
-  "relative flex items-center justify-center rounded-full border-[1.5px] border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 backdrop-blur-[16px] text-black/40 dark:text-white/55 cursor-pointer shrink-0 z-30 outline-none shadow-[0_4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:border-black/25 dark:hover:border-white/25 hover:text-black/70 dark:hover:text-white/80 active:opacity-70 transition-colors duration-300 before:content-[''] before:absolute before:inset-[3px] before:rounded-full before:border before:border-black/[0.04] dark:before:border-white/[0.04] before:pointer-events-none";
+  "relative flex items-center justify-center rounded-full border-2 border-white/40 bg-white/15 hover:bg-[#D4D994] text-white hover:text-[#211D1D] shadow-[0_6px_24px_rgba(0,0,0,0.35)] backdrop-blur-md cursor-pointer shrink-0 z-40 outline-none hover:border-[#D4D994] active:scale-95 transition-all duration-300";
 
 export default function SocialCards({ cards }: SocialCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -252,13 +252,13 @@ export default function SocialCards({ cards }: SocialCardsProps) {
   if (!totalCards) return null;
 
   const chevron = (direction: "left" | "right") => (
-    <svg className="relative z-[2] w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg className="relative z-[2] w-5 h-5 text-current" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <polyline points={direction === "left" ? "15 18 9 12 15 6" : "9 18 15 12 9 6"} />
     </svg>
   );
 
   return (
-    <section className="flex flex-col items-center w-full py-4 lg:py-8 px-4 md:px-8 relative z-20">
+    <section className="flex flex-col items-center w-full py-2 lg:py-6 px-4 md:px-8 relative z-20">
       <div className="flex items-center justify-center w-full max-w-[90rem]">
         <div ref={containerRef} className="fan-layout flex relative justify-center items-center w-full max-w-[80rem]">
           {cards.map((card, index) => {
@@ -277,16 +277,23 @@ export default function SocialCards({ cards }: SocialCardsProps) {
       </div>
 
       {needsPagination && (
-        <div className="flex items-center justify-center gap-4 mt-4 md:mt-6 z-30">
-          <button className={`${ARROW_CLASSES} w-10 h-10 md:w-12 md:h-12`} onClick={() => cycle("left")} aria-label="Previous">
+        <div className="flex items-center justify-center gap-4 mt-8 md:mt-12 z-40 relative">
+          <button className={`${ARROW_CLASSES} w-11 h-11 md:w-13 md:h-13`} onClick={() => cycle("left")} aria-label="Previous">
             {chevron("left")}
           </button>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-black/25 backdrop-blur-md border border-white/20">
             {cards.map((_, i) => (
-              <span key={i} className={`w-2 h-2 rounded-full transition-all duration-300 ${i === centerIndex ? "bg-black/70 dark:bg-white/80 scale-[1.3]" : "bg-black/15 dark:bg-white/15"}`} />
+              <span
+                key={i}
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                  i === centerIndex
+                    ? "bg-[#D4D994] scale-125 shadow-[0_0_8px_rgba(212,217,148,0.7)]"
+                    : "bg-white/35 hover:bg-white/70"
+                }`}
+              />
             ))}
           </div>
-          <button className={`${ARROW_CLASSES} w-10 h-10 md:w-12 md:h-12`} onClick={() => cycle("right")} aria-label="Next">
+          <button className={`${ARROW_CLASSES} w-11 h-11 md:w-13 md:h-13`} onClick={() => cycle("right")} aria-label="Next">
             {chevron("right")}
           </button>
         </div>

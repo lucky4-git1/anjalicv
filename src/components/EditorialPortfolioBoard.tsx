@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { motion } from "framer-motion"
 import {
   Mail,
   Copy,
@@ -524,7 +525,13 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
         ════════════════════════════════════════════════════════════════════ */}
         <section id="work" className="scroll-mt-24 pt-6 pb-6">
           {/* Section Header: Matching Reference Screenshot */}
-          <div className="text-center mb-12 sm:mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center mb-12 sm:mb-16"
+          >
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif text-[#893941] font-normal tracking-wide">
               Work Sample
             </h2>
@@ -538,14 +545,32 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
               <div className="h-[1px] bg-gradient-to-r from-[#CB7885]/40 via-[#CB7885]/20 to-transparent flex-1 hidden sm:block" />
               <span className="text-[#CB7885] text-xs sm:text-sm select-none">✧</span>
             </div>
-          </div>
+          </motion.div>
 
           {/* 4 Phone Mockup Showcase Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6 lg:gap-8 items-end max-w-6xl mx-auto px-4">
-            {WORK_SAMPLES.map((sample) => (
-              <div
+            {WORK_SAMPLES.map((sample, index) => (
+              <motion.div
                 key={sample.id}
                 onClick={() => setSelectedSample(sample)}
+                initial={{
+                  opacity: 0,
+                  y: 70,
+                  scale: 0.92,
+                  rotate: index % 2 === 0 ? -1.5 : 1.5
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  rotate: 0
+                }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{
+                  duration: 0.85,
+                  delay: index * 0.14,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
                 className="group relative flex flex-col items-center cursor-pointer select-none"
               >
                 {/* Phone Container */}
@@ -573,11 +598,23 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
                       </div>
                     </div>
 
-                    {/* Center Play Button matching reference screenshot */}
+                    {/* Center Play Button with spring entrance & glow on hover */}
                     <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                      <div className="w-12 h-12 rounded-full bg-black/45 backdrop-blur-md flex items-center justify-center text-white border border-white/30 shadow-2xl transition-all duration-300 group-hover:scale-115 group-hover:bg-[#CB7885] group-hover:border-[#FFFEFA]">
+                      <motion.div
+                        initial={{ scale: 0.4, opacity: 0 }}
+                        whileInView={{ scale: 1, opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{
+                          delay: 0.35 + index * 0.14,
+                          duration: 0.55,
+                          type: "spring",
+                          stiffness: 280,
+                          damping: 18
+                        }}
+                        className="w-12 h-12 rounded-full bg-black/45 backdrop-blur-md flex items-center justify-center text-white border border-white/30 shadow-2xl transition-all duration-300 group-hover:scale-115 group-hover:bg-[#CB7885] group-hover:border-[#FFFEFA]"
+                      >
                         <Play className="w-4 h-4 fill-white text-white ml-0.5 transition-transform group-hover:scale-110" />
-                      </div>
+                      </motion.div>
                     </div>
 
                     {/* Bottom Views Tag */}
@@ -598,15 +635,25 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
                 </div>
 
                 {/* Subtitle / Title under each phone */}
-                <div className="mt-4 text-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.3 + index * 0.14,
+                    ease: "easeOut"
+                  }}
+                  className="mt-4 text-center"
+                >
                   <h3 className="font-serif text-base sm:text-lg font-bold text-[#893941] group-hover:text-[#CB7885] transition-colors leading-snug">
                     {sample.title}
                   </h3>
                   <p className="text-[11px] font-mono text-[#5E6623] tracking-wider mt-0.5 uppercase">
                     {sample.client}
                   </p>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             ))}
           </div>
         </section>

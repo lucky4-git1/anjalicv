@@ -41,6 +41,9 @@ export const FlightFlower: React.FC = () => {
       scrub: 1.2,
       onUpdate: (self) => {
         flight.p = self.progress
+        if (self.progress >= 0.88) {
+          window.dispatchEvent(new CustomEvent("flower-landed"))
+        }
       }
     })
 

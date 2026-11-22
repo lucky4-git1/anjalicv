@@ -112,7 +112,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
             href="#hero"
             onClick={(e) => handleNavClick(e, "#hero")}
             className="flex items-center gap-2.5 group cursor-pointer"
-            aria-label="Anjali Home"
+            aria-label="Anjali Rajput Home"
           >
             <div className="w-[34px] h-[34px] rounded-full bg-[#161616] flex items-center justify-center shadow-sm transition-transform duration-200 group-hover:scale-105">
               <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white" aria-hidden="true">
@@ -120,7 +120,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
               </svg>
             </div>
             <span className="font-sans font-medium text-[14.5px] tracking-[-0.02em] text-[#161616] lowercase">
-              anjali
+              anjali rajput
             </span>
           </a>
 

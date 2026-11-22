@@ -24,7 +24,7 @@ export const CvModal: React.FC<CvModalProps> = ({ isOpen, onClose }) => {
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#893941]" />
             <span className="text-xs font-mono uppercase tracking-widest text-[#893941] font-bold">
-              Official Curriculum Vitae • Anjali Verma
+              Official Curriculum Vitae • Anjali Rajput
             </span>
           </div>
 

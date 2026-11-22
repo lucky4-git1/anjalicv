@@ -47,9 +47,9 @@ export interface AccoladeItem {
 export const PORTFOLIO_DATA = {
   personal: {
     name: "Anjali",
-    fullName: "Anjali Verma",
+    fullName: "Anjali Rajput",
     title: "Senior Creative Director & Visual Designer",
-    tagline: "BOTANICAL EDITORIAL — ANJALI'S CREATIVE WORLD",
+    tagline: "BOTANICAL EDITORIAL — ANJALI RAJPUT'S CREATIVE WORLD",
     subtagline: "Fashion-inspired editorial design, brand identity systems, and tactile digital experiences.",
     email: "anjali@thepinkstandard.studio",
     location: "London • New York • Remote",

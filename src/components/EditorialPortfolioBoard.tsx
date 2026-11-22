@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import {
   Mail,
@@ -272,6 +272,33 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
 
   const [selectedSample, setSelectedSample] = useState<WorkSample | null>(null)
   const [copied, setCopied] = useState(false)
+  const [flowerLanded, setFlowerLanded] = useState(false)
+
+  useEffect(() => {
+    const onFlowerLanded = () => {
+      setFlowerLanded(true)
+    }
+    window.addEventListener("flower-landed", onFlowerLanded)
+
+    const handleScroll = () => {
+      const anchor = document.getElementById("portrait-flower-anchor")
+      if (anchor) {
+        const rect = anchor.getBoundingClientRect()
+        // When portrait anchor reaches viewport upper-center (flower lands)
+        if (rect.top <= window.innerHeight * 0.58) {
+          setFlowerLanded(true)
+        }
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    handleScroll()
+
+    return () => {
+      window.removeEventListener("flower-landed", onFlowerLanded)
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
   const [activeSkillTab, setActiveSkillTab] = useState<"all" | "design" | "tools" | "tech">("all")
   const [likedSkills, setLikedSkills] = useState<Record<string, boolean>>({
     "Editorial Art Direction": true,
@@ -338,22 +365,43 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
 
               <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start mb-6">
                 {/* Portrait Image Frame — Target landing point for the traveling hero flower */}
-                <div id="about-portrait-card" className="relative sm:col-span-5 rounded-xl border-2 border-[#893941]/20 bg-[#F5F3EC] shadow-md group">
+                <div
+                  id="about-portrait-card"
+                  className={`relative sm:col-span-5 rounded-xl border-2 transition-all duration-700 bg-[#F5F3EC] shadow-md group ${
+                    flowerLanded
+                      ? "border-[#D4D994] shadow-[0_12px_40px_rgba(212,217,148,0.35)] ring-2 ring-[#D4D994]/40"
+                      : "border-[#893941]/20 hover:border-[#D4D994]"
+                  }`}
+                >
                   {/* Landing anchor for the traveling flower */}
                   <div
                     id="portrait-flower-anchor"
                     className="absolute -top-3 -right-3 w-6 h-6 pointer-events-none z-30"
                     aria-hidden="true"
                   />
-                  <div className="rounded-xl overflow-hidden">
+                  <div className="rounded-xl overflow-hidden relative">
                     <img
-                      src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
-                      alt="Anjali Verma — Creative Director"
-                      className="w-full aspect-[4/5] object-cover grayscale contrast-110 hover:grayscale-0 transition-all duration-500"
+                      id="about-portrait-img"
+                      src="/assets/anjali-rajput.png"
+                      alt="Anjali Rajput — Creative Director"
+                      className={`w-full aspect-[4/5] object-cover object-top transition-all duration-1000 ease-out ${
+                        flowerLanded
+                          ? "grayscale-0 contrast-100 saturate-105 scale-[1.01]"
+                          : "grayscale contrast-115 hover:grayscale-0"
+                      }`}
                     />
+
+                    {/* Shimmer / bloom sheen on landing */}
+                    {flowerLanded && (
+                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent pointer-events-none animate-pulse" />
+                    )}
+
                     <div className="p-2.5 bg-[#F5F3EC] text-center border-t border-[#893941]/10">
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-[#893941] font-bold block">
-                        Anjali Verma
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-[#893941] font-bold flex items-center justify-center gap-1.5">
+                        Anjali Rajput
+                        {flowerLanded && (
+                          <span className="text-[#CB7885] animate-bounce text-xs">✿</span>
+                        )}
                       </span>
                       <span className="text-[9px] font-mono text-[#5E6623]">
                         London • Creative Direction
@@ -747,7 +795,7 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
               <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">GitHub</a>
             </div>
             <span className="text-zinc-400 text-[11px]">
-              © 2027 Anjali Verma • Botanical Editorial Portfolio
+              © 2027 Anjali Rajput • Botanical Editorial Portfolio
             </span>
           </div>
         </div>

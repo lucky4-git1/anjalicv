@@ -19,6 +19,7 @@ import {
 } from "lucide-react"
 import confetti from "canvas-confetti"
 import { PORTFOLIO_DATA } from "../data/portfolioData"
+import SocialCards, { CardItem } from "./ui/card-fan-carousel"
 
 export interface WorkSample {
   id: string
@@ -82,6 +83,19 @@ export const WORK_SAMPLES: WorkSample[] = [
     description: "Close-up cinematic beauty monologues and fluid camera movement authoring bespoke brand personality across TikTok and Instagram Reels.",
     tags: ["Campaign Direction", "Talent Casting", "Motion Editorial"]
   }
+]
+
+export const CAMPAIGN_FAN_CARDS: CardItem[] = [
+  { imgUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80", alt: "Silk skincare ritual" },
+  { imgUrl: "https://images.unsplash.com/photo-1608248597358-1e4242fa5214?auto=format&fit=crop&w=800&q=80", alt: "Haute jewelry styling" },
+  { imgUrl: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=800&q=80", alt: "Artisanal stoneware ceramics" },
+  { imgUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80", alt: "Editorial portrait monograph" },
+  { imgUrl: "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=800&q=80", alt: "Botanical bloom roses" },
+  { imgUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80", alt: "Spatial minimalist architecture" },
+  { imgUrl: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80", alt: "Organic cosmetic aesthetics" },
+  { imgUrl: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=80", alt: "Champagne couture silk" },
+  { imgUrl: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80", alt: "Editorial typography monograph" },
+  { imgUrl: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80", alt: "Terracotta ceramic craft" },
 ]
 
 interface CuteSkill {
@@ -655,6 +669,30 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
                 </motion.div>
               </motion.div>
             ))}
+          </div>
+
+          {/* ── CARD FAN CAROUSEL: EDITORIAL CAMPAIGN ARCHIVE ── */}
+          <div className="mt-14 sm:mt-20 pt-8 sm:pt-12 border-t border-[#CB7885]/20 flex flex-col items-center overflow-visible">
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="text-center mb-6 sm:mb-8"
+            >
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#893941]/10 text-[#893941] border border-[#893941]/20 text-[10px] font-mono uppercase tracking-widest font-semibold mb-2 shadow-xs">
+                <Sparkles className="w-3 h-3 text-[#CB7885]" />
+                Curated Campaign Fan Deck
+              </div>
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif text-[#893941] font-normal">
+                Visual Archives & Editorial Stills
+              </h3>
+              <p className="text-xs font-mono text-[#5E6623] mt-1 max-w-md mx-auto">
+                Hover or cycle cards to explore the dynamic deck • Interactive GSAP fan physics
+              </p>
+            </motion.div>
+
+            <SocialCards cards={CAMPAIGN_FAN_CARDS} />
           </div>
         </section>
 

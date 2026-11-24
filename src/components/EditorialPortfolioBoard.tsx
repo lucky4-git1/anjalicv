@@ -358,11 +358,11 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
                 ABOUT ME
               </h2>
 
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start">
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-7 items-center">
                 {/* Portrait Image Frame — Target landing point for the traveling hero flower */}
                 <div
                   id="about-portrait-card"
-                  className={`relative sm:col-span-5 rounded-xl border-2 transition-all duration-700 bg-[#F5F3EC] shadow-md group ${
+                  className={`relative sm:col-span-5 rounded-2xl border-2 transition-all duration-700 bg-[#F5F3EC] shadow-md group max-w-[340px] sm:max-w-none w-full mx-auto ${
                     flowerLanded
                       ? "border-[#D4D994] shadow-[0_12px_40px_rgba(212,217,148,0.35)] ring-2 ring-[#D4D994]/40"
                       : "border-[#893941]/20 hover:border-[#D4D994]"
@@ -374,12 +374,12 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
                     className="absolute -top-3 -right-3 w-6 h-6 pointer-events-none z-30"
                     aria-hidden="true"
                   />
-                  <div className="rounded-xl overflow-hidden relative">
+                  <div className="rounded-2xl overflow-hidden relative">
                     <img
                       id="about-portrait-img"
                       src="/assets/anjali-rajput.png"
-                      alt="Anjali Rajput — Creative Director"
-                      className={`w-full aspect-[4/5] object-cover object-top transition-all duration-1000 ease-out ${
+                      alt="Anjali Rajput — Social Media Manager"
+                      className={`w-full aspect-[2/3] object-cover object-top transition-all duration-1000 ease-out ${
                         flowerLanded
                           ? "grayscale-0 contrast-100 saturate-105 scale-[1.01]"
                           : "grayscale contrast-115 hover:grayscale-0"
@@ -391,27 +391,27 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
                       <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent pointer-events-none animate-pulse" />
                     )}
 
-                    <div className="p-2.5 bg-[#F5F3EC] text-center border-t border-[#893941]/10">
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-[#893941] font-bold flex items-center justify-center gap-1.5">
+                    <div className="py-3 px-3 bg-[#F5F3EC] text-center border-t border-[#893941]/10">
+                      <span className="text-sm sm:text-base font-serif uppercase tracking-wider text-[#893941] font-bold flex items-center justify-center gap-1.5">
                         Anjali Rajput
                         {flowerLanded && (
-                          <span className="text-[#CB7885] animate-bounce text-xs">✿</span>
+                          <span className="text-[#CB7885] animate-bounce text-sm">✿</span>
                         )}
                       </span>
-                      <span className="text-[9px] font-mono text-[#5E6623]">
-                        London • Creative Direction
+                      <span className="text-xs sm:text-[13px] font-sans font-medium text-[#5E6623] mt-0.5 block tracking-wide">
+                        Social Media Manager
                       </span>
                     </div>
                   </div>
                 </div>
 
                 {/* Personal Intro & Philosophy */}
-                <div className="sm:col-span-7 space-y-4 font-serif text-[#211D1D]">
-                  <p className="text-xl sm:text-2xl md:text-[25px] font-normal italic text-[#893941] leading-[1.32] tracking-tight">
+                <div className="sm:col-span-7 space-y-5 font-serif text-[#211D1D]">
+                  <p className="text-2xl sm:text-3xl md:text-[28px] font-normal italic text-[#893941] leading-[1.3] tracking-tight">
                     {personal.bio}
                   </p>
-                  <p className="text-base sm:text-lg md:text-[19px] font-light text-[#211D1D]/90 leading-relaxed tracking-wide">
-                    I operate at the precise intersection of graphic editorial monograph art direction and performance creative technology. Rather than treating visual design and code as disconnected disciplines, I author bespoke brand identities alongside real-time shaders and layout systems.
+                  <p className="text-lg sm:text-xl md:text-[21px] font-light text-[#211D1D]/95 leading-relaxed tracking-wide">
+                    I craft viral Reels, aesthetic feeds, and data-driven growth strategies that elevate brand presence across Instagram, TikTok, and YouTube. Blending trend forecasting with creative direction, I produce captivating multi-platform content that drives genuine engagement and converts views into community.
                   </p>
                 </div>
               </div>
@@ -743,7 +743,7 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
           </h2>
 
           <p className="max-w-xl text-xs sm:text-sm text-zinc-300 font-sans leading-relaxed mb-8">
-            Available for select Creative Direction, Haute Couture Brand Identity, and Spatial Design Commissions.
+            Available for Social Media Management, Viral Reels & Content Strategy, and Brand Growth Collaborations.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3 mb-10">
@@ -834,7 +834,7 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
             <div className="space-y-4 mb-6 text-xs text-[#211D1D] font-sans leading-relaxed">
               <div>
                 <h4 className="text-xs font-semibold text-[#893941] uppercase font-mono tracking-wider mb-1">
-                  Creative Direction & Reel Concept
+                  Social Media Strategy & Reel Concept
                 </h4>
                 <p className="text-sm leading-relaxed text-[#211D1D]/85">{selectedSample.description}</p>
               </div>

@@ -48,18 +48,18 @@ export const PORTFOLIO_DATA = {
   personal: {
     name: "Anjali",
     fullName: "Anjali Rajput",
-    title: "Senior Creative Director & Visual Designer",
-    tagline: "BOTANICAL EDITORIAL — ANJALI RAJPUT'S CREATIVE WORLD",
-    subtagline: "Fashion-inspired editorial design, brand identity systems, and tactile digital experiences.",
+    title: "Senior Social Media Manager & Content Strategist",
+    tagline: "AESTHETIC SOCIAL CAMPAIGNS — ANJALI RAJPUT",
+    subtagline: "Social media strategy, visual storytelling, viral reels, and high-impact brand growth.",
     email: "anjali@thepinkstandard.studio",
-    location: "London • New York • Remote",
-    status: "Available for Select Creative Direction & Editorial Commissions",
-    bio: "Over the past decade, I have directed editorial brand systems, digital flagships, and spatial interfaces for visionary luxury houses and technology leaders. My practice bridges graphic design monograph art direction with high-precision engineering.",
-    philosophy: "Elegance is the consequence of absolute conviction. Every typeface, margin, and contour is an intentional declaration.",
+    location: "London • Remote",
+    status: "Available for Social Media Management & Brand Collaborations",
+    bio: "Passionate Social Media Manager specializing in high-engagement visual storytelling, aesthetic content strategy, and viral campaigns that turn audiences into loyal brand advocates.",
+    philosophy: "Authentic storytelling paired with immaculate aesthetic curation creates an unforgettable digital presence.",
     stats: [
-      { label: "Design Experience", value: "10+ Yrs" },
-      { label: "Global Accolades", value: "24+" },
-      { label: "Identity Systems", value: "38+" },
+      { label: "Content Reach", value: "10M+" },
+      { label: "Campaigns Led", value: "50+" },
+      { label: "Growth Rate", value: "3.5x" },
       { label: "Based In", value: "London" }
     ]
   },

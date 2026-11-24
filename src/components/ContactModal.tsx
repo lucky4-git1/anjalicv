@@ -15,7 +15,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
     name: "",
     email: "",
     company: "",
-    scope: "Creative Direction & Brand Identity",
+    scope: "Social Media Management & Campaign Strategy",
     message: "",
   })
 
@@ -65,13 +65,13 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
           <div>
             <div className="mb-5">
               <span className="text-[10px] font-mono uppercase tracking-widest text-[#893941] font-bold block mb-1">
-                COMMISSION INTAKE
+                COLLABORATION INTAKE
               </span>
               <h3 className="text-2xl font-serif font-bold text-[#893941]">
                 Initiate Project Inquiry
               </h3>
               <p className="text-xs text-[#5E6623] font-sans mt-0.5">
-                For creative direction commissions, brand identities, or digital flagships.
+                For social media management, aesthetic campaigns, or brand collaborations.
               </p>
             </div>
 
@@ -115,10 +115,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                   onChange={(e) => setFormData({ ...formData, scope: e.target.value })}
                   className="w-full px-3 py-2 rounded-lg bg-white border border-[#893941]/30 text-[#211D1D] text-xs focus:border-[#893941] focus:outline-none transition-colors"
                 >
-                  <option value="Creative Direction & Brand Identity">Creative Direction & Brand Identity</option>
-                  <option value="UI/UX Digital Flagship Architecture">UI/UX Digital Flagship Architecture</option>
-                  <option value="Social Media Editorial Campaign">Social Media Editorial Campaign</option>
-                  <option value="Executive Design Advisory">Executive Design Advisory</option>
+                  <option value="Social Media Management & Campaign Strategy">Social Media Management & Campaign Strategy</option>
+                  <option value="Viral Reels & TikTok Content Production">Viral Reels & TikTok Content Production</option>
+                  <option value="Aesthetic Feed Curation & Brand Identity">Aesthetic Feed Curation & Brand Identity</option>
+                  <option value="Influencer & Creator Collaborations">Influencer & Creator Collaborations</option>
                 </select>
               </div>
 

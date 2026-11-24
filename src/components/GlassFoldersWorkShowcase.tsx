@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { motion, AnimatePresence } from "framer-motion"
-import { Folder, Sparkles, Compass, X, ArrowUpRight, Eye } from "lucide-react"
+import { Compass, X, ArrowUpRight, Eye } from "lucide-react"
 import GlassFolder, { FolderFile } from "@/components/ui/glass-folder-cards"
 import WorksWheel, { WorksWheelItem } from "@/components/ui/works-wheel"
 import { LiquidButton } from "@/components/ui/liquid-button"
@@ -248,43 +248,11 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
 
       {/* ── CENTERED EDITORIAL CONTAINER ── */}
       <div className="max-w-7xl mx-auto px-5 sm:px-8 relative z-10">
-        {/* Section Headline */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 pb-6 border-b border-[#CB7885]/25">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#893941]/70 border border-[#CB7885]/35 text-[11px] font-mono tracking-wider uppercase text-[#D4D994] mb-3 font-semibold">
-              <Sparkles className="w-3.5 h-3.5 text-[#D4D994]" />
-              Archival Glass Folders & 3D Interactive Modal
-            </div>
-            <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#FFFEFA] font-normal tracking-wide">
-              Curated Campaign Archives
-            </h3>
-            <p className="text-xs sm:text-sm font-sans text-zinc-300 mt-2 max-w-xl leading-relaxed">
-              Frosted glass folders drawn as tactile objects. Click any folder to inspect its files and launch the interactive 3D drum modal.
-            </p>
-          </div>
-
-          {/* Quick Collection Selector Tabs */}
-          <div className="flex flex-wrap items-center gap-2 bg-[#171415]/90 p-1.5 rounded-2xl border border-white/10 shrink-0">
-            {(["reels", "lookbooks", "strategy"] as const).map((key) => {
-              const col = COLLECTIONS[key]
-              const isActive = activeTab === key
-              return (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => handleFolderClick(key)}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-mono transition-all cursor-pointer flex items-center gap-2 ${
-                    isActive
-                      ? "bg-[#D4D994] text-[#211D1D] font-bold shadow-md scale-[1.02]"
-                      : "text-zinc-400 hover:text-white hover:bg-white/5"
-                  }`}
-                >
-                  <Folder className={`w-3.5 h-3.5 ${isActive ? "text-[#211D1D]" : "text-[#CB7885]"}`} />
-                  <span>{col.name}</span>
-                </button>
-              )
-            })}
-          </div>
+        {/* ── SINGLE CENTERED HEADLINE (CLEAN MINIMALIST EDITORIAL) ── */}
+        <div className="text-center mb-10 sm:mb-14">
+          <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#FFFEFA] font-normal tracking-wide">
+            Curated Campaign Archives
+          </h3>
         </div>
 
         {/* ── ROW OF 3 CLICKABLE GLASS FOLDERS ON THE DOTTED DESK ── */}

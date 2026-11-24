@@ -58,8 +58,8 @@ const RING_R = 1.14; // ring radius
    swung back left as well as up and down. BOW is that arc's radius; nothing else
    makes the difference between a stack of cards and a wheel seen side on. */
 const BOW = 1.82;
-const TITLE = 0.124; // ring label and front-card title
-const INDEX = 0.04; // the index down the right-hand side
+const TITLE = 0.15; // ring label and front-card title
+const INDEX = 0.054; // the index down the right-hand side
 /** Items either side of the front still worth drawing. Past this a card is
     edge-on, and further round it would stack up on the vanishing point. */
 const CULL = 1.6;
@@ -168,8 +168,8 @@ export function WorksWheel({
       drumR,
       bow: cardH * BOW,
       depth: cardH * LENS,
-      title: cardH * TITLE,
-      index: cardH * INDEX,
+      title: Math.max(34, cardH * TITLE),
+      index: Math.max(15, cardH * INDEX),
     };
   }, [stage, count]);
 

@@ -134,6 +134,12 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
 
         sectionEl.addEventListener("mousemove", handlePointerMove)
         sectionEl.addEventListener("mouseleave", handlePointerLeave)
+
+        return () => {
+          sectionEl.removeEventListener("click", handleHeroClick)
+          sectionEl.removeEventListener("mousemove", handlePointerMove)
+          sectionEl.removeEventListener("mouseleave", handlePointerLeave)
+        }
       }
 
       // ======================================================================

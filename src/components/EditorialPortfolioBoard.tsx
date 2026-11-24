@@ -403,6 +403,8 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
                       id="about-portrait-img"
                       src="/assets/anjali-rajput.png"
                       alt="Anjali Rajput — Social Media Manager"
+                      loading="eager"
+                      decoding="async"
                       className={`w-full aspect-[2/3] object-cover object-top transition-all duration-1000 ease-out ${
                         flowerLanded
                           ? "grayscale-0 contrast-100 saturate-105 scale-[1.01]"
@@ -656,6 +658,8 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
                     <img
                       src={sample.image}
                       alt={sample.title}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out brightness-[0.95] group-hover:brightness-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/65 pointer-events-none" />
@@ -835,7 +839,7 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
             </div>
 
             <div className="aspect-[16/9] w-full rounded-xl overflow-hidden border border-[#893941]/20 mb-6 bg-[#211D1D] relative group">
-              <img src={selectedSample.image} alt={selectedSample.title} className="w-full h-full object-cover" />
+              <img src={selectedSample.image} alt={selectedSample.title} loading="lazy" decoding="async" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                 <div className="w-14 h-14 rounded-full bg-[#CB7885] text-white flex items-center justify-center shadow-lg border border-white/50">
                   <Play className="w-6 h-6 fill-white text-white ml-0.5" />

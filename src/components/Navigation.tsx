@@ -85,7 +85,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
       }
 
       if (current) {
-        setActiveSection(current)
+        setActiveSection((prev) => (prev === current ? prev : current))
       }
       ticking = false
     }

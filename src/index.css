@@ -29,6 +29,10 @@
     font-family: var(--font-sans);
     background-color: #F9EAE6;
     color: #211D1D;
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   ::selection {

@@ -367,15 +367,24 @@ export function LiquidNavbar({
     const s = st.current
     if (s.raf) return
     s.last = performance.now()
+    let idleFrames = 0
     const tick = (now: number) => {
       const dt = Math.min((now - s.last) / 1000, 1 / 30)
       s.last = now
       step(dt, now)
       draw()
       const busy = s.moving || s.rips.length || s.sats.length || s.mouse.s > 0.01
-      // ambient water keeps moving while visible; reduced-motion only animates on change
-      if (s.visible && (!s.reduce || busy)) s.raf = requestAnimationFrame(tick)
-      else s.raf = 0
+      if (busy) {
+        idleFrames = 0
+      } else {
+        idleFrames++
+      }
+      // Animate while busy or let waves smoothly settle for ~2s, then pause idle RAF
+      if (s.visible && (!s.reduce ? idleFrames < 120 : busy)) {
+        s.raf = requestAnimationFrame(tick)
+      } else {
+        s.raf = 0
+      }
     }
     s.raf = requestAnimationFrame(tick)
   }, [draw, step])

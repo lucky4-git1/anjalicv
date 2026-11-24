@@ -173,6 +173,10 @@ export function WorksWheel({
     };
   }, [stage, count]);
 
+  const drag = React.useRef<number | null>(null);
+  const settling = React.useRef(0);
+  const wakeRef = React.useRef<() => void>(() => {});
+
   // One pass per frame: ease toward the target, then write every transform.
   React.useEffect(() => {
     if (!stage.h) return;
@@ -180,9 +184,9 @@ export function WorksWheel({
     const { ringR, ringScale, drumR, bow } = metrics;
 
     const draw = () => {
-      frame = requestAnimationFrame(draw);
       const gap = target.current - turn.current;
-      if (Math.abs(gap) < 0.0005) turn.current = target.current;
+      const isSettled = Math.abs(gap) < 0.0004;
+      if (isSettled) turn.current = target.current;
       else turn.current += gap * (reduced ? 1 : EASE);
 
       const t = turn.current;
@@ -223,15 +227,29 @@ export function WorksWheel({
       if (titleRef.current) titleRef.current.style.opacity = String(m);
       const near = clamp(Math.round(pos), 0, last);
       setActive((prev) => (prev === near ? prev : near));
+
+      if (!isSettled || drag.current !== null) {
+        frame = requestAnimationFrame(draw);
+      } else {
+        frame = 0;
+      }
+    };
+
+    wakeRef.current = () => {
+      if (!frame) frame = requestAnimationFrame(draw);
     };
 
     frame = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(frame);
+    return () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+    };
   }, [metrics, stage.h, count, last, reduced]);
 
   const to = React.useCallback(
     (next: number) => {
       target.current = clamp(next, 0, last + 1);
+      wakeRef.current();
     },
     [last],
   );
@@ -268,9 +286,6 @@ export function WorksWheel({
       window.clearTimeout(settling.current);
     };
   }, [to, last]);
-
-  const drag = React.useRef<number | null>(null);
-  const settling = React.useRef(0);
 
   return (
     <section
@@ -344,6 +359,8 @@ export function WorksWheel({
                     <img
                       src={item.image}
                       alt={item.title}
+                      loading="lazy"
+                      decoding="async"
                       draggable={false}
                       className="size-full object-cover"
                     />

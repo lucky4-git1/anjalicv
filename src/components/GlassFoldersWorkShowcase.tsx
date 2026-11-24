@@ -1,8 +1,8 @@
 "use client"
 
-import React, { useState, useRef } from "react"
+import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Folder, Sparkles, Compass, ChevronDown, ChevronUp, X, Check } from "lucide-react"
+import { Folder, Sparkles, Compass, X, ArrowUpRight, Eye } from "lucide-react"
 import GlassFolder, { FolderFile } from "@/components/ui/glass-folder-cards"
 import WorksWheel, { WorksWheelItem } from "@/components/ui/works-wheel"
 
@@ -190,40 +190,40 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
 }) => {
   const [activeTab, setActiveTab] = useState<"reels" | "lookbooks" | "strategy">("reels")
   const [openFolder, setOpenFolder] = useState<"reels" | "lookbooks" | "strategy" | null>("reels")
-  const [isDrumOpen, setIsDrumOpen] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [wheelActiveIndex, setWheelActiveIndex] = useState<number | undefined>(undefined)
-  const drumRef = useRef<HTMLDivElement>(null)
 
   const activeCollection = COLLECTIONS[activeTab]
 
-  // Handles clicking a folder: Opens that folder and immediately opens the Active Drum!
+  // Close modal on Escape key
+  useEffect(() => {
+    if (!isModalOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsModalOpen(false)
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [isModalOpen])
+
+  // Clicking a folder: opens the folder AND launches the 3D Works Wheel Modal!
   const handleFolderClick = (key: "reels" | "lookbooks" | "strategy") => {
     setActiveTab(key)
     setOpenFolder(key)
-    setIsDrumOpen(true)
     setWheelActiveIndex(0)
-
-    // Smooth scroll down to the drum if needed
-    setTimeout(() => {
-      drumRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" })
-    }, 150)
+    setIsModalOpen(true)
   }
 
-  // Handles clicking a file inside any folder: Opens drum and spins directly to that item
+  // Clicking a file inside the folder: opens modal directly spun to that card!
   const handleFileClick = (key: "reels" | "lookbooks" | "strategy", index: number) => {
     setActiveTab(key)
     setOpenFolder(key)
-    setIsDrumOpen(true)
     setWheelActiveIndex(index)
-
-    setTimeout(() => {
-      drumRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" })
-    }, 100)
+    setIsModalOpen(true)
   }
 
   return (
     <div className="relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] bg-[#211D1D] text-[#F5F3EC] py-16 sm:py-24 my-8 overflow-hidden">
-      {/* ── FULL-BLEED DOTTED MATRIX DESK PATTERN (EDGES TO EDGES) ── */}
+      {/* ── FULL-BLEED DOTTED MATRIX DESK PATTERN (EDGE TO EDGE) ── */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-[0.20]"
@@ -244,13 +244,13 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#893941]/70 border border-[#CB7885]/35 text-[11px] font-mono tracking-wider uppercase text-[#D4D994] mb-3 font-semibold">
               <Sparkles className="w-3.5 h-3.5 text-[#D4D994]" />
-              Archival Glass Folders & 3D Drum Wheel
+              Archival Glass Folders & 3D Interactive Modal
             </div>
             <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#FFFEFA] font-normal tracking-wide">
               Curated Campaign Archives
             </h3>
             <p className="text-xs sm:text-sm font-sans text-zinc-300 mt-2 max-w-xl leading-relaxed">
-              Frosted glass folders drawn as tactile objects. Click any folder to fan out its files and open its dedicated 3D drum wheel below.
+              Frosted glass folders drawn as tactile objects. Click any folder to inspect its files and launch the interactive 3D drum modal.
             </p>
           </div>
 
@@ -278,12 +278,12 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
           </div>
         </div>
 
-        {/* ── ROW OF 3 CLICKABLE GLASS FOLDER CARDS ── */}
+        {/* ── ROW OF 3 CLICKABLE GLASS FOLDERS ON THE DOTTED DESK ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 justify-items-center items-end py-6">
           {/* FOLDER 1: Viral Social Reels */}
           <div
             className={`flex flex-col items-center transition-all duration-300 cursor-pointer ${
-              activeTab === "reels" && isDrumOpen ? "scale-105" : "opacity-85 hover:opacity-100 hover:scale-[1.02]"
+              activeTab === "reels" ? "scale-105" : "opacity-85 hover:opacity-100 hover:scale-[1.02]"
             }`}
             onClick={() => handleFolderClick("reels")}
           >
@@ -296,9 +296,7 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
               open={openFolder === "reels"}
               onOpenChange={(isOpen) => {
                 if (isOpen) handleFolderClick("reels")
-                else if (openFolder === "reels") {
-                  setOpenFolder(null)
-                }
+                else if (openFolder === "reels") setOpenFolder(null)
               }}
               files={COLLECTIONS.reels.files}
               onFileSelect={(_, idx) => handleFileClick("reels", idx)}
@@ -310,21 +308,17 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
                 e.stopPropagation()
                 handleFolderClick("reels")
               }}
-              className={`mt-4 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
-                activeTab === "reels" && isDrumOpen
-                  ? "bg-[#D4D994] text-[#211D1D] font-bold shadow-md"
-                  : "bg-white/5 text-[#D4D994] hover:bg-white/10 border border-white/10"
-              }`}
+              className="mt-4 px-4 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer bg-[#D4D994] text-[#211D1D] font-bold shadow-lg hover:bg-[#c3c87e] active:scale-95"
             >
-              <span className={`w-2 h-2 rounded-full ${activeTab === "reels" && isDrumOpen ? "bg-[#893941] animate-ping" : "bg-[#D4D994]"}`} />
-              <span>{activeTab === "reels" && isDrumOpen ? "▾ Drum Opened" : "Open Drum ✦"}</span>
+              <Compass className="w-3.5 h-3.5" />
+              <span>Open 3D Reel Wheel ✦</span>
             </button>
           </div>
 
           {/* FOLDER 2: Aesthetic Lookbooks */}
           <div
             className={`flex flex-col items-center transition-all duration-300 cursor-pointer ${
-              activeTab === "lookbooks" && isDrumOpen ? "scale-105" : "opacity-85 hover:opacity-100 hover:scale-[1.02]"
+              activeTab === "lookbooks" ? "scale-105" : "opacity-85 hover:opacity-100 hover:scale-[1.02]"
             }`}
             onClick={() => handleFolderClick("lookbooks")}
           >
@@ -339,9 +333,7 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
               open={openFolder === "lookbooks"}
               onOpenChange={(isOpen) => {
                 if (isOpen) handleFolderClick("lookbooks")
-                else if (openFolder === "lookbooks") {
-                  setOpenFolder(null)
-                }
+                else if (openFolder === "lookbooks") setOpenFolder(null)
               }}
               files={COLLECTIONS.lookbooks.files}
               onFileSelect={(_, idx) => handleFileClick("lookbooks", idx)}
@@ -357,21 +349,17 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
                 e.stopPropagation()
                 handleFolderClick("lookbooks")
               }}
-              className={`mt-4 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
-                activeTab === "lookbooks" && isDrumOpen
-                  ? "bg-[#CB7885] text-white font-bold shadow-md"
-                  : "bg-white/5 text-[#CB7885] hover:bg-white/10 border border-white/10"
-              }`}
+              className="mt-4 px-4 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer bg-[#CB7885] text-white font-bold shadow-lg hover:bg-[#b56572] active:scale-95"
             >
-              <span className={`w-2 h-2 rounded-full ${activeTab === "lookbooks" && isDrumOpen ? "bg-white animate-ping" : "bg-[#CB7885]"}`} />
-              <span>{activeTab === "lookbooks" && isDrumOpen ? "▾ Drum Opened" : "Open Drum ✦"}</span>
+              <Compass className="w-3.5 h-3.5" />
+              <span>Open 3D Lookbook Wheel ✦</span>
             </button>
           </div>
 
           {/* FOLDER 3: Brand Strategy & Growth */}
           <div
             className={`flex flex-col items-center transition-all duration-300 cursor-pointer ${
-              activeTab === "strategy" && isDrumOpen ? "scale-105" : "opacity-85 hover:opacity-100 hover:scale-[1.02]"
+              activeTab === "strategy" ? "scale-105" : "opacity-85 hover:opacity-100 hover:scale-[1.02]"
             }`}
             onClick={() => handleFolderClick("strategy")}
           >
@@ -385,9 +373,7 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
               open={openFolder === "strategy"}
               onOpenChange={(isOpen) => {
                 if (isOpen) handleFolderClick("strategy")
-                else if (openFolder === "strategy") {
-                  setOpenFolder(null)
-                }
+                else if (openFolder === "strategy") setOpenFolder(null)
               }}
               files={COLLECTIONS.strategy.files}
               onFileSelect={(_, idx) => handleFileClick("strategy", idx)}
@@ -399,14 +385,10 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
                 e.stopPropagation()
                 handleFolderClick("strategy")
               }}
-              className={`mt-4 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
-                activeTab === "strategy" && isDrumOpen
-                  ? "bg-[#D4D994] text-[#211D1D] font-bold shadow-md"
-                  : "bg-white/5 text-[#D4D994] hover:bg-white/10 border border-white/10"
-              }`}
+              className="mt-4 px-4 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer bg-[#D4D994] text-[#211D1D] font-bold shadow-lg hover:bg-[#c3c87e] active:scale-95"
             >
-              <span className={`w-2 h-2 rounded-full ${activeTab === "strategy" && isDrumOpen ? "bg-[#893941] animate-ping" : "bg-[#D4D994]"}`} />
-              <span>{activeTab === "strategy" && isDrumOpen ? "▾ Drum Opened" : "Open Drum ✦"}</span>
+              <Compass className="w-3.5 h-3.5" />
+              <span>Open 3D Strategy Wheel ✦</span>
             </button>
           </div>
         </div>
@@ -414,90 +396,105 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
         {/* Helpful Hint Pill */}
         <div className="flex items-center justify-center my-6">
           <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#D4D994] bg-black/50 px-5 py-2 rounded-full border border-white/10 shadow-md">
-            Click any folder to open its files & launch the 3D Work Drum
+            Click any folder or button to launch the 3D Work Drum Modal
           </p>
         </div>
-
-        {/* ── ACTIVE DRUM: OPENS UPON CLICKING A FOLDER ── */}
-        <div ref={drumRef}>
-          <AnimatePresence mode="wait">
-            {isDrumOpen && (
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 25, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 20, scale: 0.98 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-8 rounded-3xl overflow-hidden border border-[#CB7885]/35 bg-[#151213] shadow-[0_24px_70px_rgba(0,0,0,0.6)]"
-              >
-                {/* Active Drum Header */}
-                <div className="p-4 sm:p-5 border-b border-white/10 flex flex-wrap items-center justify-between gap-3 bg-black/60 backdrop-blur-md">
-                  <div className="flex items-center gap-2.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#D4D994] animate-pulse" />
-                    <span className="font-mono text-xs uppercase tracking-wider text-[#D4D994] font-bold">
-                      Active Drum: {activeCollection.name}
-                    </span>
-                    <span className="text-zinc-500 text-xs">•</span>
-                    <span className="text-zinc-400 text-xs font-mono">
-                      {activeCollection.items.length} Curated Works
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <div className="hidden sm:flex items-center gap-1.5 text-[#D4D994] bg-[#211D1D] px-3 py-1 rounded-full border border-[#D4D994]/20 text-xs font-mono">
-                      <Compass className="w-3.5 h-3.5" />
-                      <span>Scroll or Drag Drum</span>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => setIsDrumOpen(false)}
-                      className="flex items-center gap-1 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-zinc-300 hover:text-white text-xs font-mono transition-colors cursor-pointer"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                      <span>Close Drum</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* 3D Works Wheel Stage */}
-                <div className="w-full h-[540px] sm:h-[620px] relative bg-gradient-to-b from-[#181516] via-[#110e0f] to-[#181516]">
-                  <WorksWheel
-                    items={activeCollection.items}
-                    label={activeCollection.wheelLabel}
-                    action="View"
-                    activeIndex={wheelActiveIndex}
-                    onItemSelect={(item) => {
-                      if (onSelectProject) {
-                        onSelectProject(item)
-                      }
-                    }}
-                  />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Closed State Toggle Affordance */}
-          {!isDrumOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-6 flex justify-center"
-            >
-              <button
-                type="button"
-                onClick={() => setIsDrumOpen(true)}
-                className="px-6 py-3 rounded-full bg-[#893941] hover:bg-[#a1434c] text-[#FFFEFA] font-mono text-xs uppercase tracking-wider font-bold shadow-xl transition-all cursor-pointer flex items-center gap-2 border border-[#CB7885]/40 active:scale-95"
-              >
-                <Compass className="w-4 h-4 text-[#D4D994]" />
-                <span>Re-open Active Drum: {activeCollection.name}</span>
-                <ChevronDown className="w-4 h-4" />
-              </button>
-            </motion.div>
-          )}
-        </div>
       </div>
+
+      {/* ── DYNAMIC 3D WORKS WHEEL MODAL OVERLAY ── */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6">
+            {/* Modal Backdrop with Blur */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-0 bg-black/85 backdrop-blur-md cursor-pointer"
+              onClick={() => setIsModalOpen(false)}
+            />
+
+            {/* Modal Dialog Container */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94, y: 25 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 20 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="relative w-full max-w-6xl max-h-[92vh] rounded-3xl overflow-hidden border-2 border-[#CB7885]/40 bg-[#161314] text-[#F5F3EC] shadow-[0_30px_90px_rgba(0,0,0,0.85)] flex flex-col z-10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Top Bar */}
+              <div className="p-4 sm:p-6 border-b border-white/10 flex flex-wrap items-center justify-between gap-4 bg-black/70 backdrop-blur-md">
+                <div className="flex items-center gap-3">
+                  <span className="w-3 h-3 rounded-full bg-[#D4D994] animate-pulse" />
+                  <div>
+                    <h4 className="font-serif text-lg sm:text-xl font-bold text-[#FFFEFA] leading-none">
+                      Active Drum: {activeCollection.name}
+                    </h4>
+                    <p className="font-mono text-[11px] text-zinc-400 mt-1">
+                      {activeCollection.items.length} Curated Works • Drag or scroll to rotate drum
+                    </p>
+                  </div>
+                </div>
+
+                {/* Collection Switcher in Modal */}
+                <div className="flex items-center gap-2 bg-[#211D1D] p-1 rounded-xl border border-white/10">
+                  {(["reels", "lookbooks", "strategy"] as const).map((key) => {
+                    const col = COLLECTIONS[key]
+                    const isActive = activeTab === key
+                    return (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => {
+                          setActiveTab(key)
+                          setOpenFolder(key)
+                          setWheelActiveIndex(0)
+                        }}
+                        className={`px-3 py-1.5 rounded-lg text-[11px] font-mono transition-all cursor-pointer ${
+                          isActive
+                            ? "bg-[#D4D994] text-[#211D1D] font-bold shadow-xs"
+                            : "text-zinc-400 hover:text-white"
+                        }`}
+                      >
+                        {col.wheelLabel}
+                      </button>
+                    )
+                  })}
+                </div>
+
+                {/* Close Button */}
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-zinc-300 hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-mono"
+                  aria-label="Close 3D Drum Modal"
+                >
+                  <X className="w-4 h-4" />
+                  <span className="hidden sm:inline">Close</span>
+                </button>
+              </div>
+
+              {/* 3D Works Wheel Stage in Modal */}
+              <div className="w-full h-[520px] sm:h-[620px] relative bg-gradient-to-b from-[#181516] via-[#110e0f] to-[#181516]">
+                <WorksWheel
+                  key={activeTab}
+                  items={activeCollection.items}
+                  label={activeCollection.wheelLabel}
+                  action="View"
+                  activeIndex={wheelActiveIndex}
+                  onItemSelect={(item) => {
+                    if (onSelectProject) {
+                      onSelectProject(item)
+                    }
+                  }}
+                />
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

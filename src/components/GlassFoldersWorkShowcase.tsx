@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import { Folder, Sparkles, Compass, X, ArrowUpRight, Eye } from "lucide-react"
 import GlassFolder, { FolderFile } from "@/components/ui/glass-folder-cards"
@@ -195,14 +196,21 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
 
   const activeCollection = COLLECTIONS[activeTab]
 
-  // Close modal on Escape key
+  // Lock body scroll and listen for Escape key when modal is open
   useEffect(() => {
-    if (!isModalOpen) return
+    if (!isModalOpen) {
+      document.body.style.overflow = ""
+      return
+    }
+    document.body.style.overflow = "hidden"
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsModalOpen(false)
     }
     window.addEventListener("keydown", onKey)
-    return () => window.removeEventListener("keydown", onKey)
+    return () => {
+      document.body.style.overflow = ""
+      window.removeEventListener("keydown", onKey)
+    }
   }, [isModalOpen])
 
   // Clicking a folder: opens the folder AND launches the 3D Works Wheel Modal!
@@ -401,101 +409,105 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
         </div>
       </div>
 
-      {/* ── FULL-SCREEN 3D WORKS WHEEL MODAL OVERLAY ── */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 w-screen h-screen bg-[#141112] text-[#F5F3EC] flex flex-col overflow-hidden"
-          >
-            {/* Dotted desk pattern inside full screen modal */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0 opacity-[0.16]"
-              style={{
-                backgroundImage: "radial-gradient(#D4D994 1.25px, transparent 1.45px)",
-                backgroundSize: "22px 22px",
-              }}
-            />
-
-            {/* Decorative ambient lighting */}
-            <div className="absolute top-1/4 -right-32 w-96 h-96 rounded-full bg-[#893941]/35 blur-[140px] pointer-events-none" />
-            <div className="absolute bottom-1/4 -left-32 w-96 h-96 rounded-full bg-[#CB7885]/25 blur-[140px] pointer-events-none" />
-
-            {/* Modal Top Bar (Full Screen Header with Enlarged Typography & Red Close Button) */}
-            <div className="relative z-10 px-5 sm:px-10 py-5 sm:py-6 border-b border-white/10 flex flex-wrap items-center justify-between gap-5 bg-black/75 backdrop-blur-md shrink-0">
-              <div className="flex items-center gap-4">
-                <span className="w-3.5 h-3.5 rounded-full bg-[#D4D994] animate-pulse" />
-                <div>
-                  <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-[#FFFEFA] leading-tight tracking-wide">
-                    Active Drum: {activeCollection.name}
-                  </h3>
-                  <p className="font-sans text-sm sm:text-base text-zinc-300 mt-1">
-                    {activeCollection.items.length} Curated Works • Drag or scroll to rotate the 3D drum wheel
-                  </p>
-                </div>
-              </div>
-
-              {/* Collection Switcher in Modal */}
-              <div className="flex items-center gap-2 bg-[#211D1D] p-1.5 rounded-2xl border border-white/15">
-                {(["reels", "lookbooks", "strategy"] as const).map((key) => {
-                  const col = COLLECTIONS[key]
-                  const isActive = activeTab === key
-                  return (
-                    <button
-                      key={key}
-                      type="button"
-                      onClick={() => {
-                        setActiveTab(key)
-                        setOpenFolder(key)
-                        setWheelActiveIndex(0)
-                      }}
-                      className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-mono transition-all cursor-pointer ${
-                        isActive
-                          ? "bg-[#D4D994] text-[#211D1D] font-bold shadow-md scale-[1.02]"
-                          : "text-zinc-400 hover:text-white hover:bg-white/5"
-                      }`}
-                    >
-                      {col.wheelLabel}
-                    </button>
-                  )
-                })}
-              </div>
-
-              {/* RED Close Button */}
-              <button
-                type="button"
-                onClick={() => setIsModalOpen(false)}
-                className="px-5 py-2.5 sm:px-6 sm:py-3 rounded-2xl bg-[#DC2626] hover:bg-[#B91C1C] active:bg-[#991B1B] text-white font-mono text-sm sm:text-base uppercase tracking-wider font-bold transition-all cursor-pointer flex items-center gap-2.5 shadow-[0_4px_25px_rgba(220,38,38,0.55)] hover:shadow-[0_6px_35px_rgba(220,38,38,0.75)] active:scale-95 border border-red-400/50"
-                aria-label="Close Full Screen 3D Drum"
+      {/* ── COMPLETE FULL-SCREEN 3D WORKS WHEEL MODAL OVERLAY (PORTALED TO BODY) ── */}
+      {typeof document !== "undefined" &&
+        createPortal(
+          <AnimatePresence>
+            {isModalOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="fixed inset-0 z-[999999] w-screen h-screen bg-[#141112] text-[#F5F3EC] flex flex-col overflow-hidden"
               >
-                <X className="w-5 h-5 stroke-[2.5]" />
-                <span>Close</span>
-                <span className="text-[11px] opacity-75 font-mono hidden sm:inline">(ESC)</span>
-              </button>
-            </div>
+                {/* Full-bleed dotted desk pattern */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 opacity-[0.20]"
+                  style={{
+                    backgroundImage: "radial-gradient(#D4D994 1.3px, transparent 1.5px)",
+                    backgroundSize: "22px 22px",
+                  }}
+                />
 
-            {/* 3D Works Wheel Stage — Takes Full Remaining Screen Height */}
-            <div className="relative z-10 flex-1 w-full h-[calc(100vh-100px)] min-h-[500px] overflow-hidden bg-gradient-to-b from-[#181516]/80 via-[#110e0f]/90 to-[#181516]/80">
-              <WorksWheel
-                key={activeTab}
-                items={activeCollection.items}
-                label={activeCollection.wheelLabel}
-                action="View"
-                activeIndex={wheelActiveIndex}
-                onItemSelect={(item) => {
-                  if (onSelectProject) {
-                    onSelectProject(item)
-                  }
-                }}
-              />
-            </div>
-          </motion.div>
+                {/* Ambient glow */}
+                <div className="absolute top-1/3 -right-36 w-[36rem] h-[36rem] rounded-full bg-[#893941]/35 blur-[160px] pointer-events-none" />
+                <div className="absolute bottom-1/3 -left-36 w-[36rem] h-[36rem] rounded-full bg-[#CB7885]/25 blur-[160px] pointer-events-none" />
+
+                {/* Top Control Bar */}
+                <div className="relative z-20 px-6 sm:px-12 py-5 sm:py-7 border-b border-white/10 flex flex-wrap items-center justify-between gap-5 bg-black/80 backdrop-blur-xl shrink-0">
+                  <div className="flex items-center gap-4">
+                    <span className="w-4 h-4 rounded-full bg-[#D4D994] animate-pulse" />
+                    <div>
+                      <h3 className="font-serif text-2xl sm:text-4xl md:text-5xl font-bold text-[#FFFEFA] leading-tight tracking-wide">
+                        Active Drum: {activeCollection.name}
+                      </h3>
+                      <p className="font-sans text-sm sm:text-base md:text-lg text-zinc-300 mt-1">
+                        {activeCollection.items.length} Curated Works • Drag or scroll to turn the 3D drum wheel
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Collection Switcher in Modal */}
+                  <div className="flex items-center gap-2 bg-[#211D1D]/90 p-2 rounded-2xl border border-white/15 shadow-inner">
+                    {(["reels", "lookbooks", "strategy"] as const).map((key) => {
+                      const col = COLLECTIONS[key]
+                      const isActive = activeTab === key
+                      return (
+                        <button
+                          key={key}
+                          type="button"
+                          onClick={() => {
+                            setActiveTab(key)
+                            setOpenFolder(key)
+                            setWheelActiveIndex(0)
+                          }}
+                          className={`px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all cursor-pointer ${
+                            isActive
+                              ? "bg-[#D4D994] text-[#211D1D] shadow-md scale-[1.02]"
+                              : "text-zinc-400 hover:text-white hover:bg-white/5"
+                          }`}
+                        >
+                          {col.wheelLabel}
+                        </button>
+                      )
+                    })}
+                  </div>
+
+                  {/* Bright Bold Red Close Button */}
+                  <button
+                    type="button"
+                    onClick={() => setIsModalOpen(false)}
+                    className="px-6 py-3 sm:px-8 sm:py-3.5 rounded-2xl bg-[#DC2626] hover:bg-[#B91C1C] active:bg-[#991B1B] text-white font-mono text-base sm:text-lg uppercase tracking-wider font-extrabold transition-all cursor-pointer flex items-center gap-2.5 shadow-[0_6px_35px_rgba(220,38,38,0.7)] hover:shadow-[0_8px_45px_rgba(220,38,38,0.9)] active:scale-95 border-2 border-red-300/70"
+                    aria-label="Close Full Screen 3D Drum"
+                  >
+                    <X className="w-6 h-6 stroke-[3]" />
+                    <span>Close</span>
+                    <span className="text-xs opacity-80 font-mono hidden sm:inline">(ESC)</span>
+                  </button>
+                </div>
+
+                {/* 3D Works Wheel Stage — Fills the entire rest of the screen */}
+                <div className="relative z-10 flex-1 w-full h-[calc(100vh-110px)] overflow-hidden bg-gradient-to-b from-[#181516]/85 via-[#0e0b0c]/95 to-[#181516]/85">
+                  <WorksWheel
+                    key={activeTab}
+                    items={activeCollection.items}
+                    label={activeCollection.wheelLabel}
+                    action="View"
+                    activeIndex={wheelActiveIndex}
+                    onItemSelect={(item) => {
+                      if (onSelectProject) {
+                        onSelectProject(item)
+                      }
+                    }}
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </div>
   )
 }

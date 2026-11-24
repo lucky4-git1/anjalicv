@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../components";
 @source "../components/originkit";
 @source "../src";
 
@@ -10,6 +11,11 @@
   --color-ivory: #F5F3EC;
   --color-softwhite: #FFFEFA;
   --color-nearblack: #211D1D;
+
+  --color-background: #211D1D;
+  --color-foreground: #F5F3EC;
+  --color-muted: #2d2627;
+  --color-muted-foreground: #CB7885;
 
   --font-serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
   --font-editorial: "Playfair Display", "Cormorant Garamond", serif;

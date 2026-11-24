@@ -20,6 +20,8 @@ import {
 import confetti from "canvas-confetti"
 import { PORTFOLIO_DATA } from "../data/portfolioData"
 import SocialCards, { CardItem } from "./ui/card-fan-carousel"
+import { GlassFoldersWorkShowcase } from "./GlassFoldersWorkShowcase"
+import type { WorksWheelItem } from "./ui/works-wheel"
 
 export interface WorkSample {
   id: string
@@ -340,6 +342,28 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
       colors: ["#CB7885", "#893941", "#D4D994", "#F5F3EC"],
     })
     setTimeout(() => setCopied(false), 2200)
+  }
+
+  const handleShowcaseSelect = (item: WorksWheelItem) => {
+    const found = WORK_SAMPLES.find(
+      (s) => s.title.toLowerCase() === item.title.toLowerCase()
+    )
+    if (found) {
+      setSelectedSample(found)
+    } else {
+      setSelectedSample({
+        id: item.title.toLowerCase().replace(/\s+/g, "-"),
+        title: item.title,
+        client: "Luxury Editorial Brand",
+        category: "Social Campaign & 3D Wheel Reel",
+        views: "3.8M",
+        reach: "1.9M",
+        shares: "98K",
+        image: item.image,
+        description: `Bespoke social media direction, visual storytelling, and high-conversion aesthetic reel production for ${item.title}. Engineered to captivate audiences and drive viral engagement.`,
+        tags: ["Social Media", "Art Direction", "Viral Reel", "Editorial Stills"]
+      })
+    }
   }
 
   return (
@@ -726,6 +750,11 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
 
               <SocialCards cards={CAMPAIGN_FAN_CARDS} />
             </div>
+          </div>
+
+          {/* Archival Glass Folders & 3D Works Wheel Showcase */}
+          <div className="max-w-7xl mx-auto px-2 sm:px-6 w-full">
+            <GlassFoldersWorkShowcase onSelectProject={handleShowcaseSelect} />
           </div>
         </section>
 

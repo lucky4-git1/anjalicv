@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Menu, X, FileText, Plus, Heart } from "lucide-react"
+import LiquidNavbar, { NimbusIcons, type LiquidNavItem } from "./ui/liquid-navbar"
 
 interface NavigationProps {
   onOpenCvModal: () => void
@@ -17,6 +18,21 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
     { id: "work", name: "Work", href: "#work" },
     { id: "contact", name: "Contact", href: "#contact" },
   ]
+
+  const navItems: LiquidNavItem[] = [
+    { label: "Home", href: "#hero", icon: NimbusIcons.home, fx: "glow" },
+    { label: "About", href: "#about", icon: NimbusIcons.user, fx: "wave" },
+    { label: "Work", href: "#work", icon: NimbusIcons.sparkle, fx: "drop" },
+    { label: "Contact", href: "#contact", icon: NimbusIcons.plane, fx: "plane" },
+  ]
+
+  const sectionMap: Record<string, number> = {
+    hero: 0,
+    about: 1,
+    work: 2,
+    contact: 3,
+  }
+  const activeIndex = sectionMap[activeSection] ?? 0
 
   useEffect(() => {
     let ticking = false
@@ -101,8 +117,8 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "py-3 bg-[#F9EAE6]/85 backdrop-blur-md border-b border-[#CB7885]/20 shadow-[0_4px_24px_rgba(137,57,65,0.06)]"
-            : "py-5 sm:py-6 bg-transparent"
+            ? "py-2.5 sm:py-3 bg-[#F9EAE6]/70 backdrop-blur-2xl border-b border-white/60 shadow-[0_8px_32px_rgba(137,57,65,0.08),inset_0_1px_1.5px_rgba(255,255,255,0.7)]"
+            : "py-4 sm:py-5 bg-[#F9EAE6]/45 backdrop-blur-xl border-b border-white/40 shadow-[0_4px_20px_rgba(137,57,65,0.04),inset_0_1px_1px_rgba(255,255,255,0.5)]"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-10 flex items-center justify-between">
@@ -124,38 +140,31 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
             </span>
           </a>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-2" role="menubar">
-            {navLinks.map((link) => {
-              const isActive = activeSection === link.id
-              return (
-                <a
-                  key={link.id}
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
-                  role="menuitem"
-                  className={`text-[12px] font-sans font-medium px-4 py-1.5 rounded-full border transition-all duration-300 relative cursor-pointer ${
-                    isActive
-                      ? "text-[#161616] border-[#161616]/25 bg-white shadow-xs font-semibold scale-[1.03]"
-                      : "text-[#555] hover:text-[#161616] hover:border-[#D1D1D1] bg-white/70 backdrop-blur-xs border-[#E9E9E9]"
-                  }`}
-                >
-                  <span className="flex items-center gap-1.5">
-                    {isActive && (
-                      <Heart className="w-2.5 h-2.5 fill-[#893941] text-[#893941] shrink-0 animate-pulse" />
-                    )}
-                    {link.name}
-                  </span>
-                </a>
-              )
-            })}
-          </nav>
+          {/* Desktop Navigation: Liquid Glass Waterline Tabs */}
+          <div className="hidden md:flex items-center justify-center">
+            <LiquidNavbar
+              items={navItems}
+              active={activeIndex}
+              onChange={(idx) => {
+                const sectionIds = ["hero", "about", "work", "contact"]
+                const targetId = sectionIds[idx]
+                if (targetId) {
+                  setActiveSection(targetId)
+                  const target = document.getElementById(targetId)
+                  if (target) {
+                    target.scrollIntoView({ behavior: "smooth" })
+                  }
+                }
+              }}
+              tone="light"
+            />
+          </div>
 
           {/* Action CTAs */}
           <div className="hidden md:flex items-center gap-2.5">
             <button
               onClick={onOpenCvModal}
-              className="w-[32px] h-[32px] rounded-full border border-[#E9E9E9] bg-white/80 hover:bg-white hover:border-[#D1D1D1] text-[#161616] flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 shadow-xs"
+              className="w-[34px] h-[34px] rounded-full border border-white/60 bg-white/75 hover:bg-white backdrop-blur-md text-[#161616] flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 shadow-[0_2px_8px_rgba(137,57,65,0.06),inset_0_1px_1px_rgba(255,255,255,0.8)]"
               aria-label="View Curriculum Vitae"
               title="Curriculum Vitae"
               type="button"
@@ -165,7 +174,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
 
             <button
               onClick={onOpenContactModal}
-              className="w-[32px] h-[32px] rounded-full border border-[#E9E9E9] bg-white/80 hover:bg-white hover:border-[#D1D1D1] text-[#161616] flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 shadow-xs"
+              className="w-[34px] h-[34px] rounded-full border border-white/60 bg-white/75 hover:bg-white backdrop-blur-md text-[#161616] flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 shadow-[0_2px_8px_rgba(137,57,65,0.06),inset_0_1px_1px_rgba(255,255,255,0.8)]"
               aria-label="Initiate Inquiry"
               title="Initiate Inquiry"
               type="button"

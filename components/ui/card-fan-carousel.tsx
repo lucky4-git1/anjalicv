@@ -41,13 +41,13 @@ function getResponsiveMultiplier(width: number) {
 function getHeightMultiplier(width: number) {
   // Ideal layout heights (in px at 16px root) matching the CSS breakpoints
   let idealPx: number;
-  if (width < 480) idealPx = 22 * 16;       // 352px
-  else if (width < 640) idealPx = 26 * 16;  // 416px
-  else if (width < 768) idealPx = 28 * 16;  // 448px
-  else if (width < 1024) idealPx = 34 * 16; // 544px
-  else idealPx = 38 * 16;                    // 608px
+  if (width < 480) idealPx = 18 * 16;       // 288px
+  else if (width < 640) idealPx = 20 * 16;  // 320px
+  else if (width < 768) idealPx = 22 * 16;  // 352px
+  else if (width < 1024) idealPx = 25 * 16; // 400px
+  else idealPx = 28 * 16;                    // 448px
 
-  const available = window.innerHeight * 0.7; // 70vh budget
+  const available = window.innerHeight * 0.58; // 58vh budget for 100vh fit
   if (available >= idealPx) return 1;
   return available / idealPx;
 }
@@ -258,7 +258,7 @@ export default function SocialCards({ cards }: SocialCardsProps) {
   );
 
   return (
-    <section className="flex flex-col items-center w-full py-2 lg:py-6 px-4 md:px-8 relative z-20">
+    <section className="flex flex-col items-center w-full py-1 lg:py-2 px-3 md:px-6 relative z-20">
       <div className="flex items-center justify-center w-full max-w-[90rem]">
         <div ref={containerRef} className="fan-layout flex relative justify-center items-center w-full max-w-[80rem]">
           {cards.map((card, index) => {
@@ -277,17 +277,17 @@ export default function SocialCards({ cards }: SocialCardsProps) {
       </div>
 
       {needsPagination && (
-        <div className="flex items-center justify-center gap-4 mt-10 md:mt-14 z-40 relative">
+        <div className="flex items-center justify-center gap-4 mt-4 sm:mt-6 z-40 relative">
           <button
             type="button"
-            className={`${ARROW_CLASSES} w-11 h-11 md:w-12 md:h-12`}
+            className={`${ARROW_CLASSES} w-10 h-10 md:w-11 md:h-11`}
             onClick={() => cycle("left")}
             aria-label="Previous card"
             title="Previous card"
           >
             {chevron("left")}
           </button>
-          <div className="flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-[#211D1D]/75 backdrop-blur-md border border-white/25 shadow-lg">
+          <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#211D1D]/75 backdrop-blur-md border border-white/25 shadow-lg">
             {cards.map((_, i) => (
               <span
                 key={i}
@@ -301,7 +301,7 @@ export default function SocialCards({ cards }: SocialCardsProps) {
           </div>
           <button
             type="button"
-            className={`${ARROW_CLASSES} w-11 h-11 md:w-12 md:h-12`}
+            className={`${ARROW_CLASSES} w-10 h-10 md:w-11 md:h-11`}
             onClick={() => cycle("right")}
             aria-label="Next card"
             title="Next card"

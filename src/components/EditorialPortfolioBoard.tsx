@@ -353,17 +353,12 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
           
           {/* PANEL 2: ABOUT ME + PROFILE (7 cols) — Dusty Rose & Ivory Editorial Panel */}
           <div className="lg:col-span-7 rounded-2xl bg-[#CB7885] text-[#211D1D] p-7 sm:p-10 flex flex-col justify-between shadow-[0_12px_40px_rgba(0,0,0,0.12)] relative overflow-hidden border border-[#D4D994]/30">
-            {/* Subtle botanical corner mark */}
-            <div className="absolute top-4 right-5 text-[10px] font-mono tracking-widest uppercase text-[#893941] font-bold">
-              01 / PROFILE & EDITORIAL
-            </div>
-
             <div>
               <h2 className="text-4xl sm:text-6xl md:text-7xl font-serif font-bold text-[#893941] leading-none mb-6">
                 ABOUT ME
               </h2>
 
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start">
                 {/* Portrait Image Frame — Target landing point for the traveling hero flower */}
                 <div
                   id="about-portrait-card"
@@ -411,23 +406,15 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
                 </div>
 
                 {/* Personal Intro & Philosophy */}
-                <div className="sm:col-span-7 space-y-3 text-xs sm:text-sm text-[#211D1D] leading-relaxed">
-                  <p className="font-medium text-sm text-[#893941]">
+                <div className="sm:col-span-7 space-y-4 font-serif text-[#211D1D]">
+                  <p className="text-xl sm:text-2xl md:text-[25px] font-normal italic text-[#893941] leading-[1.32] tracking-tight">
                     {personal.bio}
                   </p>
-                  <p>
+                  <p className="text-base sm:text-lg md:text-[19px] font-light text-[#211D1D]/90 leading-relaxed tracking-wide">
                     I operate at the precise intersection of graphic editorial monograph art direction and performance creative technology. Rather than treating visual design and code as disconnected disciplines, I author bespoke brand identities alongside real-time shaders and layout systems.
                   </p>
                 </div>
               </div>
-            </div>
-
-            {/* Bottom Philosophy Plaque */}
-            <div className="pt-4 border-t border-[#893941]/20 flex items-center justify-between">
-              <span className="font-serif italic text-sm sm:text-base text-[#893941] font-semibold">
-                “{personal.philosophy}”
-              </span>
-              <span className="w-2 h-2 rounded-full bg-[#5E6623] shrink-0" />
             </div>
           </div>
 
@@ -441,8 +428,8 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
               {/* Header with cute moodboard tag */}
               <div className="flex items-center justify-between pb-3 border-b border-[#CB7885]/30 mb-4">
                 <span className="text-[10px] font-mono tracking-widest uppercase text-[#D4D994] font-bold flex items-center gap-1.5">
-                  <Sparkles className="w-3 h-3 text-[#D4D994]" />
-                  02 / CAPABILITIES MATRIX
+                  <Sparkles className="w-3.5 h-3.5 text-[#D4D994]" />
+                  Creative Arsenal
                 </span>
                 <span className="text-[10px] font-mono tracking-wider text-[#FDE8EC] bg-white/10 px-2.5 py-0.5 rounded-full border border-white/15 shadow-xs">
                   ˚୨୧ Pinterest Moodboard ✿
@@ -719,20 +706,20 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
             ))}
           </div>
 
-          {/* ── CARD FAN CAROUSEL: EDITORIAL CAMPAIGN ARCHIVE (FULL-WIDTH SEAMLESS STRIP) ── */}
-          <div className="relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] bg-[#893941] text-[#F5F3EC] py-16 sm:py-24 my-14 sm:my-20 flex flex-col items-center overflow-visible">
-            <div className="max-w-7xl mx-auto px-5 sm:px-8 w-full flex flex-col items-center">
+          {/* ── CARD FAN CAROUSEL: EDITORIAL CAMPAIGN ARCHIVE (100VH SEAMLESS STRIP) ── */}
+          <div className="relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] bg-[#893941] text-[#F5F3EC] min-h-[92vh] lg:h-[100vh] py-6 sm:py-10 my-8 sm:my-10 flex flex-col justify-center items-center overflow-visible">
+            <div className="max-w-7xl mx-auto px-4 sm:px-8 w-full flex flex-col items-center">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="text-center mb-8 sm:mb-12 max-w-2xl mx-auto"
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                className="text-center mb-3 sm:mb-5 max-w-2xl mx-auto"
               >
-                <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#FFFEFA] font-normal tracking-wide">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif text-[#FFFEFA] font-normal tracking-wide">
                   Visual Archives & Editorial Stills
                 </h3>
-                <p className="text-xs sm:text-sm font-mono text-[#D4D994] mt-2.5 leading-relaxed">
+                <p className="text-xs sm:text-sm font-mono text-[#D4D994] mt-1.5 leading-relaxed">
                   Hover or cycle cards to explore the dynamic deck • Interactive GSAP fan physics
                 </p>
               </motion.div>
@@ -750,9 +737,6 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
             SECTION 8: FULL-WIDTH COLLABORATION & CONTACT PANEL
         ════════════════════════════════════════════════════════════════════ */}
         <div id="contact" className="rounded-2xl bg-[#893941] text-[#F5F3EC] p-8 sm:p-14 shadow-[0_16px_50px_rgba(0,0,0,0.35)] border border-[#CB7885]/30 text-center flex flex-col items-center scroll-mt-24">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#211D1D]/50 border border-[#D4D994]/30 text-[10px] font-mono tracking-widest uppercase text-[#D4D994] mb-4 font-bold">
-            07 / INVITATION TO COLLABORATE
-          </div>
 
           <h2 className="text-4xl sm:text-6xl md:text-7xl font-serif font-bold text-[#FFFEFA] leading-tight mb-4 max-w-3xl">
             Let's Shape Botanical Luxury Together.

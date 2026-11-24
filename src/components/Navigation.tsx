@@ -114,15 +114,20 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
 
   return (
     <>
+      {/* ── FULL-WIDTH LIQUID GLASS NAVBAR ── */}
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 isolate backdrop-blur-2xl border-b border-white/70 ${
           scrolled
-            ? "py-2.5 sm:py-3 bg-[#F9EAE6]/70 backdrop-blur-2xl border-b border-white/60 shadow-[0_8px_32px_rgba(137,57,65,0.08),inset_0_1px_1.5px_rgba(255,255,255,0.7)]"
-            : "py-4 sm:py-5 bg-[#F9EAE6]/45 backdrop-blur-xl border-b border-white/40 shadow-[0_4px_20px_rgba(137,57,65,0.04),inset_0_1px_1px_rgba(255,255,255,0.5)]"
+            ? "py-2.5 sm:py-3 bg-white/55 shadow-[0_12px_40px_rgba(137,57,65,0.12),inset_0_-1.5px_2px_rgba(203,120,133,0.25),inset_0_1.5px_2px_rgba(255,255,255,0.95)]"
+            : "py-3.5 sm:py-4 bg-white/40 shadow-[0_8px_30px_rgba(137,57,65,0.06),inset_0_-1px_1.5px_rgba(203,120,133,0.18),inset_0_1px_1.5px_rgba(255,255,255,0.9)]"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 flex items-center justify-between">
-          
+        {/* Liquid Glass Highlight & Shimmer Sheen Layers */}
+        <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white to-transparent opacity-90 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#CB7885]/35 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/35 via-transparent to-white/10 pointer-events-none -z-10" />
+
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 flex items-center justify-between relative z-10">
           {/* Logo Group */}
           <a
             href="#hero"
@@ -164,7 +169,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
           <div className="hidden md:flex items-center gap-2.5">
             <button
               onClick={onOpenCvModal}
-              className="w-[34px] h-[34px] rounded-full border border-white/60 bg-white/75 hover:bg-white backdrop-blur-md text-[#161616] flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 shadow-[0_2px_8px_rgba(137,57,65,0.06),inset_0_1px_1px_rgba(255,255,255,0.8)]"
+              className="w-[34px] h-[34px] rounded-full border border-white/80 bg-white/70 hover:bg-white backdrop-blur-md text-[#161616] flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 shadow-[0_2px_8px_rgba(137,57,65,0.08),inset_0_1px_1px_rgba(255,255,255,0.9)]"
               aria-label="View Curriculum Vitae"
               title="Curriculum Vitae"
               type="button"
@@ -174,7 +179,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
 
             <button
               onClick={onOpenContactModal}
-              className="w-[34px] h-[34px] rounded-full border border-white/60 bg-white/75 hover:bg-white backdrop-blur-md text-[#161616] flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 shadow-[0_2px_8px_rgba(137,57,65,0.06),inset_0_1px_1px_rgba(255,255,255,0.8)]"
+              className="w-[34px] h-[34px] rounded-full border border-white/80 bg-white/70 hover:bg-white backdrop-blur-md text-[#161616] flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 shadow-[0_2px_8px_rgba(137,57,65,0.08),inset_0_1px_1px_rgba(255,255,255,0.9)]"
               aria-label="Initiate Inquiry"
               title="Initiate Inquiry"
               type="button"
@@ -186,7 +191,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-full border border-[#E9E9E9] bg-white text-[#161616]"
+            className="md:hidden p-2 rounded-full border border-white/80 bg-white/75 backdrop-blur-md text-[#161616] shadow-xs cursor-pointer"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}

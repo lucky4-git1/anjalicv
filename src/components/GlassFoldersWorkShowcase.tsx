@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Folder, Sparkles, Compass, X, ArrowUpRight, Eye } from "lucide-react"
 import GlassFolder, { FolderFile } from "@/components/ui/glass-folder-cards"
 import WorksWheel, { WorksWheelItem } from "@/components/ui/works-wheel"
+import { LiquidButton } from "@/components/ui/liquid-button"
 
 export interface ShowcaseProject {
   id: string
@@ -435,61 +436,65 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
                 <div className="absolute top-1/3 -right-36 w-[36rem] h-[36rem] rounded-full bg-[#893941]/35 blur-[160px] pointer-events-none" />
                 <div className="absolute bottom-1/3 -left-36 w-[36rem] h-[36rem] rounded-full bg-[#CB7885]/25 blur-[160px] pointer-events-none" />
 
-                {/* Top Control Bar */}
-                <div className="relative z-20 px-6 sm:px-12 py-5 sm:py-7 border-b border-white/10 flex flex-wrap items-center justify-between gap-5 bg-black/80 backdrop-blur-xl shrink-0">
-                  <div className="flex items-center gap-4">
-                    <span className="w-4 h-4 rounded-full bg-[#D4D994] animate-pulse" />
+                {/* ── SLEEK FLOATING MODAL NAVBAR WITH LIQUID BUTTONS ── */}
+                <header className="relative z-30 px-4 sm:px-8 py-3 sm:py-4 border-b border-white/10 bg-[#161213]/85 backdrop-blur-2xl flex flex-wrap items-center justify-between gap-3 sm:gap-4 shadow-[0_10px_35px_rgba(0,0,0,0.6)] shrink-0">
+                  {/* Left: Refined Title (Decreased font size, no pulsing dot) */}
+                  <div className="flex items-center gap-3">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#D4D994] px-2.5 py-1 rounded-full bg-[#D4D994]/10 border border-[#D4D994]/30 font-semibold hidden xs:inline-block">
+                      Archive
+                    </span>
                     <div>
-                      <h3 className="font-serif text-2xl sm:text-4xl md:text-5xl font-bold text-[#FFFEFA] leading-tight tracking-wide">
-                        Active Drum: {activeCollection.name}
+                      <h3 className="font-serif text-sm sm:text-base md:text-lg font-medium text-[#FFFEFA] tracking-wide leading-tight">
+                        Active Drum: <span className="text-[#D4D994]">{activeCollection.name}</span>
                       </h3>
-                      <p className="font-sans text-sm sm:text-base md:text-lg text-zinc-300 mt-1">
-                        {activeCollection.items.length} Curated Works • Drag or scroll to turn the 3D drum wheel
+                      <p className="font-sans text-[11px] sm:text-xs text-zinc-400 mt-0.5">
+                        {activeCollection.items.length} Curated Works • Drag or scroll drum wheel
                       </p>
                     </div>
                   </div>
 
-                  {/* Collection Switcher in Modal */}
-                  <div className="flex items-center gap-2 bg-[#211D1D]/90 p-2 rounded-2xl border border-white/15 shadow-inner">
+                  {/* Center: Liquid Glass Button Navigation Bar */}
+                  <nav className="flex items-center gap-1.5 sm:gap-2.5 p-1 rounded-full bg-black/40 border border-white/10 backdrop-blur-md shadow-inner">
                     {(["reels", "lookbooks", "strategy"] as const).map((key) => {
                       const col = COLLECTIONS[key]
                       const isActive = activeTab === key
                       return (
-                        <button
+                        <LiquidButton
                           key={key}
-                          type="button"
+                          size="sm"
                           onClick={() => {
                             setActiveTab(key)
                             setOpenFolder(key)
                             setWheelActiveIndex(0)
                           }}
-                          className={`px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all cursor-pointer ${
+                          className={`rounded-full px-3.5 sm:px-5 py-2 text-xs font-mono tracking-wider transition-all cursor-pointer ${
                             isActive
-                              ? "bg-[#D4D994] text-[#211D1D] shadow-md scale-[1.02]"
-                              : "text-zinc-400 hover:text-white hover:bg-white/5"
+                              ? "text-[#D4D994] font-bold shadow-[0_0_20px_rgba(212,217,148,0.35)] border border-[#D4D994]/60 bg-[#D4D994]/15 scale-[1.02]"
+                              : "text-zinc-300 hover:text-white border border-white/10 hover:bg-white/5"
                           }`}
                         >
-                          {col.wheelLabel}
-                        </button>
+                          <span>{col.wheelLabel}</span>
+                        </LiquidButton>
                       )
                     })}
-                  </div>
+                  </nav>
 
-                  {/* Bright Bold Red Close Button */}
-                  <button
-                    type="button"
+                  {/* Right: Bold Red Liquid Glass Close Button */}
+                  <LiquidButton
+                    size="sm"
+                    variant="destructive"
                     onClick={() => setIsModalOpen(false)}
-                    className="px-6 py-3 sm:px-8 sm:py-3.5 rounded-2xl bg-[#DC2626] hover:bg-[#B91C1C] active:bg-[#991B1B] text-white font-mono text-base sm:text-lg uppercase tracking-wider font-extrabold transition-all cursor-pointer flex items-center gap-2.5 shadow-[0_6px_35px_rgba(220,38,38,0.7)] hover:shadow-[0_8px_45px_rgba(220,38,38,0.9)] active:scale-95 border-2 border-red-300/70"
+                    className="rounded-full px-4 sm:px-6 py-2 bg-[#DC2626] hover:bg-[#B91C1C] text-white font-mono text-xs sm:text-sm uppercase tracking-wider font-extrabold shadow-[0_4px_25px_rgba(220,38,38,0.7)] hover:shadow-[0_6px_35px_rgba(220,38,38,0.9)] border-2 border-red-300/80 cursor-pointer flex items-center gap-2 active:scale-95 transition-all"
                     aria-label="Close Full Screen 3D Drum"
                   >
-                    <X className="w-6 h-6 stroke-[3]" />
+                    <X className="w-4 h-4 stroke-[2.5]" />
                     <span>Close</span>
-                    <span className="text-xs opacity-80 font-mono hidden sm:inline">(ESC)</span>
-                  </button>
-                </div>
+                    <span className="text-[10px] opacity-80 font-mono hidden sm:inline">(ESC)</span>
+                  </LiquidButton>
+                </header>
 
                 {/* 3D Works Wheel Stage — Fills the entire rest of the screen */}
-                <div className="relative z-10 flex-1 w-full h-[calc(100vh-110px)] overflow-hidden bg-gradient-to-b from-[#181516]/85 via-[#0e0b0c]/95 to-[#181516]/85">
+                <div className="relative z-10 flex-1 w-full h-[calc(100vh-68px)] overflow-hidden bg-gradient-to-b from-[#181516]/85 via-[#0e0b0c]/95 to-[#181516]/85">
                   <WorksWheel
                     key={activeTab}
                     items={activeCollection.items}

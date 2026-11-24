@@ -753,9 +753,7 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
           </div>
 
           {/* Archival Glass Folders & 3D Works Wheel Showcase */}
-          <div className="max-w-7xl mx-auto px-2 sm:px-6 w-full">
-            <GlassFoldersWorkShowcase onSelectProject={handleShowcaseSelect} />
-          </div>
+          <GlassFoldersWorkShowcase onSelectProject={handleShowcaseSelect} />
         </section>
 
 

@@ -662,18 +662,7 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
                       decoding="async"
                       className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out brightness-[0.95] group-hover:brightness-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/65 pointer-events-none" />
-
-                    {/* Status Bar */}
-                    <div className="absolute top-2.5 inset-x-4 flex justify-between items-center text-[9px] font-mono text-white/80 pointer-events-none z-10">
-                      <span>9:41</span>
-                      <div className="flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-white/75" />
-                        <span className="w-3.5 h-1.5 rounded-xs border border-white/75 flex items-center p-[1px]">
-                          <span className="w-full h-full bg-white/75" />
-                        </span>
-                      </div>
-                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/65 pointer-events-none" />
 
                     {/* Center Play Button with spring entrance & glow on hover */}
                     <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
@@ -700,6 +689,37 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
                         <Sparkles className="w-2.5 h-2.5 text-[#D4D994]" />
                         {sample.views} Views
                       </span>
+                    </div>
+                  </div>
+
+                  {/* Status Bar (Accurately aligned with phone-frame.png notch ears) */}
+                  <div className="absolute top-[3.25%] -translate-y-1/2 inset-x-0 px-[7.2%] flex justify-between items-center pointer-events-none z-25 select-none">
+                    <div className="w-[16.5%] flex items-center justify-center">
+                      <span className="font-sans font-semibold tracking-[-0.02em] text-[10px] sm:text-[11px] text-white/95 leading-none">
+                        9:41
+                      </span>
+                    </div>
+                    <div className="w-[16.5%] flex items-center justify-center gap-1 text-white/90 leading-none">
+                      {/* Cellular signal */}
+                      <svg className="w-2.5 h-2.5 text-white/90 fill-current" viewBox="0 0 16 16">
+                        <rect x="1" y="11" width="2.2" height="4" rx="0.5" />
+                        <rect x="5" y="8" width="2.2" height="7" rx="0.5" />
+                        <rect x="9" y="5" width="2.2" height="10" rx="0.5" />
+                        <rect x="13" y="2" width="2.2" height="13" rx="0.5" />
+                      </svg>
+                      {/* Wi-Fi */}
+                      <svg className="w-2.5 h-2.5 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                        <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+                        <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+                        <circle cx="12" cy="20" r="1.2" fill="currentColor" />
+                      </svg>
+                      {/* Battery Indicator with tip */}
+                      <div className="flex items-center">
+                        <div className="w-[14px] h-[7px] rounded-[2px] border border-white/80 p-[0.75px] flex items-center">
+                          <div className="w-full h-full bg-white/90 rounded-[1px]" />
+                        </div>
+                        <div className="w-[1px] h-[3px] bg-white/80 rounded-r-[0.5px] -ml-[0.5px]" />
+                      </div>
                     </div>
                   </div>
 

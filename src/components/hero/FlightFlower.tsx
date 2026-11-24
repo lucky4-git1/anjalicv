@@ -74,12 +74,13 @@ export const FlightFlower: React.FC = () => {
       const jEl = document.getElementById("hero-letter-j")
       if (jEl) {
         const jRect = jEl.getBoundingClientRect()
-        startX = jRect.left + jRect.width * 0.45 + mousePos.currentX * mouseFactor
-        startY = jRect.top - jRect.height * 0.08 + mousePos.currentY * mouseFactor
+        // Rest naturally in the crown of "j" with ample clearance below navbar
+        startX = jRect.left + jRect.width * 0.46 + mousePos.currentX * mouseFactor
+        startY = jRect.top + jRect.height * 0.08 + mousePos.currentY * mouseFactor
       } else {
         const heroRect = heroAnchor.getBoundingClientRect()
         startX = heroRect.left + heroRect.width / 2 + mousePos.currentX * mouseFactor
-        startY = heroRect.top + heroRect.height / 2 + mousePos.currentY * mouseFactor
+        startY = heroRect.top + heroRect.height * 0.6 + mousePos.currentY * mouseFactor
       }
 
       // End position (docked on top-right of portrait photo)
@@ -171,8 +172,8 @@ export const FlightFlower: React.FC = () => {
       className="fixed top-0 left-0 pointer-events-none select-none"
       style={{
         zIndex: 45,
-        width: "clamp(260px, 32vw, 420px)",
-        height: "clamp(300px, 37vw, 480px)",
+        width: "clamp(190px, 26vw, 350px)",
+        height: "clamp(220px, 30vw, 400px)",
         willChange: "transform, opacity",
         filter: "drop-shadow(0 20px 32px rgba(0, 0, 0, 0.14)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.06))"
       }}

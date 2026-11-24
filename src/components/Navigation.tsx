@@ -188,14 +188,25 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-full border border-white/80 bg-white/75 backdrop-blur-md text-[#161616] shadow-xs cursor-pointer"
-            aria-label="Toggle navigation menu"
-          >
-            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-          </button>
+          {/* Mobile Action Controls */}
+          <div className="flex md:hidden items-center gap-2">
+            <button
+              onClick={onOpenCvModal}
+              className="px-2.5 py-1 rounded-full border border-white/80 bg-white/85 backdrop-blur-md text-[#161616] text-[11px] font-mono tracking-wider font-semibold flex items-center gap-1 shadow-xs cursor-pointer"
+              aria-label="View Curriculum Vitae"
+            >
+              <FileText className="w-3 h-3 text-[#893941]" />
+              <span>CV</span>
+            </button>
+
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-full border border-white/80 bg-white/85 backdrop-blur-md text-[#161616] shadow-xs cursor-pointer"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
+          </div>
         </div>
       </header>
 

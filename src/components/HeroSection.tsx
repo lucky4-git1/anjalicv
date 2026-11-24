@@ -178,7 +178,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
       <PollenParticles />
 
       {/* Top Spacer for Global Fixed Navigation Header */}
-      <div className="relative z-10 w-full h-20 sm:h-24 pointer-events-none" />
+      <div className="relative z-10 w-full h-24 sm:h-32 md:h-36 pointer-events-none shrink-0" />
 
       {/* ── CENTERPIECE: HUGE HEADLINE + CROWN FLOWER (Layers 10, 20) ── */}
       <div className="relative z-10 w-full flex-1 flex items-center justify-center px-4 sm:px-8">
@@ -192,7 +192,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           <h1
             className="hero-headline-font text-[#161616] tracking-[-0.015em] leading-[0.88] whitespace-nowrap select-none text-center"
             style={{
-              fontSize: "clamp(6.2rem, 19.5vw, 17.5rem)",
+              fontSize: "clamp(4.2rem, 18.5vw, 17.5rem)",
               fontWeight: 800
             }}
             aria-label="Anjali"
@@ -230,7 +230,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           style={{
             zIndex: 15,
             left: "48%",
-            top: "31%",
+            top: "35%",
             width: "4px",
             height: "4px",
             transform: "translate(-50%, -50%)"

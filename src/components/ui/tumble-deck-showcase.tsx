@@ -33,6 +33,8 @@ export type TumbleDeckShowcaseProps = {
   scrollPerCard?: number
   /** How many upright cards show behind the front one. */
   depth?: number
+  /** Whether the deck loops endlessly or stops at first/last card so the page can scroll past. */
+  loop?: boolean
   background?: string
   className?: string
   style?: React.CSSProperties
@@ -97,6 +99,7 @@ export default function TumbleDeckShowcase({
   aspect = 2.06,
   scrollPerCard = 240,
   depth = 5,
+  loop = true,
   background = "var(--color-background)",
   className,
   style,
@@ -121,6 +124,11 @@ export default function TumbleDeckShowcase({
       const img = imgRefs.current[j]
       if (!el || !img || j >= pool) return
       const k = base + wrap(j - base, pool)
+      if (!loop && (k < 0 || k >= n)) {
+        el.style.opacity = "0"
+        el.style.visibility = "hidden"
+        return
+      }
       if (slotK.current[j] !== k) {
         slotK.current[j] = k
         const c = cards[wrap(k, n)]
@@ -135,7 +143,7 @@ export default function TumbleDeckShowcase({
       const shade = p.flat ? 0.06 : (-p.angle / 90) * 0.06
       el.style.setProperty("--td-shade", String(shade))
     })
-  }, [depth, pool, cards, n])
+  }, [depth, pool, cards, n, loop])
 
   // New images: re-point every slot on the next paint.
   React.useLayoutEffect(() => {
@@ -152,10 +160,10 @@ export default function TumbleDeckShowcase({
     const fit = () => {
       const W0 = root.clientWidth
       const H0 = root.clientHeight
-      const wFrac = W0 < 420 ? 0.76 : 0.655
-      const h = Math.max(60, Math.min((W0 * wFrac) / aspect, H0 * 0.42, 620))
+      const wFrac = W0 < 420 ? 0.88 : 0.78
+      const h = Math.max(80, Math.min((W0 * wFrac) / aspect, H0 * 0.56, 780))
       const w = h * aspect
-      const top = H0 / 2 - 0.62 * h
+      const top = H0 / 2 - 0.54 * h
       geo.current = { h, gap: 0.24 * h }
       scene.style.perspective = `${6 * h}px`
       scene.style.perspectiveOrigin = `50% ${top - 1.66 * h}px`
@@ -197,7 +205,11 @@ export default function TumbleDeckShowcase({
     }
     const push = (to: number) => {
       // A hard fling still travels card by card instead of skipping the deck.
-      target = Math.max(Math.round(s.pos) - 3, Math.min(Math.round(s.pos) + 3, to))
+      let clamped = Math.max(Math.round(s.pos) - 3, Math.min(Math.round(s.pos) + 3, to))
+      if (!loop) {
+        clamped = Math.max(0, Math.min(n - 1, clamped))
+      }
+      target = clamped
       if (reduce) {
         s.pos = target
         paint()
@@ -212,9 +224,16 @@ export default function TumbleDeckShowcase({
     api.current.step = (dir) => push(Math.round(target) + dir)
 
     const onWheel = (e: WheelEvent) => {
-      e.preventDefault()
       const scale = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? root.clientHeight : 1
       const d = (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * scale
+      if (!loop) {
+        const atStart = target <= 0 && s.pos <= 0.02
+        const atEnd = target >= n - 1 && s.pos >= n - 1 - 0.02
+        if ((d < 0 && atStart) || (d > 0 && atEnd)) {
+          return
+        }
+      }
+      e.preventDefault()
       if (reduce) {
         // No scrubbing: whole cards only, one per `scrollPerCard` of travel.
         acc += d
@@ -274,7 +293,7 @@ export default function TumbleDeckShowcase({
       root.removeEventListener("pointerup", onUp)
       root.removeEventListener("pointercancel", onUp)
     }
-  }, [n, scrollPerCard, paint])
+  }, [n, scrollPerCard, paint, loop])
 
   const onKey = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === " " || e.key === "Enter") {

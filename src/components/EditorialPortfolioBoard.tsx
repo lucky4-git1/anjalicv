@@ -23,6 +23,7 @@ import SocialCards, { CardItem } from "./ui/card-fan-carousel"
 import { GlassFoldersWorkShowcase } from "./GlassFoldersWorkShowcase"
 import type { WorksWheelItem } from "./ui/works-wheel"
 import PhoneMockupBasic from "./ui/phone-mockups-1"
+import TumbleDeckDemo from "./ui/tumble-deck-demo"
 
 export interface WorkSample {
   id: string
@@ -652,6 +653,9 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
 
           {/* Archival Glass Folders & 3D Works Wheel Showcase */}
           <GlassFoldersWorkShowcase onSelectProject={handleShowcaseSelect} />
+
+          {/* 3D Scroll-Driven Tumble Deck Showcase */}
+          <TumbleDeckDemo />
         </section>
 
 

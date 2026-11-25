@@ -74,9 +74,13 @@ export const FlightFlower: React.FC = () => {
       const jEl = document.getElementById("hero-letter-j")
       if (jEl) {
         const jRect = jEl.getBoundingClientRect()
-        // Rest naturally in the crown of "j" with ample clearance below navbar
-        startX = jRect.left + jRect.width * 0.46 + mousePos.currentX * mouseFactor
-        startY = jRect.top + jRect.height * 0.08 + mousePos.currentY * mouseFactor
+        const isSmallViewport = window.innerWidth < 640
+        // Crown just above the dot of "j" without covering "Anjali" or the subtitle
+        startX = jRect.left + jRect.width * 0.48 + mousePos.currentX * mouseFactor
+        startY =
+          jRect.top -
+          jRect.height * (isSmallViewport ? 0.42 : 0.14) +
+          mousePos.currentY * mouseFactor
       } else {
         const heroRect = heroAnchor.getBoundingClientRect()
         startX = heroRect.left + heroRect.width / 2 + mousePos.currentX * mouseFactor
@@ -171,9 +175,9 @@ export const FlightFlower: React.FC = () => {
       id="traveling-flight-flower"
       className="fixed top-0 left-0 pointer-events-none select-none"
       style={{
-        zIndex: 45,
-        width: "clamp(190px, 26vw, 350px)",
-        height: "clamp(220px, 30vw, 400px)",
+        zIndex: 35,
+        width: "clamp(108px, 19vw, 290px)",
+        height: "clamp(124px, 22vw, 330px)",
         willChange: "transform, opacity",
         filter: "drop-shadow(0 20px 32px rgba(0, 0, 0, 0.14)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.06))"
       }}

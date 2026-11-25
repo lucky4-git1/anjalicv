@@ -108,6 +108,8 @@ export function WorksWheel({
   items,
   label = "Works '26",
   action = "View",
+  activeIndex,
+  onItemSelect,
   className,
   ...props
 }: WorksWheelProps) {
@@ -151,7 +153,11 @@ export function WorksWheel({
 
   const metrics = React.useMemo(() => {
     const { w, h } = stage;
-    const cardW = Math.min(h * CARD_H * CARD_RATIO, w * CARD_MAX_W);
+    const isMobile = w > 0 && w < 640;
+    const cardW = Math.min(
+      h * CARD_H * CARD_RATIO,
+      w * (isMobile ? 0.62 : CARD_MAX_W),
+    );
     const cardH = cardW / CARD_RATIO;
     const drumR = cardH * DRUM;
     const ringR = cardH * RING_R;
@@ -168,7 +174,9 @@ export function WorksWheel({
       drumR,
       bow: cardH * BOW,
       depth: cardH * LENS,
-      title: Math.max(48, cardH * 0.18),
+      title: isMobile
+        ? Math.max(24, Math.min(cardH * 0.22, w * 0.08))
+        : Math.max(48, cardH * 0.18),
       index: Math.max(18, cardH * 0.068),
     };
   }, [stage, count]);
@@ -255,10 +263,10 @@ export function WorksWheel({
   );
 
   React.useEffect(() => {
-    if (props.activeIndex !== undefined) {
-      to(props.activeIndex + 1);
+    if (activeIndex !== undefined) {
+      to(activeIndex + 1);
     }
-  }, [props.activeIndex, to]);
+  }, [activeIndex, to]);
 
   // Native listener, because the wheel has to be cancellable - and it only
   // cancels while it still has somewhere to go, so the page scrolls on at
@@ -339,9 +347,9 @@ export function WorksWheel({
                   aria-selected={i === active}
                   href={item.href}
                   onClick={(e: React.MouseEvent) => {
-                    if (props.onItemSelect) {
+                    if (onItemSelect) {
                       if (!item.href || item.href.startsWith("#")) e.preventDefault();
-                      props.onItemSelect(item, i);
+                      onItemSelect(item, i);
                     }
                   }}
                   ref={(node: HTMLElement | null) => {
@@ -403,14 +411,14 @@ export function WorksWheel({
       </div>
       <div
         ref={titleRef}
-        className="pointer-events-none absolute top-1/2 left-[8%] -translate-y-1/2 tracking-tight opacity-0"
+        className="pointer-events-none absolute bottom-8 left-6 right-6 text-center sm:text-left sm:bottom-auto sm:top-1/2 sm:left-[8%] sm:right-auto sm:-translate-y-1/2 tracking-tight opacity-0"
         style={{ fontSize: metrics.title }}
       >
         {items[active]?.title}
       </div>
 
       <ol
-        className="text-muted-foreground absolute top-[7.5%] right-[2.5%] text-right leading-[1.75]"
+        className="hidden sm:block text-muted-foreground absolute top-[7.5%] right-[2.5%] text-right leading-[1.75]"
         style={{ fontSize: metrics.index }}
       >
         {items.map((item, i) => (

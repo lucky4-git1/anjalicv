@@ -204,9 +204,9 @@ export function initKoiPond({
       p.y+=sin(uFlap*2.8+p.x*4.4)*.15*tailWeight;
       p.y+=aFlex*uFlap*.075;
       p.z+=aFlex*abs(uFlap)*.025;
-      vec2 local=vec2(p.x,p.y*.66+p.z*.95)*uScale;
+      vec2 local=vec2(p.x,p.y*.66+p.z*.95);
       float c=cos(uAngle),s=sin(uAngle);
-      vec2 rotated=vec2(local.x*c-local.y*s,local.x*s+local.y*c);
+      vec2 rotated=vec2(local.x*c-local.y*s,local.x*s+local.y*c)*uScale;
       vec3 angledNormal=normalize(vec3(aNormal.x,aNormal.y*.66+aNormal.z*.95,aNormal.z*.66-aNormal.y*.95));
       vec2 nxy=vec2(angledNormal.x*c-angledNormal.y*s,angledNormal.x*s+angledNormal.y*c);
       vNormal=normalize(vec3(nxy,angledNormal.z));
@@ -316,9 +316,9 @@ export function initKoiPond({
       p.y+=cos(uFlap*.8+longitudinal*6.0)*.022*tail*uTailAmp;
       longitudinal=(uLongAxis>.5?p.x:p.z)*uFacing;
       lateral=uLongAxis>.5?p.z:p.x;
-      vec2 local=vec2(longitudinal,lateral*.86+p.y*.5)*uScale;
+      vec2 local=vec2(longitudinal,(lateral*.86+p.y*.5)*.74);
       float c=cos(uAngle),s=sin(uAngle);
-      vec2 rotated=vec2(local.x*c-local.y*s,local.x*s+local.y*c);
+      vec2 rotated=vec2(local.x*c-local.y*s,local.x*s+local.y*c)*uScale;
       float longitudinalNormal=(uLongAxis>.5?aNormal.x:aNormal.z)*uFacing;
       float lateralNormal=uLongAxis>.5?aNormal.z:aNormal.x;
       vec3 n=normalize(vec3(longitudinalNormal,lateralNormal*.86+aNormal.y*.5,aNormal.y*.86-lateralNormal*.5));
@@ -526,6 +526,30 @@ export function initKoiPond({
     Promise.all([loadFishModel('/assets/models/goldfish.glb',1),loadFishModel('/assets/models/butterflyfish.glb',-1),loadFishModel('/assets/models/sanke-koi.glb',1)]).then(models=>{if(!destroyed){goldfishModels=models;goldfishReady=true;}}).catch(error=>console.error('Fish models could not load; using procedural fish instead.',error));
   }
 
+  type RectBox = { left: number; top: number; right: number; bottom: number };
+  let exclusionBoxes: RectBox[] = [];
+
+  function measureExclusions() {
+    const sRect = section.getBoundingClientRect();
+    if (!sRect.width || !sRect.height) return;
+    const selectors = ['.koi-day-toggle', '.koi-greeting', '.koi-subtitle', '.koi-cta'];
+    const boxes: RectBox[] = [];
+    for (const sel of selectors) {
+      const el = section.querySelector(sel);
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0) {
+        boxes.push({
+          left: r.left - sRect.left,
+          top: r.top - sRect.top,
+          right: r.right - sRect.left,
+          bottom: r.bottom - sRect.top,
+        });
+      }
+    }
+    exclusionBoxes = boxes;
+  }
+
   function resize() {
     const rect = section.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return;
@@ -546,7 +570,10 @@ export function initKoiPond({
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.R8, gridW, gridH, 0, gl.RED, gl.UNSIGNED_BYTE, fieldBytes);
       gl.useProgram(program);
       gl.uniform2f(uniforms.grid, gridW, gridH);
+      uploadWater();
     }
+    drawArt();
+    measureExclusions();
   }
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(section);
@@ -617,8 +644,8 @@ export function initKoiPond({
       const mesh=goldfishModels[f.modelIndex];gl.bindVertexArray(mesh.vao);
       for(const [unit,texture] of [[0,mesh.baseTexture],[1,mesh.mrTexture],[2,mesh.normalTexture]]){gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,texture);}
       gl.uniform4fv(goldfishUniforms.baseFactor,mesh.baseFactor);gl.uniform3fv(goldfishUniforms.modelCenter,mesh.modelCenter);gl.uniform1f(goldfishUniforms.longAxis,mesh.longAxis);
-      const scale=Math.max(.38,Math.min(1.08,width/1272)),length=f.length*scale*1.38;
-      const centerX=f.x*2-1,centerY=1-f.y*2,scaleX=2*length/width,scaleY=2*length*.74/height;
+      const scale=Math.max(.46,Math.min(1.08,width/1272)),length=f.length*scale*1.38;
+      const centerX=f.x*2-1,centerY=1-f.y*2,scaleX=2*length/width,scaleY=2*length/height;
       const angle=-Math.atan2(f.vy,f.vx),tailAmp=Math.max(.6,Math.min(1.55,f.speedNow/24));
       gl.uniform2f(goldfishUniforms.scale,scaleX,scaleY);gl.uniform1f(goldfishUniforms.angle,angle);gl.uniform1f(goldfishUniforms.flap,f.flapPhase);gl.uniform1f(goldfishUniforms.tailAmp,tailAmp);gl.uniform1f(goldfishUniforms.facing,mesh.facing);
       gl.uniform1f(goldfishUniforms.shadow,1.0);gl.uniform2f(goldfishUniforms.center,centerX+scaleX*.065,centerY-scaleY*.12);gl.uniform1f(goldfishUniforms.depth,-.052);gl.drawElements(gl.TRIANGLES,mesh.indexCount,gl.UNSIGNED_INT,0);
@@ -805,21 +832,41 @@ export function initKoiPond({
   }
 
   function driftTabsWithFish(){
+    if(!exclusionBoxes.length)measureExclusions();
     const placed=[];
+    const minY=width<640?86:78;
+    const pad=14;
     for(const tab of floatingTabs){
       if(tab.element.matches(':hover')||document.activeElement===tab.element)continue;
       const f=fish[tab.fishIndex],w=tab.element.offsetWidth,h=tab.element.offsetHeight;
       let x=f.x*width-f.vx*62+Math.sin(time*.62+tab.phase)*3+(tab.index%2?1:-1)*Math.min(w*.3,44);
       const fishY=f.y*height,verticalGap=h*.5+45;
       let y=fishY<150?fishY+verticalGap:fishY-verticalGap+Math.sin(time*.9+tab.phase)*3;
-      const minX=w*.58,maxX=width-w*.58;
-      x=Math.max(minX,Math.min(maxX,x));y=Math.max(76,Math.min(height-h*.6,y));
-      for(let pass=0;pass<3;pass++)for(const other of placed){
-        if(Math.abs(x-other.x)<(w+other.w)*.5+10&&Math.abs(y-other.y)<(h+other.h)*.5+10){
-          const sign=x<other.x?-1:1,candidate=other.x+sign*((w+other.w)*.5+14);
-          const shifted=Math.max(minX,Math.min(maxX,candidate));
-          if(Math.abs(shifted-other.x)>=(w+other.w)*.5+10)x=shifted;
-          else {const down=y+(h+other.h)*.5+14,up=y-(h+other.h)*.5-14;y=down<=height-h*.6?down:Math.max(76,up);}
+      const minX=w*.58,maxX=width-w*.58,maxY=height-h*.65;
+      x=Math.max(minX,Math.min(maxX,x));y=Math.max(minY,Math.min(maxY,y));
+      for(let pass=0;pass<3;pass++){
+        for(const box of exclusionBoxes){
+          if(x+w*.5>box.left-pad&&x-w*.5<box.right+pad&&y+h*.5>box.top-pad&&y-h*.5<box.bottom+pad){
+            const cands=[];
+            const up=box.top-pad-h*.5,down=box.bottom+pad+h*.5;
+            const left=box.left-pad-w*.5,right=box.right+pad+w*.5;
+            if(up>=minY)cands.push({x,y:up,d:Math.abs(y-up)});
+            if(down<=maxY)cands.push({x,y:down,d:Math.abs(y-down)});
+            if(left>=minX)cands.push({x:left,y,d:Math.abs(x-left)});
+            if(right<=maxX)cands.push({x:right,y,d:Math.abs(x-right)});
+            if(cands.length){
+              cands.sort((a,b)=>a.d-b.d);
+              x=cands[0].x;y=cands[0].y;
+            }
+          }
+        }
+        for(const other of placed){
+          if(Math.abs(x-other.x)<(w+other.w)*.5+10&&Math.abs(y-other.y)<(h+other.h)*.5+10){
+            const sign=x<other.x?-1:1,candidate=other.x+sign*((w+other.w)*.5+14);
+            const shifted=Math.max(minX,Math.min(maxX,candidate));
+            if(Math.abs(shifted-other.x)>=(w+other.w)*.5+10)x=shifted;
+            else {const down=y+(h+other.h)*.5+14,up=y-(h+other.h)*.5-14;y=down<=maxY?down:Math.max(minY,up);}
+          }
         }
       }
       tab.element.style.left=`${x}px`;

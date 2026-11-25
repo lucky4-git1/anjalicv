@@ -160,7 +160,7 @@ export default function TumbleDeckShowcase({
     const fit = () => {
       const W0 = root.clientWidth
       const H0 = root.clientHeight
-      const wFrac = W0 < 420 ? 0.88 : 0.78
+      const wFrac = W0 < 420 ? 0.8 : 0.78
       const h = Math.max(80, Math.min((W0 * wFrac) / aspect, H0 * 0.56, 780))
       const w = h * aspect
       const top = H0 / 2 - 0.54 * h

@@ -30,6 +30,7 @@
     background-color: #F9EAE6;
     color: #211D1D;
     scroll-behavior: smooth;
+    overflow-x: clip;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

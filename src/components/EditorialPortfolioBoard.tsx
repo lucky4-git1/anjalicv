@@ -60,7 +60,7 @@ export const WORK_SAMPLES: WorkSample[] = [
     views: "3.4M",
     reach: "1.9M",
     shares: "174K",
-    image: "https://images.unsplash.com/photo-1608248597358-1e4242fa5214?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80",
     description: "Tactile editorial hand choreography highlighting gold vermeil rings and bespoke craftsmanship with ambient sunlight and warm linen tones.",
     tags: ["Jewelry Styling", "Hand Choreography", "Editorial"]
   },
@@ -92,7 +92,7 @@ export const WORK_SAMPLES: WorkSample[] = [
 
 export const CAMPAIGN_FAN_CARDS: CardItem[] = [
   { imgUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80", alt: "Silk skincare ritual" },
-  { imgUrl: "https://images.unsplash.com/photo-1608248597358-1e4242fa5214?auto=format&fit=crop&w=800&q=80", alt: "Haute jewelry styling" },
+  { imgUrl: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80", alt: "Haute jewelry styling" },
   { imgUrl: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=800&q=80", alt: "Artisanal stoneware ceramics" },
   { imgUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80", alt: "Editorial portrait monograph" },
   { imgUrl: "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=800&q=80", alt: "Botanical bloom roses" },

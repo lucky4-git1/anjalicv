@@ -205,6 +205,7 @@ export const KoiPondContactSection: React.FC<KoiPondContactSectionProps> = ({
           --water-pill: rgba(8, 34, 35, .54);
           --water-edge: rgba(242, 215, 189, .42);
           color: var(--water-ink);
+          background-color: #0d3333;
         }
         .koi-pond-wrapper[data-mode="day"] {
           --water-pill: rgba(17, 63, 55, .46);

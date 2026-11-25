@@ -31,10 +31,16 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Contact Anjali Rajput"
+      className="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in"
+    >
       <div className="relative w-full max-w-lg bg-[#F5F3EC] text-[#211D1D] border-2 border-[#893941] rounded-2xl p-6 sm:p-8 shadow-2xl">
         <button
           onClick={onClose}
+          aria-label="Close contact dialog"
           className="absolute top-5 right-5 p-1.5 rounded-lg border border-[#893941]/30 text-[#893941] hover:bg-[#893941]/10"
         >
           <X className="w-4 h-4" />

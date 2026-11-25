@@ -17,7 +17,12 @@ export const CvModal: React.FC<CvModalProps> = ({ isOpen, onClose }) => {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-fade-in">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Curriculum Vitae"
+      className="fixed inset-0 z-[80] flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-fade-in"
+    >
       <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-[#F5F3EC] text-[#211D1D] rounded-2xl p-6 sm:p-10 shadow-2xl border-2 border-[#893941] print:p-0 print:m-0 print:shadow-none print:w-full print:border-none">
         {/* Modal Controls (Hidden in Print) */}
         <div className="flex items-center justify-between pb-4 border-b border-[#211D1D]/15 mb-6 print:hidden">
@@ -39,6 +44,7 @@ export const CvModal: React.FC<CvModalProps> = ({ isOpen, onClose }) => {
 
             <button
               onClick={onClose}
+              aria-label="Close Curriculum Vitae"
               className="p-1.5 rounded-lg bg-[#211D1D]/10 hover:bg-[#211D1D]/20 text-[#211D1D] transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />

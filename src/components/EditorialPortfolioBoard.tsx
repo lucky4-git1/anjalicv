@@ -22,6 +22,7 @@ import { PORTFOLIO_DATA } from "../data/portfolioData"
 import SocialCards, { CardItem } from "./ui/card-fan-carousel"
 import { GlassFoldersWorkShowcase } from "./GlassFoldersWorkShowcase"
 import type { WorksWheelItem } from "./ui/works-wheel"
+import PhoneMockupBasic from "./ui/phone-mockups-1"
 
 export interface WorkSample {
   id: string
@@ -622,136 +623,9 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
             </div>
           </motion.div>
 
-          {/* 4 Phone Mockup Showcase Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6 lg:gap-8 items-end max-w-6xl mx-auto px-4">
-            {WORK_SAMPLES.map((sample, index) => (
-              <motion.div
-                key={sample.id}
-                onClick={() => setSelectedSample(sample)}
-                initial={{
-                  opacity: 0,
-                  y: 70,
-                  scale: 0.92,
-                  rotate: index % 2 === 0 ? -1.5 : 1.5
-                }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0,
-                  scale: 1,
-                  rotate: 0
-                }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{
-                  duration: 0.85,
-                  delay: index * 0.14,
-                  ease: [0.16, 1, 0.3, 1]
-                }}
-                className="group relative flex flex-col items-center cursor-pointer select-none"
-              >
-                {/* Phone Container */}
-                <div className="relative w-full max-w-[250px] sm:max-w-[230px] lg:max-w-[250px] aspect-[194/402] transition-all duration-500 ease-out group-hover:-translate-y-3 group-hover:scale-[1.02]">
-                  {/* Grounding shadow beneath phone */}
-                  <div className="absolute -bottom-5 inset-x-5 h-8 bg-[#893941]/25 blur-xl rounded-full transition-all duration-500 group-hover:scale-115 group-hover:bg-[#893941]/35 pointer-events-none" />
-
-                  {/* Inner Screen Content */}
-                  <div className="absolute inset-[3px] rounded-[26px] overflow-hidden bg-[#211D1D] shadow-inner">
-                    <img
-                      src={sample.image}
-                      alt={sample.title}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out brightness-[0.95] group-hover:brightness-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/65 pointer-events-none" />
-
-                    {/* Center Play Button with spring entrance & glow on hover */}
-                    <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                      <motion.div
-                        initial={{ scale: 0.4, opacity: 0 }}
-                        whileInView={{ scale: 1, opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{
-                          delay: 0.35 + index * 0.14,
-                          duration: 0.55,
-                          type: "spring",
-                          stiffness: 280,
-                          damping: 18
-                        }}
-                        className="w-12 h-12 rounded-full bg-black/45 backdrop-blur-md flex items-center justify-center text-white border border-white/30 shadow-2xl transition-all duration-300 group-hover:scale-115 group-hover:bg-[#CB7885] group-hover:border-[#FFFEFA]"
-                      >
-                        <Play className="w-4 h-4 fill-white text-white ml-0.5 transition-transform group-hover:scale-110" />
-                      </motion.div>
-                    </div>
-
-                    {/* Bottom Views Tag */}
-                    <div className="absolute bottom-3 inset-x-3 text-center z-10 pointer-events-none">
-                      <span className="text-[10px] font-mono tracking-wider text-white/95 bg-black/45 backdrop-blur-xs px-2.5 py-1 rounded-full border border-white/20 inline-flex items-center gap-1 shadow-xs">
-                        <Sparkles className="w-2.5 h-2.5 text-[#D4D994]" />
-                        {sample.views} Views
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Status Bar (Accurately aligned with phone-frame.png notch ears) */}
-                  <div className="absolute top-[3.25%] -translate-y-1/2 inset-x-0 px-[7.2%] flex justify-between items-center pointer-events-none z-25 select-none">
-                    <div className="w-[16.5%] flex items-center justify-center">
-                      <span className="font-sans font-semibold tracking-[-0.02em] text-[10px] sm:text-[11px] text-white/95 leading-none">
-                        9:41
-                      </span>
-                    </div>
-                    <div className="w-[16.5%] flex items-center justify-center gap-1 text-white/90 leading-none">
-                      {/* Cellular signal */}
-                      <svg className="w-2.5 h-2.5 text-white/90 fill-current" viewBox="0 0 16 16">
-                        <rect x="1" y="11" width="2.2" height="4" rx="0.5" />
-                        <rect x="5" y="8" width="2.2" height="7" rx="0.5" />
-                        <rect x="9" y="5" width="2.2" height="10" rx="0.5" />
-                        <rect x="13" y="2" width="2.2" height="13" rx="0.5" />
-                      </svg>
-                      {/* Wi-Fi */}
-                      <svg className="w-2.5 h-2.5 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                        <path d="M5 12.55a11 11 0 0 1 14.08 0" />
-                        <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
-                        <circle cx="12" cy="20" r="1.2" fill="currentColor" />
-                      </svg>
-                      {/* Battery Indicator with tip */}
-                      <div className="flex items-center">
-                        <div className="w-[14px] h-[7px] rounded-[2px] border border-white/80 p-[0.75px] flex items-center">
-                          <div className="w-full h-full bg-white/90 rounded-[1px]" />
-                        </div>
-                        <div className="w-[1px] h-[3px] bg-white/80 rounded-r-[0.5px] -ml-[0.5px]" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Phone Bezel Frame Overlay (Exact user-provided model) */}
-                  <img
-                    src="/assets/phone-frame.png"
-                    alt="Phone Frame"
-                    className="absolute inset-0 w-full h-full object-fill pointer-events-none z-20 select-none"
-                  />
-                </div>
-
-                {/* Subtitle / Title under each phone */}
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    duration: 0.5,
-                    delay: 0.3 + index * 0.14,
-                    ease: "easeOut"
-                  }}
-                  className="mt-4 text-center"
-                >
-                  <h3 className="font-serif text-base sm:text-lg font-bold text-[#893941] group-hover:text-[#CB7885] transition-colors leading-snug">
-                    {sample.title}
-                  </h3>
-                  <p className="text-[11px] font-mono text-[#5E6623] tracking-wider mt-0.5 uppercase">
-                    {sample.client}
-                  </p>
-                </motion.div>
-              </motion.div>
-            ))}
+          {/* Interactive Phone Mockup Carousel */}
+          <div className="max-w-6xl mx-auto px-4">
+            <PhoneMockupBasic />
           </div>
 
           {/* ── CARD FAN CAROUSEL: EDITORIAL CAMPAIGN ARCHIVE (100VH SEAMLESS STRIP) ── */}

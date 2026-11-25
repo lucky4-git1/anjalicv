@@ -376,7 +376,8 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
         {/* ════════════════════════════════════════════════════════════════════
             TWO-COLUMN ROW 1: ABOUT ME (LEFT) + SKILLS & EXPERTISE (RIGHT)
         ════════════════════════════════════════════════════════════════════ */}
-        <div id="about" className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch scroll-mt-24">
+        <div id="about" className="min-h-[100dvh] flex items-center py-10 sm:py-16 scroll-mt-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch w-full">
           
           {/* PANEL 2: ABOUT ME + PROFILE (7 cols) — Dusty Rose & Ivory Editorial Panel */}
           <div className="lg:col-span-7 rounded-2xl bg-[#CB7885] text-[#211D1D] p-7 sm:p-10 flex flex-col justify-between shadow-[0_12px_40px_rgba(0,0,0,0.12)] relative overflow-hidden border border-[#D4D994]/30">
@@ -595,13 +596,15 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
               <span className="text-[#D4D994]">100% Code & Craft</span>
             </div>
           </div>
+          </div>
         </div>
 
 
         {/* ════════════════════════════════════════════════════════════════════
             SECTION 3: WORK SAMPLE (MATCHES REFERENCE WITH 4 PHONE MODELS)
         ════════════════════════════════════════════════════════════════════ */}
-        <section id="work" className="scroll-mt-24 pt-6 pb-6">
+        <section id="work" className="scroll-mt-24">
+          <div className="min-h-[100dvh] flex flex-col justify-center py-12">
           {/* Section Header: Matching Reference Screenshot */}
           <motion.div
             initial={{ opacity: 0, y: 28 }}
@@ -626,12 +629,13 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
           </motion.div>
 
           {/* Interactive Phone Mockup Carousel */}
-          <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-6xl mx-auto px-4 w-full">
             <PhoneMockupBasic />
+          </div>
           </div>
 
           {/* ── CARD FAN CAROUSEL: EDITORIAL CAMPAIGN ARCHIVE ── */}
-          <div className="relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] bg-[#893941] text-[#F5F3EC] min-h-[calc(100vh-4.5rem)] py-10 sm:py-12 my-8 sm:my-10 flex flex-col justify-center items-center overflow-x-clip">
+          <div className="relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] bg-[#893941] text-[#F5F3EC] min-h-[100dvh] py-12 sm:py-16 flex flex-col justify-center items-center overflow-x-clip">
             <div className="max-w-7xl mx-auto px-4 sm:px-8 w-full flex flex-col items-center">
               <div className="text-center mb-4 sm:mb-5 max-w-2xl mx-auto">
                 <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif text-[#FFFEFA] font-normal tracking-wide">

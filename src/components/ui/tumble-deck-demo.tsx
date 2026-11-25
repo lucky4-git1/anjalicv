@@ -34,7 +34,7 @@ const cards: TumbleCard[] = [
 export default function TumbleDeckDemo() {
   return (
     <section
-      className="relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] h-[100vh] min-h-[620px] pt-20 sm:pt-24 flex flex-col overflow-hidden"
+      className="relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] h-[100dvh] min-h-[620px] pt-20 sm:pt-24 flex flex-col overflow-hidden"
       style={
         {
           "--color-background": "#F9EAE6",

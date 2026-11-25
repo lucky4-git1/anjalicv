@@ -231,7 +231,7 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
   }
 
   return (
-    <div className="relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] bg-[#211D1D] text-[#F5F3EC] py-16 sm:py-24 my-8 overflow-hidden">
+    <div className="relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] bg-[#211D1D] text-[#F5F3EC] min-h-[100dvh] flex flex-col justify-center py-16 sm:py-24 overflow-hidden">
       {/* ── FULL-BLEED DOTTED MATRIX DESK PATTERN (EDGE TO EDGE) ── */}
       <div
         aria-hidden="true"

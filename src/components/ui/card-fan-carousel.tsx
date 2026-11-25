@@ -41,11 +41,11 @@ function getResponsiveMultiplier(width: number) {
 function getHeightMultiplier(width: number) {
   // Ideal layout heights (in px at 16px root) matching the CSS breakpoints
   let idealPx: number;
-  if (width < 480) idealPx = 18 * 16;       // 288px
-  else if (width < 640) idealPx = 20 * 16;  // 320px
-  else if (width < 768) idealPx = 22 * 16;  // 352px
-  else if (width < 1024) idealPx = 25 * 16; // 400px
-  else idealPx = 28 * 16;                    // 448px
+  if (width < 480) idealPx = 16 * 16;       // 256px
+  else if (width < 640) idealPx = 18 * 16;  // 288px
+  else if (width < 768) idealPx = 20 * 16;  // 320px
+  else if (width < 1024) idealPx = 22 * 16; // 352px
+  else idealPx = 23 * 16;                   // 368px
 
   const available = window.innerHeight * 0.58; // 58vh budget for 100vh fit
   if (available >= idealPx) return 1;
@@ -277,7 +277,7 @@ export default function SocialCards({ cards }: SocialCardsProps) {
       </div>
 
       {needsPagination && (
-        <div className="flex items-center justify-center gap-4 mt-4 sm:mt-6 z-40 relative">
+        <div className="flex items-center justify-center gap-4 mt-28 sm:mt-6 z-40 relative">
           <button
             type="button"
             className={`${ARROW_CLASSES} w-10 h-10 md:w-11 md:h-11`}

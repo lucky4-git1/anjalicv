@@ -48,18 +48,23 @@ export const PollenParticles: React.FC = () => {
       color: Math.random() > 0.4 ? "244, 184, 205" : "229, 138, 160" // Rose/Blush tones
     }))
 
-    const render = () => {
+    let lastTime = 0
+    const frameInterval = 1000 / 30
+
+    const render = (now: number) => {
       animationFrameId = requestAnimationFrame(render)
       if (!isVisible || !isTabActive) return
+      if (now - lastTime < frameInterval) return
+      lastTime = now
 
       const width = canvas.width
       const height = canvas.height
       ctx.clearRect(0, 0, width, height)
 
       for (const p of particles) {
-        p.wobble += p.wobbleSpeed
-        p.x += p.vx + Math.sin(p.wobble) * 0.3
-        p.y += p.vy
+        p.wobble += p.wobbleSpeed * 2
+        p.x += (p.vx + Math.sin(p.wobble) * 0.3) * 1.5
+        p.y += p.vy * 1.5
 
         // Wrap around bounds
         if (p.y > height + 10) p.y = -10
@@ -67,10 +72,13 @@ export const PollenParticles: React.FC = () => {
         if (p.x > width + 10) p.x = -10
 
         ctx.beginPath()
+        ctx.arc(p.x, p.y, p.radius * 2.1, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(${p.color}, ${p.alpha * 0.25})`
+        ctx.fill()
+
+        ctx.beginPath()
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2)
         ctx.fillStyle = `rgba(${p.color}, ${p.alpha})`
-        ctx.shadowColor = `rgba(${p.color}, 0.5)`
-        ctx.shadowBlur = 4
         ctx.fill()
       }
     }

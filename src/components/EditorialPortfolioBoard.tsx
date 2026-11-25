@@ -630,23 +630,17 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
             <PhoneMockupBasic />
           </div>
 
-          {/* ── CARD FAN CAROUSEL: EDITORIAL CAMPAIGN ARCHIVE (100VH SEAMLESS STRIP) ── */}
-          <div className="relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] bg-[#893941] text-[#F5F3EC] min-h-[92vh] lg:h-[100vh] py-6 sm:py-10 my-8 sm:my-10 flex flex-col justify-center items-center overflow-visible">
+          {/* ── CARD FAN CAROUSEL: EDITORIAL CAMPAIGN ARCHIVE ── */}
+          <div className="relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] bg-[#893941] text-[#F5F3EC] min-h-[calc(100vh-4.5rem)] py-10 sm:py-12 my-8 sm:my-10 flex flex-col justify-center items-center overflow-x-clip">
             <div className="max-w-7xl mx-auto px-4 sm:px-8 w-full flex flex-col items-center">
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                className="text-center mb-3 sm:mb-5 max-w-2xl mx-auto"
-              >
+              <div className="text-center mb-4 sm:mb-5 max-w-2xl mx-auto">
                 <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif text-[#FFFEFA] font-normal tracking-wide">
                   Visual Archives & Editorial Stills
                 </h3>
                 <p className="text-xs sm:text-sm font-mono text-[#D4D994] mt-1.5 leading-relaxed">
                   Hover or cycle cards to explore the dynamic deck • Interactive GSAP fan physics
                 </p>
-              </motion.div>
+              </div>
 
               <SocialCards cards={CAMPAIGN_FAN_CARDS} />
             </div>

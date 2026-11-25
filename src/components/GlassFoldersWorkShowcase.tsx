@@ -243,13 +243,13 @@ export const GlassFoldersWorkShowcase: React.FC<GlassFoldersWorkShowcaseProps> =
       />
 
       {/* Decorative ambient lighting */}
-      <div className="absolute top-1/4 -right-32 w-96 h-96 rounded-full bg-[#893941]/35 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 -left-32 w-96 h-96 rounded-full bg-[#CB7885]/25 blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/4 -right-32 w-96 h-96 rounded-full bg-[#893941]/30 blur-[64px] pointer-events-none" />
+      <div className="absolute bottom-1/4 -left-32 w-96 h-96 rounded-full bg-[#CB7885]/20 blur-[64px] pointer-events-none" />
 
       {/* ── CENTERED EDITORIAL CONTAINER ── */}
       <div className="max-w-7xl mx-auto px-5 sm:px-8 relative z-10">
         {/* ── SINGLE CENTERED HEADLINE (CLEAN MINIMALIST EDITORIAL) ── */}
-        <div className="text-center mb-10 sm:mb-14">
+        <div className="text-center mb-24 md:mb-16">
           <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#FFFEFA] font-normal tracking-wide">
             Curated Campaign Archives
           </h3>

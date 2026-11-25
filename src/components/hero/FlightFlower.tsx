@@ -47,9 +47,32 @@ export const FlightFlower: React.FC = () => {
       }
     })
 
+    // Dirty-check state so we don't thrash layout/DOM at 120fps when idle or offscreen
+    let lastScrollY = -1
+    let lastP = -1
+    let lastMX = 999
+    let lastMY = 999
+
     // GSAP Ticker ensures buttery 60/120fps sync with zero coordinate drift
     const renderFrame = () => {
       if (!container) return
+
+      const p = Math.min(Math.max(flight.p, 0), 1)
+      const scrollY = window.scrollY
+      const mouseActive =
+        p <= 0.08 &&
+        (Math.abs(mousePos.targetX - mousePos.currentX) > 0.05 ||
+          Math.abs(mousePos.targetY - mousePos.currentY) > 0.05)
+
+      if (
+        !mouseActive &&
+        Math.abs(scrollY - lastScrollY) < 0.25 &&
+        Math.abs(p - lastP) < 0.0005 &&
+        Math.abs(mousePos.currentX - lastMX) < 0.05 &&
+        Math.abs(mousePos.currentY - lastMY) < 0.05
+      ) {
+        return
+      }
 
       const heroAnchor =
         document.getElementById("hero-flower-anchor") ||
@@ -60,12 +83,21 @@ export const FlightFlower: React.FC = () => {
 
       const portRect = portraitAnchor.getBoundingClientRect()
 
-      const p = Math.min(Math.max(flight.p, 0), 1)
-
       // Smooth pointer parallax falloff
       mousePos.currentX += (mousePos.targetX - mousePos.currentX) * 0.1
       mousePos.currentY += (mousePos.targetY - mousePos.currentY) * 0.1
       const mouseFactor = Math.max(0, 1 - p * 6)
+
+      lastScrollY = scrollY
+      lastP = p
+      lastMX = mousePos.currentX
+      lastMY = mousePos.currentY
+
+      if (p >= 1 && portRect.bottom <= 0) {
+        container.style.opacity = "0"
+        container.style.visibility = "hidden"
+        return
+      }
 
       // Start position (pinned atop "j" in hero)
       let startX: number
@@ -133,6 +165,7 @@ export const FlightFlower: React.FC = () => {
       }
 
       // Apply transform with GPU acceleration
+      container.style.visibility = curOpacity <= 0.01 ? "hidden" : "visible"
       container.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, -50%) scale(${curScale}) rotate(${curRot}deg)`
       container.style.opacity = `${curOpacity}`
     }
@@ -179,7 +212,7 @@ export const FlightFlower: React.FC = () => {
         width: "clamp(108px, 19vw, 290px)",
         height: "clamp(124px, 22vw, 330px)",
         willChange: "transform, opacity",
-        filter: "drop-shadow(0 20px 32px rgba(0, 0, 0, 0.14)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.06))"
+        filter: "drop-shadow(0 12px 20px rgba(0, 0, 0, 0.12))"
       }}
       aria-hidden="true"
     >

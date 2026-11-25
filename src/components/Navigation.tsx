@@ -116,7 +116,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onOpenCvModal, onOpenCon
     <>
       {/* ── FULL-WIDTH LIQUID GLASS NAVBAR ── */}
       <header
-        className={`fixed top-0 left-0 right-0 w-full z-[70] transition-all duration-300 isolate backdrop-blur-2xl border-b border-white/70 ${
+        className={`fixed top-0 left-0 right-0 w-full z-[70] transition-all duration-300 isolate backdrop-blur-md border-b border-white/70 ${
           scrolled
             ? "py-2.5 sm:py-3 bg-white/55 shadow-[0_12px_40px_rgba(137,57,65,0.12),inset_0_-1.5px_2px_rgba(203,120,133,0.25),inset_0_1.5px_2px_rgba(255,255,255,0.95)]"
             : "py-3.5 sm:py-4 bg-white/40 shadow-[0_8px_30px_rgba(137,57,65,0.06),inset_0_-1px_1.5px_rgba(203,120,133,0.18),inset_0_1px_1.5px_rgba(255,255,255,0.9)]"

@@ -37,27 +37,34 @@ const cards: TumbleCard[] = [
 
 export default function TumbleDeckDemo() {
   return (
-    <div className="my-12 sm:my-16 max-w-6xl mx-auto px-4">
-      <div className="text-center mb-8">
-        <span className="inline-block px-3 py-1 rounded-full border border-[#893941]/25 bg-[#F5F3EC] text-[#893941] font-mono text-[10px] uppercase tracking-widest mb-3">
-          3D Interactive Showcase
-        </span>
-        <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif text-[#893941] font-normal tracking-wide">
+    <section
+      className="relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] h-[100vh] min-h-[620px] pt-20 sm:pt-24 flex flex-col overflow-hidden"
+      style={
+        {
+          "--color-background": "#F9EAE6",
+          "--color-foreground": "#211D1D",
+        } as React.CSSProperties
+      }
+      aria-label="Editorial Web and Digital Deck"
+    >
+      {/* Editorial Header in normal flow above the 3D deck */}
+      <div className="shrink-0 text-center px-4 pt-2 pb-2 z-20 pointer-events-none select-none">
+        <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#893941] font-normal tracking-wide">
           Editorial Web &amp; Digital Deck
         </h3>
-        <p className="text-xs sm:text-sm font-mono text-[#5E6623] mt-1.5 leading-relaxed">
-          Scroll, drag, click, or use arrow keys to flip through the 3D landing page deck
+        <p className="text-xs sm:text-sm font-mono text-[#5E6623] mt-1 leading-relaxed">
+          Scroll, drag, click, or use arrow keys to flip through the interactive 3D deck
         </p>
       </div>
 
-      <div className="rounded-3xl overflow-hidden border border-[#893941]/20 shadow-[0_24px_70px_rgba(33,29,29,0.22)]">
+      <div className="flex-1 min-h-0 w-full">
         <TumbleDeckShowcase
           cards={cards}
-          height="min(78vh, 660px)"
-          background="#211D1D"
+          height="100%"
+          background="transparent"
           ariaLabel="Editorial web design showcase deck"
         />
       </div>
-    </div>
+    </section>
   )
 }

@@ -24,6 +24,7 @@ import { GlassFoldersWorkShowcase } from "./GlassFoldersWorkShowcase"
 import type { WorksWheelItem } from "./ui/works-wheel"
 import PhoneMockupBasic from "./ui/phone-mockups-1"
 import TumbleDeckDemo from "./ui/tumble-deck-demo"
+import { KoiPondContactSection } from "./KoiPondContactSection"
 
 export interface WorkSample {
   id: string
@@ -369,7 +370,7 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
   }
 
   return (
-    <div id="portfolio-board" className="relative bg-[#F9EAE6] py-16 md:py-24 text-[#211D1D]">
+    <div id="portfolio-board" className="relative bg-[#F9EAE6] pt-16 md:pt-24 pb-0 text-[#211D1D]">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 space-y-12 md:space-y-16">
 
         {/* ════════════════════════════════════════════════════════════════════
@@ -663,55 +664,13 @@ export const EditorialPortfolioBoard: React.FC<EditorialPortfolioBoardProps> = (
 
 
         {/* ════════════════════════════════════════════════════════════════════
-            SECTION 8: FULL-WIDTH COLLABORATION & CONTACT PANEL
+            SECTION 8: INTERACTIVE 3D KOI POND CONTACT SECTION
         ════════════════════════════════════════════════════════════════════ */}
-        <div id="contact" className="rounded-2xl bg-[#893941] text-[#F5F3EC] p-8 sm:p-14 shadow-[0_16px_50px_rgba(0,0,0,0.35)] border border-[#CB7885]/30 text-center flex flex-col items-center scroll-mt-24">
-
-          <h2 className="text-4xl sm:text-6xl md:text-7xl font-serif font-bold text-[#FFFEFA] leading-tight mb-4 max-w-3xl">
-            Let's Shape Botanical Luxury Together.
-          </h2>
-
-          <p className="max-w-xl text-xs sm:text-sm text-zinc-300 font-sans leading-relaxed mb-8">
-            Available for Social Media Management, Viral Reels & Content Strategy, and Brand Growth Collaborations.
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-10">
-            <button
-              onClick={handleCopyEmail}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#211D1D] hover:bg-[#2e2528] border border-[#CB7885]/40 text-[#F5F3EC] text-xs font-mono uppercase tracking-wider transition-all cursor-pointer active:scale-[0.98]"
-            >
-              <Mail className="w-3.5 h-3.5 text-[#D4D994]" />
-              <span>{personal.email}</span>
-              {copied ? (
-                <span className="flex items-center gap-1 text-[10px] text-[#D4D994] font-semibold">
-                  <Check className="w-3 h-3" /> Copied
-                </span>
-              ) : (
-                <Copy className="w-3 h-3 text-zinc-400" />
-              )}
-            </button>
-
-            <button
-              onClick={onOpenContactModal}
-              className="px-6 py-2.5 rounded-full bg-[#D4D994] hover:bg-[#c2c87e] text-[#211D1D] font-mono text-xs uppercase tracking-wider font-bold shadow-md transition-all cursor-pointer active:scale-[0.98] flex items-center gap-1.5"
-            >
-              <span>Transmit Commission</span>
-              <Send className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-          <div className="w-full pt-8 border-t border-[#CB7885]/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-[#D4D994]">
-            <div className="flex items-center gap-6">
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
-              <a href="https://read.cv" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">ReadCV</a>
-              <a href="https://awwwards.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">Awwwards</a>
-              <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">GitHub</a>
-            </div>
-            <span className="text-zinc-400 text-[11px]">
-              © 2027 Anjali Rajput • Botanical Editorial Portfolio
-            </span>
-          </div>
-        </div>
+        <KoiPondContactSection
+          email={personal.email}
+          fullName={personal.fullName}
+          onOpenContactModal={onOpenContactModal}
+        />
 
       </div>
 
